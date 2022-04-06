@@ -1,48 +1,37 @@
 #include"needed.h"
 
-Enemy gEnemy ; 
-// load 2gRenderder 
+Enemy gEnemy[3];
 
-bool loadMainMenu (){
-    if ( gMainMenu.loadFromFile("img/mainmenu/mainmenu.png",gRenderer ) == false ){
-        std::cout<<"Could not load main menu "<<std::endl;
+bool loadFireball(){
+    if ( gFireball.loadFireball(gRenderer)== false ){
+        std::cout<<"Could not load Fireball "<<std::endl;
         return false ;
     }
     return true ;
 }
 
-bool  loadFireball (){
-            if (gFireball.loadFromFile("img/fireball/fireball.png",gRenderer) == false ){
-                std::cout<<"could not load fireball "<<SDL_GetError()<<std::endl;
-                return false ;    
-            }
-        return true;
-}
+bool loadPhoenix(){
+    if ( gPhoenix.loadPhoenix(gRenderer)== false ){
+        std::cout<<"Could not load Phoenix"<<SDL_GetError()<<std::endl;
+        return false ;
 
-void setSpriteFireball (){
-    for(int i=1 ;i<= 30 ;i++){
-        spriteOfFireball[i].x= (i-1) * 68; 
-        spriteOfFireball[i].y=0;
-        spriteOfFireball[i].w=68;
-        spriteOfFireball[i].h= 9 ;
     }
+    return true ;
 }
 
-void setSpritePhoenix (){
-    for(int i=1;i<= 12;i++){
-        spriteOfPhoenix[i].x= (i-1)* 228 ;
-        spriteOfPhoenix[i].y=0;
-        spriteOfPhoenix[i].w=228;
-        spriteOfPhoenix[i].h=189;
-    }
-}
-
-bool loadPhoenix (){
-    if ( gPhoenix.loadFromFile("img/phoenix/phoenix.png",gRenderer) == false ){
-        std::cout<<"Could not load Phoenix "<<SDL_GetError()<<std::endl;
+bool loadBoss(){
+    if (gBoss.loadBoss(gRenderer)== false ){
+        std::cout<<"Could not load boss "<<SDL_GetError()<<std::endl;
         return false;
     }
-    return true;
+    return true ;
+}
+
+bool loadMainMenu (){
+    if(gGameMenu.loadMenu(gRenderer)== true ){
+        return true ;
+    }
+    else return false ;
 }
 
 void setScrolling(){
@@ -53,13 +42,13 @@ void setScrolling(){
 }
 
 void minusScrolling (){
-    double  minus = 0.8;
+    double  minus = 1.8;
     for(int i=1;i<=12;i++){
         scrollingOffset[i] -= minus ;
         if (scrollingOffset[i] < - gBackgroundTexture.getWidth()){
             scrollingOffset[i]=0;
         }
-        minus -= (0.8/12);
+        minus -= (1.8/12);
     }
 }
 
@@ -113,27 +102,6 @@ bool loadlayer (){
     return success;
 }
 
-bool loadFont (){
-    bool success = true; 
-    // open font 
-    gFont = TTF_OpenFont("fonts/test.ttf",28);
-    if ( gFont == NULL){
-        std::cout<<"Could not load font ";
-        success = false;
-    }
-    else {
-        // render text 
-        SDL_Color textColor={0,0,0};
-        if (gtextTexture.loadFromRenderedText("The quick brown fox jumps over the lazy dog", textColor , gFont,gRenderer)== false){
-            success =false;
-            std::cout<<"Could not render text "<<SDL_GetError()<<std::endl;
-        }
-        else {
-        }
-    }
-    return success;
-}
-
 bool loadAudio(){
     chunk =Mix_LoadWAV("sound/running.wav");
     if ( chunk == NULL) {
@@ -168,6 +136,11 @@ bool loadAudio(){
         return false ;
     }
 
+    button= Mix_LoadWAV("img/mainmenu/buttonEFF3.wav");
+    if ( button== NULL){
+        std::cout<<"could not load button sound eff "<<SDL_GetError()<<std::endl;
+        return false;
+    }
 
     return true;    
 }
@@ -202,64 +175,15 @@ void close (){
     IMG_Quit();
 }
 
-
-
 void loadFirstLayer(){
-    double minus = 0.8;
+    double minus = 1.8;
     scrollingOffset[1] -= minus ;
-    if (scrollingOffset[1] < - gBackgroundTexture.getWidth()){
+    if (scrollingOffset[1] < -gBackgroundTexture.getWidth()){
         scrollingOffset[1]=0;
     }
     bgl[1].render(scrollingOffset[1],0,gRenderer,NULL);
     bgl[1].render(scrollingOffset[1]+gBackgroundTexture.getWidth(),0,gRenderer,NULL);
     
-}
-
-void frameProcessing (){
-        frameMainRunning ++;
-        frameIdle ++; 
-        frameIdleLeft ++;
-        frameAttack++;
-        framePhoenix++;
-        frameAttack2 ++;
-        frameFireball++;
-        frameJumpUp ++; 
-        frameJumpDown ++ ;
-        frameWalkingEnemie ++ ; 
-   
-        if(framePhoenix >= 12* 15){
-            framePhoenix= 15;
-        }
-        if ( frameMainRunning  >= 8*10 ){
-            frameMainRunning = 10;
-        } 
-        if ( frameIdle >= 15 * 8){
-            frameIdle = 15;
-        }
-        if ( frameAttack >= 18 * 6 ){
-             frameAttack =  6;
-         }
-        if ( frameAttack2 >= 28 *6 ){
-            frameAttack2 = 6;
-        }
-        if ( frameFireball >= 10 * 30 ){
-            frameFireball = 10 ;
-        }
-        if (frameJumpUp >= 7 * 7){
-            frameJumpUp = 14 ;
-        }
-        if (frameJumpDown >= 13* 13 ){
-            frameJumpDown = 26; 
-        }
-        if (frameDead <= 13*13 ){
-            frameDead ++ ;
-        }
-        if ( frameWalkingEnemie >= 21*10 ){
-            frameWalkingEnemie = 10;
-        }
-        if  ( frameEnemyDead <= 20 * 30 ){
-            frameEnemyDead ++ ;
-        }
 }
 
 bool loadAllNeeded (){
@@ -270,57 +194,58 @@ bool loadAllNeeded (){
     if(loadAudio()== false ){
         return false ;
     }
-    if (loadPhoenix()== false){
-        return false;
-    }
+
     if (loadlayer()==false){
         return false;
     }
-    if ( loadFireball() == false ){
-        return false ;
-    }
+  
     if ( loadBG()== false) {
         return false;
     }
-    if ( loadFont()==false ){
-        return false;
-    }
-  
-    
+
     if ( loadMainMenu() == false  ) return false ; 
+    if (loadBoss()== false ) return false ;
+    if ( loadFireball()== false ) return false;
+    if ( loadPhoenix()== false ) return false;
     return true;
+  
 }
 
 void playBGMusic (){
-    
     Mix_PlayMusic(music,-1);
     Mix_PlayMusic(phoenixWing, -1 );
 }
 
 
 int main(int argc, char * agrv[]){
+
+    int first = ENEMY_COORDINATION_X ;
+
+    for (int i=0;i<3;i++){
+        gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
+        first += 400;
+    }
+
     if(loadAllNeeded()==false){
         return -1;
     }
 
     bool stop = false;
-    // SET SPRITE ALL CHARACTERS -------------------------------------------------------
-    setSpriteFireball();
-    setSpritePhoenix();
+    // SET FOR PARRALAX BACKGROUND ALL VELOCITY = 0 
     setScrolling();
-   
     // ----------------------------------------------------------------------------------
+    gGameMenu.render(0,0,gRenderer,NULL);
+    gGameMenu.menuControl(gRenderer,gEvent,button,gBackgroundTexture,gFont,gWindow);
+
     playBGMusic();
-    
+
     while (stop == false ){  
         fpsTimer.start(); 
-       while ( SDL_PollEvent(&gEvent)){
+        while ( SDL_PollEvent(&gEvent)){
             if(gEvent.type == SDL_QUIT ){
-               stop=1;
+               stop=true ;
             }
-     
-            gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2,frameAttack2,frameAttack,frameJumpUp );
-            // gPhoenix.handleInputAction(gEvent,gRenderer,NULL,NULL,NULL,frameAttack2);
+            gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2 );
         }
         
         SDL_SetRenderDrawColor(gRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
@@ -328,49 +253,47 @@ int main(int argc, char * agrv[]){
         
         // FOR PARALLAX BACKGROUNDDD ------------------------------------------------------------------------------------------------------------------------
         //---------------------------------------------------------------------------------------------------------------------------------------------------
-        
-        SDL_Rect * currentFrame = &spriteMainCharacter[frame/10];
-        SDL_Rect * currentFramePhoenix = &spriteOfPhoenix[framePhoenix /15 ];
-
         minusScrolling();
         renderLayers();
-
-                
+    
         // FOR FIREBALL ---------------------------------------------------------------------------------------------------------------------------------------
-        
-        SDL_Rect  * currentFireball = & spriteOfFireball [frameFireball / 10 ];
-
             //INSIDE RENDERFIREBALL FUNCTION, IT HAS TO CHECK THE STATE OF FIREBALL IS BE CREATED  OR NOT --------------------------------- 
-            gFireball.render(gFireball.getXPos() , gFireball.getYPos() , gRenderer, currentFireball);
+            gFireball.renderFireball(gRenderer);
             gFireball.autoMove();
             
         // FOR FIREBALL -------------------------------------------------------------- 
         
-        // gPhoenix.movingCharacter();
-        gPhoenix.render(0 , DEFAULT_PHOENIX_Y  ,gRenderer , currentFramePhoenix);
+     
+        gPhoenix.renderPhoenix(gRenderer);
         
         // FOR MAIN CHARACTER ----------------------------------------------------------------------------------------------------------------------------------
         gTestCharacter.getHitFromFireball(&gFireball);
         gTestCharacter.movingCharacter();
-        gTestCharacter.showCharacter(gRenderer,frame,frameIdle,frameIdleLeft,frameAttack,frameAttack2,frameJumpUp ,frameJumpDown, frameDead);
+        gTestCharacter.showCharacter(gRenderer);
 
         loadFirstLayer();
-        
-        gEnemy.autoMove(frameEnemyDead);
-        gEnemy.ShowEnemie(gRenderer,frameWalkingEnemie,frameEnemyDead );
-        gEnemy.handleHitFromCharacter(&gTestCharacter,frameAttack );
 
-        frameProcessing();
-        SDL_RenderPresent(gRenderer);  
+        gBoss.renderBoss(gRenderer); 
+
+        for (int i=0;i<3;i++){
+            gEnemy[i].autoMove();
+            gEnemy[i].ShowEnemie(gRenderer);
+            gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);
+            gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());
+        }
+        
+        
+        SDL_RenderPresent(gRenderer); 
+
         int realImpTime = fpsTimer.getTicks();
         int timeOneFrame = (1000/FRAME_PER_SECOND ); // ms 
         if ( realImpTime < timeOneFrame ){
-            int delayTime = timeOneFrame -  realImpTime ; 
+            int delayTime = timeOneFrame - realImpTime ; 
             if ( delayTime > 0 )
             SDL_Delay(delayTime);
         }
     }
-  
+    
     close();
     return 0;
 }

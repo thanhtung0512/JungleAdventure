@@ -9,7 +9,9 @@ Dot :: Dot (){
 }
 
 
-Dot::~Dot (){;}
+Dot::~Dot (){
+    free();
+}
 
 
 void Dot:: handleEvent (SDL_Event &e){

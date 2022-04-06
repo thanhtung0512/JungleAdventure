@@ -12,22 +12,38 @@ class Enemy : public Character{
     
     public :
     
-    const int enemyVelocity = 1; 
+    const double enemyVelocity = 2; 
 
+    
+    
     Enemy();
+    
     ~Enemy();
 
-    void autoMove (int & frameEnemyDead );
+    void autoMove ( );
 
-    void handleHitFromCharacter (Character* gTestCharacter,  int & frameAttack  );
+    void handleHitFromCharacter (Character* gTestCharacter,  int  frameAttack , int frameAttack2  );
     
     void setFrameEnemiesRun ();
 
     void setFrameDead ();
 
-    void ShowEnemie (SDL_Renderer* screen , int frameWalkingEnemie , int frameEnemyDead );
+    void ShowEnemie (SDL_Renderer* screen );
 
+    void frameProcessing ();
 
+    void getHitFromFireball(Fireball * gFireball );
+
+    void collisionWithPhoenix (Phoenix * gPhoenix );
+
+    void collisionWithMainCharacter ( Character * gTestCharacter);
+
+    void checkCollision ( Phoenix  *gPhoenix , Fireball *gFireball, Character * gTestCharacter);
+
+    void setCoordinate (int X , int Y );
+
+    double getEnemyPosX ();
+    
     protected :
 
     SDL_Rect frame_running [22];
@@ -35,6 +51,7 @@ class Enemy : public Character{
     int status ;
     double mPosX  , mPosY; 
     double mVelX ;
+    int frameEnemyDead , frameWalkingEnemie ; 
     
 
 

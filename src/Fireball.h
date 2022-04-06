@@ -5,30 +5,34 @@
 
 #define BE_CREATED 1 
 #define NONE_CREATED 0 
-#define FIREBAL_VEL  0.02
+#define FIREBAL_VEL  0.01/2
 
 class Fireball : public Dot  {
     public :
     Fireball();
     ~Fireball();
 
-
-    void setFrameFireball ();
-    
     void setXPos ( int X) ;
     void setYPos ( int Y) ;
 
     void autoMove();
 
-
     double getXPos ();
     double getYPos ();
 
+    void setSpriteFireball ();
+
+    void renderFireball (SDL_Renderer * screen );
+    bool loadFireball (SDL_Renderer * screen );
+
     private :
-    SDL_Rect  frame_fireball [32];
+
+    SDL_Rect  spriteOfFireball [33];
     double  mPosX , mPosY ;
     int status ;
     double mVelX;
+
+    int frameFireball ; 
 
 } ;
 

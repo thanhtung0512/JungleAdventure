@@ -1,8 +1,28 @@
 #include"needed.h"
 #include "Character.h"
 
-#define MAX_HEIGHT_JUMP DEFAULT_MAIN_CHARACTER_Y  - 130
-const int jumpVelocity  = 1.95; 
+#define FRAME_OF_RUNNING 8 
+#define FRAME_OF_IDLE 8 
+#define FRAME_OF_ATTACK 18 
+#define FRAME_OF_ATTACK_2 28
+#define FRAME_JUMP_UP 7
+#define FRAME_JUMP_DOWN 13
+#define FRAME_DEAD 13
+
+#define MAX_HEIGHT_JUMP  DEFAULT_MAIN_CHARACTER_Y  - 135
+
+#define TIME_TO_NEXT_FRAME_RUNNING_CHARACTER 6 
+#define TIME_TO_NEXT_FRAME_IDLE 15 
+#define TIME_TO_NEXT_FRAME_ATTACK 4
+#define TIME_TO_NEXT_FRAME_ATTACK_2 3
+#define TIME_TO_NEXT_FRAME_JUMP_UP 7 
+#define TIME_TO_NEXT_FRAME_JUMP_DOWN 13 
+#define TIME_TO_NEXT_FRAME_DEAD 13
+
+#define LEFT_LIMIT_X 0 
+const double jumpVelocity  = 2.5; 
+
+
 
 Character ::Character (){
     mPosX =SCREEN_WIDTH / 2 -  140 ;
@@ -19,50 +39,67 @@ Character ::Character (){
     setJumpDownClips();
     setDeadClips();
 
-    // frameMainRunning = 10;
-    // frameIdle = 15; 
-    // frameIdleLeft = 15;
+    frameMainRunning = 10;
+    frameIdle = 15; 
+    frameIdleLeft = 15;
+    frameAttack = 6; frameAttack2 = 6 ; frameJumpUp = 14; frameJumpDown = 26 ; frameDead = 13 ;
 
     
 }
 
 Character :: ~Character (){
-
+    free();
 }
 
-void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chunk * chunk,Mix_Chunk * sword ,Mix_Chunk * sword_2 ,int& frameAttack2 , int &frameAttack , int & frameJump ){
+void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chunk * chunk,Mix_Chunk * sword ,Mix_Chunk * sword_2  ){
     if ( e.type == SDL_KEYDOWN  && e.key.repeat == 0 ){
         switch ( e.key.keysym.sym  ){
+
             case SDLK_RIGHT :{
-                Mix_PlayChannel(-1,chunk ,0);
                 if (status != JUMP_DOWN && status != JUMP_UP  ){
+                Mix_PlayChannel(-1,chunk ,0);
                 status = RUN_RIGHT ;
                 }
                 mVelCharX  += CHARACTER_VEL ;
                 break;
             }
+
             case SDLK_LEFT :{
-                Mix_PlayChannel(-1,chunk ,0);
                 if (status != JUMP_DOWN && status != JUMP_UP)
-                status =RUN_LEFT ;
+                {
+                    Mix_PlayChannel(-1,chunk ,0);
+                    status =RUN_LEFT ;
+                }
                 mVelCharX -=CHARACTER_VEL;
                 break;
             }
+
+
             case SDLK_t:{
-                Mix_PlayChannel(-1,sword,-1);  
                 frameAttack = 8; 
-                status = ATTACK;
+                if ( status != JUMP_DOWN  && status !=JUMP_UP )
+                {
+                    Mix_PlayChannel(-1,sword,-1);  
+                    status = ATTACK;
+                }
                 break;
             }
+
             case SDLK_y :{
-                Mix_PlayChannel(-1,sword_2,-1);
-                status = ATTACK_2 ;
+                if ( status != JUMP_DOWN  && status !=JUMP_UP )
+                {
+                    Mix_PlayChannel(-1,sword_2,-1);
+                    status = ATTACK_2 ;
+                    
+                }
+                
                 frameAttack2 = 6 ;
                 break;
             
             }
+
             case SDLK_UP:{
-                frameJump = 7 ;
+                frameJumpUp = 7 ;
                 mVelCharY -= 50; 
                 if ( mPosY == DEFAULT_MAIN_CHARACTER_Y )
                 status = JUMP_UP;
@@ -72,14 +109,18 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
         }
     }
     else if (e.type == SDL_KEYUP && e.key.repeat ==0  ){
+
         switch ( e.key.keysym.sym ){
             case SDLK_RIGHT :{
-                Mix_HaltChannel(-1);
                 if (status != JUMP_DOWN && status != JUMP_UP  )
-                status = RUN_RIGHT;
+                {   
+                    Mix_HaltChannel(-1);
+                    status = RUN_RIGHT;
+                }
                 mVelCharX  -= CHARACTER_VEL ;
                 break;
             }
+
             case SDLK_LEFT :{
                 Mix_HaltChannel(-1);
                 if (status != JUMP_DOWN && status != JUMP_UP  )
@@ -87,19 +128,23 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
                 mVelCharX +=CHARACTER_VEL;
                 break;
             }
+
             case SDLK_t:{
                 Mix_HaltChannel(-1);
                 if (status != JUMP_DOWN && status != JUMP_UP  )
                 status = IDLE ;
                 break;
             }
+
             case SDLK_y :{
-                frameAttack2 = 6 ;
+                
                 Mix_HaltChannel(-1);
                 if (status != JUMP_DOWN && status != JUMP_UP  )
                 status = IDLE;
                 break;
             }
+
+
             case SDLK_UP:{
                 status = JUMP_DOWN ;
                 break; 
@@ -112,13 +157,14 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
 
 void Character :: movingCharacter (){
     mPosX += mVelCharX;
-    if (mPosX<0 || (mPosX + frameWidth >SCREEN_WIDTH )){
+    if (mPosX< LEFT_LIMIT_X  || (mPosX + frameWidth >SCREEN_WIDTH )){
         mPosX -= mVelCharX;
     }
-
+ 
+ // jump processing 
     if ( status ==  JUMP_UP ){
         if (mPosY > MAX_HEIGHT_JUMP  ){
-                mPosY -= 1.95 ;
+                mPosY -= jumpVelocity ;
         }
         if ( mPosY == MAX_HEIGHT_JUMP ){
             status = JUMP_DOWN;
@@ -126,7 +172,7 @@ void Character :: movingCharacter (){
     }
     if ( status == JUMP_DOWN )  {
         if(mPosY < DEFAULT_MAIN_CHARACTER_Y ){
-            mPosY += 1.95;
+            mPosY += jumpVelocity;
         }
         if ( mPosY == DEFAULT_MAIN_CHARACTER_Y ){
             status = RUN_RIGHT ;
@@ -134,7 +180,7 @@ void Character :: movingCharacter (){
     }
 }
 
-void Character :: showCharacter (SDL_Renderer * screen, int frame , int frameIdle ,int frameIdleLeft  ,int& frameAttack , int& frameAttack2  , int frameJumpUp , int frameJumpDown, int frameDead  ){
+void Character :: showCharacter (SDL_Renderer * screen  ){
 
     if ( status == RUN_RIGHT){
        if ( loadFromFile("img/mainChar/toright.png",screen) == false ){
@@ -185,39 +231,38 @@ void Character :: showCharacter (SDL_Renderer * screen, int frame , int frameIdl
 
     if ( status == IDLE || status == IDLE_LEFT){
          frameIdle ++;
-         currentFrame = & frame_idle[frameIdle/15];
+         currentFrame = & frame_idle[frameIdle/TIME_TO_NEXT_FRAME_IDLE];
          render(mPosX , mPosY, screen , currentFrame );
-         if ( frameIdle >= 15*8 ){
-             frameIdle = 15;
+         if ( frameIdle >= TIME_TO_NEXT_FRAME_IDLE*8 ){
+             frameIdle = TIME_TO_NEXT_FRAME_IDLE;
          }
     }
     if ( status == RUN_RIGHT || status == RUN_LEFT){
-        currentFrame = & frame_clips[frame/10];
+        currentFrame = & frame_clips[frameMainRunning/TIME_TO_NEXT_FRAME_RUNNING_CHARACTER ];
         render(mPosX  , mPosY, screen , currentFrame );
     }
     if ( status == ATTACK){
-        // de y cai frame clip =)))) aaaaaaaaaaaaaaaaaaaaaaaaaaaaa cay vaiii
-         currentFrame = & frame_attack[frameAttack/6];
+         currentFrame = & frame_attack[frameAttack/TIME_TO_NEXT_FRAME_ATTACK];
          render(mPosX , mPosY, screen , currentFrame ); 
     }
     if ( status ==ATTACK_2 ){ 
-        currentFrame = & frame_attack_2[frameAttack2 /6];
+        currentFrame = & frame_attack_2[frameAttack2 /TIME_TO_NEXT_FRAME_ATTACK_2 ];
         render(mPosX,mPosY ,screen,currentFrame);
     }
     if(status == JUMP_UP ){
-        currentFrame = &frame_jump_up[ frameJumpUp/ 7 ];
+        currentFrame = &frame_jump_up[ frameJumpUp/ TIME_TO_NEXT_FRAME_JUMP_UP ];
         render(mPosX , mPosY , screen, currentFrame);
     }
     if ( status == JUMP_DOWN ){
-        currentFrame =  & frame_jump_down [frameJumpDown/ 13];
+        currentFrame =  & frame_jump_down [frameJumpDown/ TIME_TO_NEXT_FRAME_JUMP_DOWN];
         render(mPosX , mPosY , screen ,currentFrame );
     }
     
     if (status == DEAD_CHARACTER){
-        currentFrame=  & frame_dead [frameDead / 13] ;
+        currentFrame=  & frame_dead [frameDead / TIME_TO_NEXT_FRAME_DEAD] ;
         render(mPosX , mPosY ,screen ,currentFrame);
     }
-
+    frameProcessing();
 }
 
 void Character :: setClipsRun (int frameNumbers ){
@@ -292,14 +337,14 @@ void Character :: setJumpDownClips(){
     }
 }
 
-void Character :: getHitFromFireball (Fireball* gFireball ){
-    if( gFireball ->getXPos ()+FIREBALL_WIDTH  >= mPosX+ 80 && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + MAIN_CHAR_WIDTH ){
+void Character :: getHitFromFireball ( Fireball* gFireball ){
+    if( gFireball ->getXPos ()+FIREBALL_WIDTH  >= mPosX+ 80 && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + MAIN_CHAR_WIDTH  && status !=DEAD_CHARACTER){
         if (DEFAULT_PHOENIX_Y + 90 >= mPosY && DEFAULT_PHOENIX_Y + 90 <= mPosY + MAIN_CHAR_HEIGHT ){
             status = DEAD_CHARACTER;
+            gFireball->setXPos(SCREEN_WIDTH * 2  );
         }
     }
         
-    
 }
 
 void Character :: setDeadClips (){
@@ -311,3 +356,52 @@ void Character :: setDeadClips (){
 
     }
 }
+
+void Character :: frameProcessing (){
+        frameMainRunning ++;
+        frameIdle ++; 
+        frameIdleLeft ++;
+        frameAttack++;
+        frameAttack2 ++;
+        frameJumpUp ++; 
+        frameJumpDown ++ ;
+
+        if ( frameMainRunning  >= FRAME_OF_RUNNING * TIME_TO_NEXT_FRAME_RUNNING_CHARACTER  ){
+            frameMainRunning = TIME_TO_NEXT_FRAME_RUNNING_CHARACTER ;
+        } 
+        if ( frameIdle >= TIME_TO_NEXT_FRAME_IDLE * FRAME_OF_IDLE){
+            frameIdle = TIME_TO_NEXT_FRAME_IDLE;
+        }
+        if  ( frameAttack >= FRAME_OF_ATTACK * TIME_TO_NEXT_FRAME_ATTACK ){
+             frameAttack  =TIME_TO_NEXT_FRAME_ATTACK ;
+         }
+        if ( frameAttack2 >= FRAME_OF_ATTACK_2  *TIME_TO_NEXT_FRAME_ATTACK_2  ){
+            frameAttack2 = TIME_TO_NEXT_FRAME_ATTACK_2 ;
+        }
+       
+        if (frameJumpUp >= FRAME_JUMP_UP* TIME_TO_NEXT_FRAME_JUMP_UP){
+            frameJumpUp = 2 * TIME_TO_NEXT_FRAME_JUMP_UP ;
+        }
+        if (frameJumpDown >= FRAME_JUMP_DOWN* TIME_TO_NEXT_FRAME_JUMP_DOWN  ){
+            frameJumpDown = 2 * TIME_TO_NEXT_FRAME_JUMP_DOWN ; 
+        }
+        if (frameDead <= FRAME_DEAD * TIME_TO_NEXT_FRAME_DEAD  ){
+            frameDead ++ ;
+        }
+}
+
+int Character :: getFrameAttack(){
+    return frameAttack ;
+}
+
+ void Character ::   setStatus (int statusS ){
+     status = statusS ;
+ }
+
+ void Character ::  setCharacterPosX(int posX){
+     mPosX = posX ;
+ }
+
+ int Character ::  getFrameAttack2 (){
+     return frameAttack2; 
+ }

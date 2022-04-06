@@ -8,11 +8,17 @@ class Character : public Dot {
     public :
     const int frameWidth = 224;
     const int frameHeight = 112;
-    const int CHARACTER_VEL = 1.5 ;
+    const int CHARACTER_VEL = 2 ;
 
     Character();
     ~Character();
-    void handleInputAction(SDL_Event &e , SDL_Renderer *screen ,Mix_Chunk * chunk ,Mix_Chunk * sword ,Mix_Chunk * sword_2,int& frameAttack2 , int & frameAttack, int & frameJumpUp);
+
+    
+    void setCharacterPosX(int posX);
+
+
+    void handleInputAction(SDL_Event &e , SDL_Renderer *screen ,Mix_Chunk * chunk ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
+    
     void setClipsRun (int frameNumbers); // set dimensions to clips texture right run 
     
     void setIdleClip ();
@@ -29,15 +35,24 @@ class Character : public Dot {
     //bool loadFromFile ( std ::string path,SDL_Renderer * screen)
     int  getStatus ();
 
+    void  setStatus (int status );
+
     void movingCharacter ();
 
 
-    void showCharacter (SDL_Renderer * screen, int frame ,int frameIdle ,int frameIdleLeft, int& frameAttack , int &frameAttack2 , int frameJumpUp, int frameJumpDown , int frameDead   ) ;
+    void showCharacter (SDL_Renderer * screen   ) ;
 
     int getCharacterPosX ();
     int getCharacterPosY();
 
     void getHitFromFireball (Fireball* gFireball );
+
+   
+
+    void frameProcessing ();
+
+    int getFrameAttack();
+    int getFrameAttack2 ();
 
     protected :
 
@@ -67,7 +82,8 @@ class Character : public Dot {
     int frame ; // current frame 
     int status ;
     int jumpControl ; 
-    // int frameMainRunning , frameIdle , frameIdleLeft ;
+    int frameMainRunning , frameIdle , frameIdleLeft ;
+    int frameAttack ,  frameAttack2  , frameJumpUp , frameJumpDown , frameDead  ;
 
 };
 

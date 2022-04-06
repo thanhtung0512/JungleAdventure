@@ -11,8 +11,7 @@
 #include <string>
 #include <string.h>
 #include <bits/stdc++.h>
-#include <vector>
-#include <cmath>
+
 #include <SDL_image.h>
 #include "Physic/Vector2D.h"
 #include "Physic/Transform.h"
@@ -21,8 +20,11 @@
 #include "Character.h"
 #include "Fireball.h"
 #include "impTimer.h" 
-
+#include"Phoenix.h"
 #include "Enemy.h"
+#include "Character.h"
+#include"GameMenu.h"
+#include"Boss.h"
 
 #define SCREEN_WIDTH 928
 #define SCREEN_HEIGHT 793
@@ -66,19 +68,47 @@
 #define DEAD_CHARACTER  -9 
 
 
+// CHARACTER FRAME DEFINE 
+#define FRAME_OF_RUNNING 8 
+#define FRAME_OF_IDLE 8 
+#define FRAME_OF_ATTACK 18 
+#define FRAME_OF_ATTACK_2 28
+#define FRAME_JUMP_UP 7
+#define FRAME_JUMP_DOWN 13
+#define FRAME_DEAD 13
+
+#define MAX_HEIGHT_JUMP DEFAULT_MAIN_CHARACTER_Y  - 135
+
+#define TIME_TO_NEXT_FRAME_RUNNING_CHARACTER 6 
+#define TIME_TO_NEXT_FRAME_IDLE 15 
+#define TIME_TO_NEXT_FRAME_ATTACK 4
+#define TIME_TO_NEXT_FRAME_ATTACK_2 3
+#define TIME_TO_NEXT_FRAME_JUMP_UP 7 
+#define TIME_TO_NEXT_FRAME_JUMP_DOWN 13 
+#define TIME_TO_NEXT_FRAME_DEAD 13
+
+#define LEFT_LIMIT_X 0 
+
+///////////////////////////////
+
+#define ENEMY_COORDINATION_X  (double)SCREEN_WIDTH - 130
+#define ENEMY_COORDINATION_Y  (double )DEFAULT_MAIN_CHARACTER_Y+70 
+
 static SDL_Window *gWindow = NULL;
 static SDL_Renderer *gRenderer = NULL;
 static SDL_Event gEvent;
 static SDL_Texture *gCurrentImage = NULL;
+
 static TTF_Font *gFont = NULL;
 
 static LTexture bgl[13];
 static LTexture gBackgroundTexture;
 static LTexture gtextTexture;
 static LTexture gDotTexture;
-static LTexture gMainMenu ; 
 
-static Character gPhoenix;
+
+static Phoenix gPhoenix;
+
 static Character gMainCharacterTexture;
 static Character gTestCharacter;
 
@@ -86,7 +116,6 @@ static Character gTestCharacter;
 
 static SDL_Rect spriteMainCharacter[9];
 static SDL_Rect spriteOfPhoenix [50];
-static SDL_Rect spriteOfFireball [32];
 
 
 static double scrollingOffset[14];
@@ -98,20 +127,17 @@ static Mix_Music *music = NULL;
 static Mix_Music *phoenixWing = NULL;
 static Mix_Chunk *sword = NULL;
 static Mix_Chunk *sword_2 = NULL;
-static Mix_Chunk * fireball = NULL;
+static Mix_Chunk *fireball = NULL;
+static Mix_Chunk * button = NULL ;
 
-
+static gameMenu gGameMenu ; 
 static impTimer fpsTimer ; 
 
-static int frameMainRunning = 10, frameIdle = 15, frameIdleLeft = 15;
-static int frameAttack = 6, framePhoenix = 15, frameAttack2 = 6, frameFireball = 10 , frameJumpUp = 14, frameJumpDown = 26 , frameDead = 13 ;
-static int frameEnemyDead = 10 ;
-
-static int frameWalkingEnemie = 10; 
+static Boss gBoss ; 
 
 static int originXFireball = 0 , originYFireball  = 0 ;
 static int countFireball = 0;
-
+// static Enemy gEnemy ; 
 
 
 
