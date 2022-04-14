@@ -2,6 +2,16 @@
 
 Enemy gEnemy[3];
 
+bool loadSkyFireball (){
+    for (int i=1;i<=10;i++){
+        if ( gSkyFireball[i].loadFireball(gRenderer)== false ){
+        std:: cout<<"Could not load sky fireball "<<SDL_GetError()<<std::endl;
+        return false ;
+        }
+    }
+    return true ;
+}
+
 bool loadFireball(){
     if ( gFireball.loadFireball(gRenderer)== false ){
         std::cout<<"Could not load Fireball "<<std::endl;
@@ -150,6 +160,9 @@ void renderLayers(){
     for(int i=12;i>=1;i--){
         bgl[i].render(scrollingOffset[i],0,gRenderer,NULL);
         bgl[i].render(scrollingOffset[i]+gBackgroundTexture.getWidth(),0,gRenderer,NULL);
+        if( i==5 ){
+            gBoss.renderBoss(gRenderer); 
+        }
     }
    
 }
@@ -207,8 +220,8 @@ bool loadAllNeeded (){
     if (loadBoss()== false ) return false ;
     if ( loadFireball()== false ) return false;
     if ( loadPhoenix()== false ) return false;
-    return true;
-  
+    if ( loadSkyFireball()== false ) return false ;
+    return true; 
 }
 
 void playBGMusic (){
@@ -218,6 +231,7 @@ void playBGMusic (){
 
 
 int main(int argc, char * agrv[]){
+    // load all texture before going to game loop
 
     int first = ENEMY_COORDINATION_X ;
 
@@ -258,9 +272,9 @@ int main(int argc, char * agrv[]){
     
         // FOR FIREBALL ---------------------------------------------------------------------------------------------------------------------------------------
             //INSIDE RENDERFIREBALL FUNCTION, IT HAS TO CHECK THE STATE OF FIREBALL IS BE CREATED  OR NOT --------------------------------- 
-            gFireball.renderFireball(gRenderer);
-            gFireball.autoMove();
             
+        gFireball.renderFireball(gRenderer);
+        gFireball.autoMove();
         // FOR FIREBALL -------------------------------------------------------------- 
         
      
@@ -273,7 +287,10 @@ int main(int argc, char * agrv[]){
 
         loadFirstLayer();
 
-        gBoss.renderBoss(gRenderer); 
+        
+        gSkyFireball[1].renderSkyFireball(gRenderer);
+        gSkyFireball[1].autoMove();
+        gSkyFireball[1].checkCollisionWithMainCharacter(&gTestCharacter);
 
         for (int i=0;i<3;i++){
             gEnemy[i].autoMove();

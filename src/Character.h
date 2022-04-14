@@ -8,7 +8,7 @@ class Character : public Dot {
     public :
     const int frameWidth = 224;
     const int frameHeight = 112;
-    const int CHARACTER_VEL = 2 ;
+    const int CHARACTER_VEL = 3 ;
 
     Character();
     ~Character();
@@ -19,7 +19,7 @@ class Character : public Dot {
 
     void handleInputAction(SDL_Event &e , SDL_Renderer *screen ,Mix_Chunk * chunk ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
     
-    void setClipsRun (int frameNumbers); // set dimensions to clips texture right run 
+    void setClipsRun (int frameNumbers); // set dimensions for clips texture run right 
     
     void setIdleClip ();
 

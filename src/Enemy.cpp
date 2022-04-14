@@ -48,10 +48,10 @@ void Enemy :: setFrameEnemiesRun (){
 
 void Enemy :: setFrameDead (){
     for(int i=1 ;i<= 30;i++){
-        frame_dead[i].x=(i-1)* 80 ; 
-        frame_dead[i].y=  0 ;
+        frame_dead[i].x=(i-1)* 80; 
+        frame_dead[i].y=  0;
         frame_dead[i].w= 80;
-        frame_dead[i].h= 52 ;
+        frame_dead[i].h= 52;
 
     }
 }
@@ -86,7 +86,7 @@ void Enemy ::autoMove ( ){
     if ( mPosX <= -100  ){
         mPosX = SCREEN_WIDTH  + 400;
         status = ALIVE;
-        frameEnemyDead = 0 ;
+        frameEnemyDead = 20 ;
     } 
 }
 
@@ -111,6 +111,7 @@ void Enemy::  collisionWithPhoenix (Phoenix * gPhoenix ){
     if ( gPhoenix->getPhoenixX() + PHOENIX_FRAME_WIDTH == mPosX  ){
         status = DEAD;
     }
+    
 }
 
 void Enemy :: checkCollision ( Phoenix  *gPhoenix , Fireball *gFireball, Character* gTestCharacter){

@@ -25,6 +25,7 @@
 #include "Character.h"
 #include"GameMenu.h"
 #include"Boss.h"
+#include"SkyFireball.h"
 
 #define SCREEN_WIDTH 928
 #define SCREEN_HEIGHT 793
@@ -134,6 +135,7 @@ static gameMenu gGameMenu ;
 static impTimer fpsTimer ; 
 
 static Boss gBoss ; 
+static SkyFireball gSkyFireball[11];
 
 static int originXFireball = 0 , originYFireball  = 0 ;
 static int countFireball = 0;

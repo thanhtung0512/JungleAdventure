@@ -3,15 +3,14 @@
 
 Boss::Boss(){
     setClipsWalk();
-    mPosX = 0 ;
-    mPosY = 0 ;
+    mPosX = SCREEN_WIDTH/2- 50 ;
+    mPosY = 530  ;
     frameOfWalk = 120 ;
     
 }
 
 Boss::~Boss(){
     free();
-
 }
 
 void Boss::setClipsWalk(){
