@@ -4,6 +4,8 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <iostream>
+#include<ctime>
+#include<cstdlib>
 
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
@@ -87,6 +89,8 @@
 #define TIME_TO_NEXT_FRAME_JUMP_UP 7 
 #define TIME_TO_NEXT_FRAME_JUMP_DOWN 13 
 #define TIME_TO_NEXT_FRAME_DEAD 13
+#define NUMS_OF_SKY_FIREBALL 5
+#define NUMS_OF_ENEMY 3
 
 #define LEFT_LIMIT_X 0 
 

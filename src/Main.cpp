@@ -1,9 +1,9 @@
 #include"needed.h"
 
-Enemy gEnemy[3];
+Enemy gEnemy[NUMS_OF_ENEMY];
 
 bool loadSkyFireball (){
-    for (int i=1;i<=10;i++){
+    for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
         if ( gSkyFireball[i].loadFireball(gRenderer)== false ){
         std:: cout<<"Could not load sky fireball "<<SDL_GetError()<<std::endl;
         return false ;
@@ -156,7 +156,6 @@ bool loadAudio(){
 }
 
 void renderLayers(){
-
     for(int i=12;i>=1;i--){
         bgl[i].render(scrollingOffset[i],0,gRenderer,NULL);
         bgl[i].render(scrollingOffset[i]+gBackgroundTexture.getWidth(),0,gRenderer,NULL);
@@ -164,7 +163,6 @@ void renderLayers(){
             gBoss.renderBoss(gRenderer); 
         }
     }
-   
 }
 
 bool loadBG(){
@@ -232,7 +230,7 @@ void playBGMusic (){
 
 int main(int argc, char * agrv[]){
     // load all texture before going to game loop
-
+    srand(time(0));
     int first = ENEMY_COORDINATION_X ;
 
     for (int i=0;i<3;i++){
@@ -288,11 +286,15 @@ int main(int argc, char * agrv[]){
         loadFirstLayer();
 
         
-        gSkyFireball[1].renderSkyFireball(gRenderer);
-        gSkyFireball[1].autoMove();
-        gSkyFireball[1].checkCollisionWithMainCharacter(&gTestCharacter);
+        for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
+            gSkyFireball[i].renderSkyFireball(gRenderer);
+            gSkyFireball[i].autoMove();
+            gSkyFireball[i].checkCollisionWithMainCharacter(&gTestCharacter);
+        }
+        
+        
 
-        for (int i=0;i<3;i++){
+        for (int i=0;i<NUMS_OF_ENEMY;i++){
             gEnemy[i].autoMove();
             gEnemy[i].ShowEnemie(gRenderer);
             gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);

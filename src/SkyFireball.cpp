@@ -4,7 +4,7 @@
 SkyFireball :: SkyFireball(){
     mPosX = SCREEN_WIDTH/2 ; 
     mPosY = 0;
-    mVel=3;
+    mVel=1 + rand() % 3;
     setFrame();
 }
 
@@ -41,9 +41,12 @@ void SkyFireball :: frameProcessing(){
 }
 
 void SkyFireball :: autoMove(){
+    
     mPosY+=mVel;
     if ( mPosY > 700 ){
-        mPosY=0;
+        mPosY=0 ;
+        mPosX =  rand() % SCREEN_WIDTH ;
+        mVel = 1+ rand () % 3;
     }
 }
 

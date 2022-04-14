@@ -2,7 +2,7 @@
 #define SKY_FIREBALL_H
 #include"needed.h"
 
-class SkyFireball : public LTexture{
+class SkyFireball : public LTexture {
     
     public :
         SkyFireball();

@@ -84,7 +84,7 @@ void Enemy :: ShowEnemie (SDL_Renderer* screen ){
 void Enemy ::autoMove ( ){
     mPosX -= enemyVelocity;
     if ( mPosX <= -100  ){
-        mPosX = SCREEN_WIDTH  + 400;
+        mPosX = SCREEN_WIDTH  + rand () % ( 900 );
         status = ALIVE;
         frameEnemyDead = 20 ;
     } 
@@ -138,4 +138,8 @@ void Enemy :: setCoordinate (int X , int Y ){
     mPosX = X;
     mPosY = Y ;
 
+}
+
+void Enemy ::  setVel (double vel ){
+    
 }

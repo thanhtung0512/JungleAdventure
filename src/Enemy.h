@@ -44,6 +44,8 @@ class Enemy : public Character{
 
     double getEnemyPosX ();
     
+    void setVel (double vel );
+
     protected :
 
     SDL_Rect frame_running [22];
