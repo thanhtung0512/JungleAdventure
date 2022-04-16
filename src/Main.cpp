@@ -1,6 +1,28 @@
 #include"needed.h"
 
+int point=0 ; 
+bool returnGame = false; 
+
 Enemy gEnemy[NUMS_OF_ENEMY];
+
+void resetGame (){
+    int first = ENEMY_COORDINATION_X ;
+    for (int i=0;i<3;i++){
+        gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
+        first += 400;
+    }
+    gTestCharacter.resetCharacter();
+    gBoss.resetBoss();
+    gPhoenix.resetPhoenix();
+    gFireball.resetFireball();
+    for(int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
+        gSkyFireball[i].resetSkyFireball();
+    }
+    for (int i=1;i<=NUMS_OF_ENEMY;i++){
+        gEnemy[i].resetEnemy();
+    }
+
+}
 
 bool loadSkyFireball (){
     for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
@@ -80,7 +102,7 @@ bool initData(){
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
-    gWindow = SDL_CreateWindow ("Tung Project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
+    gWindow = SDL_CreateWindow ("The Jungle Adventure _ Thanh Tung UET   ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
     if (gWindow!=NULL){
         gRenderer=SDL_CreateRenderer ( gWindow,-1,SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
         if ( gRenderer == NULL){
@@ -251,11 +273,12 @@ int main(int argc, char * agrv[]){
 
     playBGMusic();
 
-    while (stop == false ){  
+    while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
         while ( SDL_PollEvent(&gEvent)){
             if(gEvent.type == SDL_QUIT ){
                stop=true ;
+               returnGame= false ;
             }
             gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2 );
         }
@@ -302,9 +325,36 @@ int main(int argc, char * agrv[]){
         }
         
         
+        if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
+            
+                gGameMenu.renderWhenDead(gRenderer);
+                while( SDL_PollEvent (&gEvent) ){
+                    if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
+                        int x = gEvent.button.x;
+                        int y = gEvent.button.y;
+                        if ( x>= 334 && x<= 400 && y>=518 && y<=579 ){
+                            returnGame =  true ;
+                            resetGame();
+                        }
+                        if ( x>=471 && x<= 539 && y>=515 && y<= 578 ){
+                            stop= true ;
+                            returnGame= false;
+                        }
+                    }
+                    else if  ( gEvent.type == SDL_QUIT){
+                        stop= true ;
+                        returnGame= false;
+                    }
+
+                }
+            
+        }
+
         SDL_RenderPresent(gRenderer); 
 
+
         int realImpTime = fpsTimer.getTicks();
+        
         int timeOneFrame = (1000/FRAME_PER_SECOND ); // ms 
         if ( realImpTime < timeOneFrame ){
             int delayTime = timeOneFrame - realImpTime ; 

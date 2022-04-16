@@ -11,6 +11,15 @@ Fireball :: Fireball (){
     setSpriteFireball();
 }
 
+
+void Fireball ::  resetFireball (){
+    mPosX = 40;
+    mPosY = DEFAULT_PHOENIX_Y + 90;
+    status = NONE_CREATED;
+    mVelX = 0 ;
+    frameFireball = 10 ;
+}
+
 Fireball ::~Fireball(){
     free();
 }
@@ -69,8 +78,6 @@ void Fireball :: setSpriteFireball (){
 }
 
 void Fireball ::  renderFireball (SDL_Renderer * screen ){
-    
-
     SDL_Rect currentFireball = spriteOfFireball[frameFireball / 10 ];
     render(mPosX , mPosY ,screen ,& currentFireball );
     frameFireball++ ;
@@ -81,8 +88,8 @@ void Fireball ::  renderFireball (SDL_Renderer * screen ){
 
 bool Fireball :: loadFireball (SDL_Renderer * screen ){
     if (loadFromFile("img/fireball/fireball.png",screen) == false ){
-                std::cout<<"could not load fireball "<<SDL_GetError()<<std::endl;
-                return false ;    
-            }
-        return true;
+        std::cout<<"could not load fireball "<<SDL_GetError()<<std::endl;
+        return false ;    
+    }
+    return true;
 }

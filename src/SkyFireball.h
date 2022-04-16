@@ -15,6 +15,7 @@ class SkyFireball : public LTexture {
         void checkCollisionWithMainCharacter(Character * gTestCharacter);
         void setCoordinate ( double X, double Y);
         void setVelocity(double vel );
+        void resetSkyFireball ();
     private:
     
     double mPosX, mPosY;

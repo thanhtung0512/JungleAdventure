@@ -11,7 +11,11 @@ Phoenix :: Phoenix(){
     framePhoenix = 10; 
 
 }
-
+void Phoenix ::  resetPhoenix (){
+    mPosX = 0 ;
+    mPosY = DEFAULT_PHOENIX_Y; 
+    framePhoenix = 10; 
+}
 
 Phoenix :: ~Phoenix(){
     free();

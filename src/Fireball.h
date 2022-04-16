@@ -25,6 +25,8 @@ class Fireball : public Dot  {
     void renderFireball (SDL_Renderer * screen );
     bool loadFireball (SDL_Renderer * screen );
 
+    void resetFireball ();
+
     private :
 
     SDL_Rect  spriteOfFireball [33];

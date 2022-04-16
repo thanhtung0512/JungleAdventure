@@ -22,11 +22,14 @@ class gameMenu : public LTexture {
     void renderPlay(SDL_Renderer * screen );
     void renderExit ( SDL_Renderer * screen );
     void renderInfor(SDL_Renderer * screen );
+    void renderWhenDead(SDL_Renderer * screen );
+    
     
 
     private :
     
     SDL_Rect currentMenu[6];
+    Mix_Chunk  * confirmSound ;
 
 
 } ;

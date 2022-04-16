@@ -3,6 +3,9 @@
 
 gameMenu :: gameMenu(){
     setMenuFrame();
+    confirmSound= NULL;
+    
+     
 }
 
 gameMenu :: ~gameMenu (){
@@ -10,7 +13,7 @@ gameMenu :: ~gameMenu (){
 }
 
 void gameMenu:: setMenuFrame(){
-    for (int i=1;i<=4;i++){
+    for (int i=1;i<=5;i++){
         currentMenu[i].x=(i-1)*SCREEN_WIDTH;
         currentMenu[i].y=0;
         currentMenu[i].w=SCREEN_WIDTH;
@@ -19,7 +22,8 @@ void gameMenu:: setMenuFrame(){
 }
 
 bool  gameMenu:: loadMenu ( SDL_Renderer * screen ){
-    if ( loadFromFile("img/mainmenu/MENU.png",screen) == false ){
+    confirmSound = Mix_LoadWAV("sound/confirm.wav");
+    if ( loadFromFile("img/mainmenu/MENU1.png",screen) == false ){
         std::cout<<"could not load Menu "<<std::endl;
         return false ;
     }
@@ -83,9 +87,11 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
             while (SDL_PollEvent(&gEvent)){
                 if (gEvent.type == SDL_MOUSEBUTTONDOWN){
                     if (isClickPlayButton(gEvent)== true ){
+                        Mix_PlayChannel(-1,confirmSound,0);
                         isPlay =1 ;
                     }
                      if(isClickExitButton(gEvent)== true ){
+                         Mix_PlayChannel(-1,confirmSound,0);
                         gBackgroundTexture.free();
                         SDL_DestroyRenderer(gRenderer);
                         TTF_CloseFont ( gFont );
@@ -99,21 +105,19 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                         isExit=1;
                     }
                      if ( isClickInfoButton(gEvent)== true ){
+                        Mix_PlayChannel(-1,confirmSound,0);
                         isInfo = 1 ;
                     }
                 }
                 else if ( gEvent.type == SDL_MOUSEMOTION){
                     if ( motionOnPlayButton(gEvent)== true ){
-                        Mix_PlayChannel(-1,button,0);
                         renderPlay(screen);
                     }
                     else if (motionOnExitButton(gEvent)==true ){
                         renderExit(screen);
-                        Mix_PlayChannel(-1,button,0);
                     }
                     else if (motionOnInfoButton(gEvent)== true ){
                         renderInfor(screen);
-                        Mix_PlayChannel(-1,button,0);
                     }
                     else {
                         Mix_HaltChannel(-1);
@@ -149,11 +153,16 @@ void gameMenu:: renderInfor(SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[4]);
 }
 
+
+void gameMenu::  renderWhenDead(SDL_Renderer * screen ){
+    render(0,0,screen,&currentMenu[5]);
+}
 bool gameMenu:: isClickExitButton(SDL_Event & gEvent){
     if(gEvent.button.button== SDL_BUTTON_LEFT ){
         int mouseX = gEvent.button.x;
         int mouseY = gEvent.button.y;
         if(  mouseX >= 247 && mouseX <=351 && mouseY >= 638 && mouseY<=743 ){
+            Mix_PlayChannel(-1,confirmSound,0);
             std::cout<<"Clicking on exit button "<<std::endl;
             return true ;
         }
@@ -169,6 +178,7 @@ bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
             int mouseY = gEvent.button.y;
             if(  mouseX >= 553 && mouseX <= 694 && mouseY >= 638 && mouseY<=746 ){
                 std::cout<<"Clicking on info button "<<std::endl;
+                Mix_PlayChannel(-1,confirmSound,0);
                 return true ;
             }
         }

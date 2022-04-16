@@ -21,6 +21,15 @@ Enemy ::  Enemy (  ){
     mPosY = ENEMY_COORDINATION_Y;
 }
 
+void Enemy ::  resetEnemy(){
+     status = ALIVE;   
+    mVelX =0 ;
+    frameEnemyDead = 20 ;
+    frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
+    mPosX = ENEMY_COORDINATION_X;
+    mPosY = ENEMY_COORDINATION_Y;
+}
+
 Enemy :: ~Enemy(){
     free();
 }

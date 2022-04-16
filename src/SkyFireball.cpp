@@ -12,6 +12,12 @@ SkyFireball:: ~SkyFireball(){
     free();
 }
 
+void SkyFireball ::  resetSkyFireball (){
+    mPosX = SCREEN_WIDTH/2 ; 
+    mPosY = 0;
+    mVel=1 + rand() % 3;
+}
+
 void SkyFireball :: setFrame(){
     for (int i=1;i<=60;i++){
         skyFireballFrames[i].x=(i-1)*9;

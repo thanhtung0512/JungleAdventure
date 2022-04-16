@@ -12,6 +12,7 @@ class Boss : public Dot {
         void renderBoss ( SDL_Renderer * screen );
         void frameProcessing ();
         bool loadBoss(SDL_Renderer* screen );
+        void resetBoss();
 
     protected : 
     int mPosX, mPosY ;

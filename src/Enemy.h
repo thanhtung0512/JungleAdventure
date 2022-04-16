@@ -45,6 +45,8 @@ class Enemy : public Character{
     double getEnemyPosX ();
     
     void setVel (double vel );
+    
+    void resetEnemy();
 
     protected :
 

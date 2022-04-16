@@ -24,7 +24,7 @@ const double jumpVelocity  = 2.5;
 
 
 
-Character ::Character (){
+Character :: Character (){
     mPosX =SCREEN_WIDTH / 2 -  140 ;
     mPosY=DEFAULT_MAIN_CHARACTER_Y ;
     mVelCharX =0;
@@ -404,4 +404,18 @@ int Character :: getFrameAttack(){
 
  int Character ::  getFrameAttack2 (){
      return frameAttack2; 
+ }
+
+ void Character :: resetCharacter(){
+     mPosX =SCREEN_WIDTH / 2 -  140 ;
+    mPosY=DEFAULT_MAIN_CHARACTER_Y ;
+    mVelCharX =0;
+    mVelCharY =0; 
+    frame = 0 ; // current frame 
+    status = RUN_RIGHT;
+    frameMainRunning = 10;
+    frameIdle = 15; 
+    frameIdleLeft = 15;
+    frameAttack = 6; frameAttack2 = 6 ; frameJumpUp = 14; frameJumpDown = 26 ; frameDead = 13 ;
+
  }

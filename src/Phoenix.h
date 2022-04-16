@@ -14,6 +14,7 @@ class Phoenix : public Character
     void setSpritePhoenix ();
     void renderPhoenix ( SDL_Renderer  * screen );
     int getPhoenixX ();
+    void resetPhoenix ();
 
     protected :
     int mPosX, mPosY ;

@@ -53,6 +53,7 @@ class Character : public Dot {
 
     int getFrameAttack();
     int getFrameAttack2 ();
+    void resetCharacter();
 
     protected :
 
