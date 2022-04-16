@@ -93,7 +93,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                      if(isClickExitButton(gEvent)== true ){
                          Mix_PlayChannel(-1,confirmSound,0);
                         gBackgroundTexture.free();
-                        SDL_DestroyRenderer(gRenderer);
+                        SDL_DestroyRenderer(screen);
                         TTF_CloseFont ( gFont );
                         gFont = NULL;
                         gRenderer=NULL;
@@ -126,7 +126,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                 }
                 else if (gEvent.type==SDL_QUIT){
                     gBackgroundTexture.free();
-                    SDL_DestroyRenderer(gRenderer);
+                    SDL_DestroyRenderer(screen);
                     TTF_CloseFont ( gFont );
                     gFont = NULL;
                     gRenderer=NULL;

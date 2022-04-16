@@ -9,7 +9,7 @@ class SkyFireball : public LTexture {
         ~SkyFireball();
         void setFrame();
         bool loadFireball(SDL_Renderer * screen);
-        void renderSkyFireball (SDL_Renderer * screen );
+        void renderSkyFireball (SDL_Renderer * screen , const int * point  );
         void autoMove();    
         void frameProcessing();
         void checkCollisionWithMainCharacter(Character * gTestCharacter);

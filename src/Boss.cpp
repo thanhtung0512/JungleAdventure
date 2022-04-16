@@ -3,14 +3,14 @@
 #define TIME_TO_NEXT_FRAME_BOSS 3 
 Boss::Boss(){
     setClipsWalk();
-    mPosX = SCREEN_WIDTH/2- 80 ;
+    mPosX = 0 ;
     mPosY = 530  ;
     frameOfWalk = 120 ;
     
 }
 
 void Boss ::  resetBoss(){
-    mPosX = SCREEN_WIDTH/2- 80 ;
+    mPosX = 0 ;
     mPosY = 530  ;
     frameOfWalk = 120 ;
 }
@@ -49,7 +49,7 @@ void Boss::setClipsWalk(){
 
 
 void Boss :: renderBoss ( SDL_Renderer * screen ){
-    
+    if ( mPosX <= SCREEN_WIDTH /2 -80 ) mPosX++;
     SDL_Rect* currentFrame = &frameWalk[frameOfWalk/TIME_TO_NEXT_FRAME_BOSS];
     render(mPosX,mPosY,screen,currentFrame);
     frameProcessing();

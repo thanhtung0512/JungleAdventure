@@ -4,7 +4,7 @@
 SkyFireball :: SkyFireball(){
     mPosX = SCREEN_WIDTH/2 ; 
     mPosY = 0;
-    mVel=1 + rand() % 3;
+    mVel=1 + rand() % 5;
     setFrame();
 }
 
@@ -15,7 +15,7 @@ SkyFireball:: ~SkyFireball(){
 void SkyFireball ::  resetSkyFireball (){
     mPosX = SCREEN_WIDTH/2 ; 
     mPosY = 0;
-    mVel=1 + rand() % 3;
+    mVel=1 + rand() % 5;
 }
 
 void SkyFireball :: setFrame(){
@@ -35,9 +35,12 @@ bool SkyFireball :: loadFireball(SDL_Renderer * screen){
     return true ;
 }
 
-void SkyFireball:: renderSkyFireball (SDL_Renderer * screen ){
-    render(mPosX,mPosY,screen,&skyFireballFrames[frameSkyfireball/5]);
-    frameProcessing();
+void SkyFireball:: renderSkyFireball (SDL_Renderer * screen , const int * point  ){
+    if ( *point >= 100 )
+    {
+        render(mPosX,mPosY,screen,&skyFireballFrames[frameSkyfireball/5]);
+        frameProcessing();
+    }
 }
 void SkyFireball :: frameProcessing(){
     frameSkyfireball++;

@@ -5,6 +5,8 @@ LTexture::LTexture(){
     mTexture = NULL;
     mWidth  = 0;
     mHeight = 0;
+    arcadeFont = nullptr;
+    
 }
 
 LTexture ::~LTexture(){
@@ -38,10 +40,10 @@ bool LTexture :: loadFromFile(std::string path ,SDL_Renderer * screen ){
 
 }
 
-bool LTexture :: loadFromRenderedText ( std::string textureText, SDL_Color textColor,TTF_Font * des , SDL_Renderer * screen ){
-
+bool LTexture :: loadFromRenderedText ( std::string textureText, SDL_Color textColor , SDL_Renderer * screen ){
     // render text surface 
-    SDL_Surface  * textSurface = TTF_RenderText_Solid( des ,textureText.c_str(), textColor);
+    this->arcadeFont = TTF_OpenFont ("fonts/ARCADE_R.ttf",28);
+    SDL_Surface  * textSurface = TTF_RenderText_Solid( arcadeFont ,textureText.c_str(), textColor);
     if ( textSurface == NULL ){
         std::cout<<"Could not load text surface "<< SDL_GetError()<<std::endl;
     }
@@ -95,3 +97,11 @@ int LTexture::getHeight(){
     return mHeight;
 }
 
+void LTexture ::  showText(int x, int y ,const int * point , SDL_Renderer * screen){
+    loadFromRenderedText(std::to_string(*point),{84,153,32},screen );
+    render(x,y,screen,NULL);
+}
+
+void LTexture :: loadFont (){
+    this->arcadeFont = TTF_OpenFont ("fonts/ARCADE_R.ttf",28);
+}

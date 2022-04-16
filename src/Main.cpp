@@ -1,7 +1,14 @@
 #include"needed.h"
 
+Uint64 NOW = SDL_GetPerformanceCounter();
+Uint64 LAST = 0;
+double deltaTime = 0;
+
 int point=0 ; 
-bool returnGame = false; 
+bool returnGame = false;
+double  currentTime = 0 ; 
+
+bool isUpdateScore = true ;
 
 Enemy gEnemy[NUMS_OF_ENEMY];
 
@@ -21,7 +28,8 @@ void resetGame (){
     for (int i=1;i<=NUMS_OF_ENEMY;i++){
         gEnemy[i].resetEnemy();
     }
-
+    point=0;
+    isUpdateScore=true ;
 }
 
 bool loadSkyFireball (){
@@ -181,8 +189,10 @@ void renderLayers(){
     for(int i=12;i>=1;i--){
         bgl[i].render(scrollingOffset[i],0,gRenderer,NULL);
         bgl[i].render(scrollingOffset[i]+gBackgroundTexture.getWidth(),0,gRenderer,NULL);
-        if( i==5 ){
-            gBoss.renderBoss(gRenderer); 
+        if( i==5  && point >= 100 ){
+            {   
+                gBoss.renderBoss(gRenderer);    
+            }
         }
     }
 }
@@ -220,7 +230,6 @@ void loadFirstLayer(){
 }
 
 bool loadAllNeeded (){
-    
     if(initData()==false){
        return false;
     }
@@ -252,9 +261,10 @@ void playBGMusic (){
 
 int main(int argc, char * agrv[]){
     // load all texture before going to game loop
-    srand(time(0));
-    int first = ENEMY_COORDINATION_X ;
 
+    srand(time(0));
+
+    int first = ENEMY_COORDINATION_X ;
     for (int i=0;i<3;i++){
         gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
         first += 400;
@@ -273,8 +283,11 @@ int main(int argc, char * agrv[]){
 
     playBGMusic();
 
+    
     while (stop == false  || returnGame == true ){  
+        
         fpsTimer.start(); 
+        
         while ( SDL_PollEvent(&gEvent)){
             if(gEvent.type == SDL_QUIT ){
                stop=true ;
@@ -299,7 +312,7 @@ int main(int argc, char * agrv[]){
         // FOR FIREBALL -------------------------------------------------------------- 
         
      
-        gPhoenix.renderPhoenix(gRenderer);
+        
         
         // FOR MAIN CHARACTER ----------------------------------------------------------------------------------------------------------------------------------
         gTestCharacter.getHitFromFireball(&gFireball);
@@ -308,11 +321,12 @@ int main(int argc, char * agrv[]){
 
         loadFirstLayer();
 
-        
+        if(point>=100 ){
         for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
-            gSkyFireball[i].renderSkyFireball(gRenderer);
+            gSkyFireball[i].renderSkyFireball(gRenderer,&point);
             gSkyFireball[i].autoMove();
             gSkyFireball[i].checkCollisionWithMainCharacter(&gTestCharacter);
+        }
         }
         
         
@@ -326,8 +340,9 @@ int main(int argc, char * agrv[]){
         
         
         if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
-            
+                isUpdateScore=false ;
                 gGameMenu.renderWhenDead(gRenderer);
+                gScore.showText(430,466,&point,gRenderer);
                 while( SDL_PollEvent (&gEvent) ){
                     if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
                         int x = gEvent.button.x;
@@ -349,9 +364,27 @@ int main(int argc, char * agrv[]){
                 }
             
         }
-
+        if ( gTestCharacter.getStatus()!=DEAD_CHARACTER){
+        gScore.showText(0,0,&point,gRenderer);
+        }
+        gPhoenix.renderPhoenix(gRenderer);
         SDL_RenderPresent(gRenderer); 
 
+
+        
+        LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
+        deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
+
+        currentTime += deltaTime;
+        // std::cout<<currentTime<<std::endl;
+        if ( currentTime >= 200 ){
+            // std::cout<<currentTime<<std::endl;
+            currentTime =0;
+            if(isUpdateScore == true ){
+                point++ ; 
+            }
+        }
 
         int realImpTime = fpsTimer.getTicks();
         
@@ -359,7 +392,9 @@ int main(int argc, char * agrv[]){
         if ( realImpTime < timeOneFrame ){
             int delayTime = timeOneFrame - realImpTime ; 
             if ( delayTime > 0 )
-            SDL_Delay(delayTime);
+            {
+                SDL_Delay(delayTime);
+            }
         }
     }
     

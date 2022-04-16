@@ -108,7 +108,7 @@ static TTF_Font *gFont = NULL;
 
 static LTexture bgl[13];
 static LTexture gBackgroundTexture;
-static LTexture gtextTexture;
+static LTexture gScore;
 static LTexture gDotTexture;
 
 

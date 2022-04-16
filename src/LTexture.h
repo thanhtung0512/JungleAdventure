@@ -8,9 +8,12 @@ class LTexture {
         //load img from specified path
         bool loadFromFile ( std ::string path,SDL_Renderer * screen);
 
+        void loadFont ();
+
         // create image form font string 
-         bool loadFromRenderedText ( std::string textureText, SDL_Color textColor,TTF_Font * des, SDL_Renderer * screen  );
+         bool loadFromRenderedText ( std::string textureText, SDL_Color textColor, SDL_Renderer * screen  );
         
+        void showText(int x, int y , const int *  point , SDL_Renderer * screen );
         //deallocates textures
         void free();
 
@@ -30,5 +33,6 @@ class LTexture {
     //texture dimension information 
     int mWidth;
     int mHeight;
+    TTF_Font * arcadeFont ; 
 };
 #endif
