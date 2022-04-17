@@ -2,7 +2,7 @@
 ## Advanced Programming 's Project _ VNU University of Engineering and Technology 
 ### Made by Nguyen Vu Thanh Tung _ K66-CQ-C-C 
 A simple arcade game using C++ and SDL Library. In this game you can ***hold UP ARROW KEY, RIGHT ARROW KEY, LEFT ARROW KEY*** 
-to handle the main character to avoid collision with enemy, fireball from Phoenix and fireball from the boss (it will be appeared when you get 100 score). 
+to handle the main character to avoid being collided with enemy, fireball from Phoenix and fireball from the boss ***(it will be appeared when you get 100 score).*** 
 Besides, you can ***hold T or Y key to use sword*** and kill all the enemy in your way.
 Hope you enjoy this game!
 Thanks very much.
