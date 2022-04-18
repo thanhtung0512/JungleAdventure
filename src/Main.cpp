@@ -1,15 +1,5 @@
 #include"needed.h"
 
-Uint64 NOW = SDL_GetPerformanceCounter();
-Uint64 LAST = 0;
-double deltaTime = 0;
-
-int point=0 ; 
-bool returnGame = false;
-double  currentTime = 0 ; 
-
-bool isUpdateScore = true ;
-
 Enemy gEnemy[NUMS_OF_ENEMY];
 
 void resetGame (){
@@ -321,7 +311,7 @@ int main(int argc, char * agrv[]){
 
         loadFirstLayer();
 
-        if(point>=100 ){
+        if( point>=100 ){
         for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
             gSkyFireball[i].renderSkyFireball(gRenderer,&point);
             gSkyFireball[i].autoMove();

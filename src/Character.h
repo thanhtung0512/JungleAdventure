@@ -55,7 +55,7 @@ class Character : public Dot {
     int getFrameAttack2 ();
     void resetCharacter();
 
-    protected :
+    private :
 
     double mPosX , mPosY;
     

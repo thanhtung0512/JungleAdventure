@@ -124,7 +124,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
             case SDLK_LEFT :{
                 Mix_HaltChannel(-1);
                 if (status != JUMP_DOWN && status != JUMP_UP  )
-                status = IDLE_LEFT ;
+                status = RUN_RIGHT ;
                 mVelCharX +=CHARACTER_VEL;
                 break;
             }
@@ -172,7 +172,7 @@ void Character :: movingCharacter (){
     }
     if ( status == JUMP_DOWN )  {
         if(mPosY < DEFAULT_MAIN_CHARACTER_Y ){
-            mPosY += jumpVelocity;
+            mPosY += jumpVelocity ;
         }
         if ( mPosY == DEFAULT_MAIN_CHARACTER_Y ){
             status = RUN_RIGHT ;

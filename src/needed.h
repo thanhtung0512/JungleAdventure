@@ -143,6 +143,18 @@ static SkyFireball gSkyFireball[11];
 
 static int originXFireball = 0 , originYFireball  = 0 ;
 static int countFireball = 0;
+
+static Uint64 NOW = SDL_GetPerformanceCounter();
+static Uint64 LAST = 0;
+static double deltaTime = 0;
+
+static  int point=0 ; 
+static bool returnGame = false;
+static double  currentTime = 0 ; 
+
+static bool isUpdateScore = true ;
+
+
 // static Enemy gEnemy ; 
 
 
