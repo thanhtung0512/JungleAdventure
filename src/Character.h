@@ -54,6 +54,8 @@ class Character : public Dot {
     int getFrameAttack();
     int getFrameAttack2 ();
     void resetCharacter();
+    
+    void manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball );
 
     private :
 

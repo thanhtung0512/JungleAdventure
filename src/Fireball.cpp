@@ -93,3 +93,8 @@ bool Fireball :: loadFireball (SDL_Renderer * screen ){
     }
     return true;
 }
+void Fireball ::  manageFireball (SDL_Renderer * screen ){
+    renderFireball(screen );
+    autoMove();
+}
+

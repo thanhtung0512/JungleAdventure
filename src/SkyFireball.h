@@ -16,6 +16,7 @@ class SkyFireball : public LTexture {
         void setCoordinate ( double X, double Y);
         void setVelocity(double vel );
         void resetSkyFireball ();
+        void manageFireball (SDL_Renderer * screen , int * point , Character *gTestCharacter );
     private:
     
     double mPosX, mPosY;

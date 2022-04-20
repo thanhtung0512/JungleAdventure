@@ -419,3 +419,9 @@ int Character :: getFrameAttack(){
     frameAttack = 6; frameAttack2 = 6 ; frameJumpUp = 14; frameJumpDown = 26 ; frameDead = 13 ;
 
  }
+
+ void Character ::  manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball  ){
+     getHitFromFireball (gFireball);
+     movingCharacter();
+     showCharacter(screen);
+ }

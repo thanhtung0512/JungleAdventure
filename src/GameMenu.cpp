@@ -4,8 +4,6 @@
 gameMenu :: gameMenu(){
     setMenuFrame();
     confirmSound= NULL;
-    
-     
 }
 
 gameMenu :: ~gameMenu (){
@@ -91,12 +89,12 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                         isPlay =1 ;
                     }
                      if(isClickExitButton(gEvent)== true ){
-                         Mix_PlayChannel(-1,confirmSound,0);
+                        Mix_PlayChannel(-1,confirmSound,0);
                         gBackgroundTexture.free();
                         SDL_DestroyRenderer(screen);
                         TTF_CloseFont ( gFont );
                         gFont = NULL;
-                        gRenderer=NULL;
+                        screen=NULL;
                         SDL_DestroyWindow(gWindow);
                         gWindow=NULL;
                         TTF_Quit();
@@ -129,7 +127,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     SDL_DestroyRenderer(screen);
                     TTF_CloseFont ( gFont );
                     gFont = NULL;
-                    gRenderer=NULL;
+                    screen=NULL;
                     SDL_DestroyWindow(gWindow);
                     gWindow=NULL;
                     TTF_Quit();

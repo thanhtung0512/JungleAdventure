@@ -75,3 +75,9 @@ void SkyFireball:: setCoordinate ( double X, double Y){
 void SkyFireball ::  setVelocity(double vel ){
     mVel= vel;
 }
+
+void SkyFireball:: manageFireball (SDL_Renderer * screen , int * point , Character *gTestCharacter ){
+    renderSkyFireball(screen,point);
+    autoMove();
+    checkCollisionWithMainCharacter(gTestCharacter);
+}

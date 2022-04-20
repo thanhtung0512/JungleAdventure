@@ -1,7 +1,7 @@
-#include"Enemy.h"
 #include"needed.h"
+#include"Enemy.h"
 
-#include"Character.h"
+
 
 #define TIME_TO_NEXT_FRAME_WALKING 3 
 #define FRAME_WALKING_ENEMY 21 
@@ -10,14 +10,14 @@
 
 
 
-Enemy ::  Enemy (  ){
+Enemy ::  Enemy (){
     status = ALIVE;   
     mVelX =0 ;
     frameEnemyDead = 20 ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
     setFrameEnemiesRun();
     setFrameDead();
-    mPosX = ENEMY_COORDINATION_X;
+    mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
 }
 
@@ -26,7 +26,7 @@ void Enemy ::  resetEnemy(){
     mVelX =0 ;
     frameEnemyDead = 20 ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
-    mPosX = ENEMY_COORDINATION_X;
+    mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
 }
 
@@ -93,9 +93,7 @@ void Enemy :: ShowEnemie (SDL_Renderer* screen ){
 void Enemy ::autoMove ( ){
     mPosX -= enemyVelocity;
     if ( mPosX <= -100  ){
-        mPosX = SCREEN_WIDTH  + rand () % ( 900 );
-        status = ALIVE;
-        frameEnemyDead = 20 ;
+       resetEnemy();
     } 
 }
 
@@ -118,7 +116,7 @@ void Enemy ::  getHitFromFireball(Fireball * gFireball){
 
 void Enemy::  collisionWithPhoenix (Phoenix * gPhoenix ){
     if ( gPhoenix->getPhoenixX() + PHOENIX_FRAME_WIDTH == mPosX  ){
-        status = DEAD;
+        resetEnemy();
     }
     
 }
@@ -150,5 +148,5 @@ void Enemy :: setCoordinate (int X , int Y ){
 }
 
 void Enemy ::  setVel (double vel ){
-    
+    mVelX = vel ;
 }
