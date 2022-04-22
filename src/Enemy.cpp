@@ -22,9 +22,9 @@ Enemy ::  Enemy (){
 }
 
 void Enemy ::  resetEnemy(){
-     status = ALIVE;   
+    status = ALIVE;   
     mVelX =0 ;
-    frameEnemyDead = 20 ;
+    frameEnemyDead = TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
     mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
@@ -83,7 +83,7 @@ void Enemy :: ShowEnemie (SDL_Renderer* screen ){
         currentFrame = &frame_running[frameWalkingEnemie / TIME_TO_NEXT_FRAME_WALKING ];
         render(mPosX,mPosY,screen , currentFrame);
     }
-    if (status == DEAD ){
+   else if (status == DEAD ){
         currentFrame = & frame_dead[frameEnemyDead / TIME_TO_NEXT_FRAME_DEAD_ENEMY ];
         render(mPosX , mPosY , screen , currentFrame);
     }
@@ -116,6 +116,7 @@ void Enemy ::  getHitFromFireball(Fireball * gFireball){
 
 void Enemy::  collisionWithPhoenix (Phoenix * gPhoenix ){
     if ( gPhoenix->getPhoenixX() + PHOENIX_FRAME_WIDTH == mPosX  ){
+        
         resetEnemy();
     }
     
@@ -132,11 +133,13 @@ double Enemy :: getEnemyPosX (){
 }
 
 void Enemy ::  collisionWithMainCharacter ( Character * gTestCharacter){
-    if ( gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 80 && gTestCharacter->getStatus() != ATTACK && gTestCharacter->getStatus() != JUMP_DOWN  && gTestCharacter->getStatus()!= JUMP_UP  && status != DEAD ){
+    if ( gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 80 && gTestCharacter->getStatus() != ATTACK && gTestCharacter->getStatus() != JUMP_DOWN  && gTestCharacter->getStatus()!= JUMP_UP  && status ==ALIVE  && gTestCharacter->getStatus()!=DEAD_CHARACTER ){
+        std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setCharacterPosX( gTestCharacter->getCharacterPosX()- 10);
         gTestCharacter->setStatus(DEAD_CHARACTER);
     }
     if(gTestCharacter->getStatus()==JUMP_DOWN  && gTestCharacter->getCharacterPosY()+112 >= mPosY && gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 120 && status == ALIVE){
+        std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setStatus(DEAD_CHARACTER );
     }
 }

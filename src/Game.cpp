@@ -18,9 +18,6 @@ int  Game:: playGame(){
     scrollingBG.loadlayer(gRenderer);
 
     bool stop = false;
-    // SET FOR PARRALAX BACKGROUND ALL VELOCITY = 0 
-    
-    // ----------------------------------------------------------------------------------
     gGameMenu.render(0,0,gRenderer,NULL);
     gGameMenu.menuControl(gRenderer,gEvent,button,gBackgroundTexture,gFont,gWindow);
 
@@ -39,11 +36,11 @@ int  Game:: playGame(){
         
         SDL_SetRenderDrawColor(gRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
         SDL_RenderClear(gRenderer);
-        gFireball.manageFireball(gRenderer);
+        
         scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
         gTestCharacter.manageCharacter(gRenderer , &gFireball );
         if( point>=100 ){
-        for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
+            for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
                 gSkyFireball[i].manageFireball(gRenderer,&point,&gTestCharacter);
             }
         }
@@ -52,6 +49,7 @@ int  Game:: playGame(){
             gEnemy[i].ShowEnemie(gRenderer);
             gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);
             gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());
+            
         }
         if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
                 isUpdateScore=false ;
@@ -79,27 +77,25 @@ int  Game:: playGame(){
             
         }
         if ( gTestCharacter.getStatus()!=DEAD_CHARACTER){
-        gScore.showText(0,0,&point,gRenderer);
+            gScore.showText(0,0,&point,gRenderer);
+            gFireball.manageFireball(gRenderer);
+            gPhoenix.renderPhoenix(gRenderer);
         }
-        gPhoenix.renderPhoenix(gRenderer);
+       
         SDL_RenderPresent(gRenderer); 
 
+        pointManage();
+        fpsManage();
         
-        LAST = NOW;
-        NOW = SDL_GetPerformanceCounter();
-        deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
+    }
+    
+    close();
+    return 0;
 
-        currentTime += deltaTime;
-        // std::cout<<currentTime<<std::endl;
-        if ( currentTime >= 200 ){
-            // std::cout<<currentTime<<std::endl;
-            currentTime =0;
-            if(isUpdateScore == true ){
-                point++ ; 
-            }   
-        }
+}
 
-        int realImpTime = fpsTimer.getTicks();
+void Game ::  fpsManage(){
+    int realImpTime = fpsTimer.getTicks();
         
         int timeOneFrame = (1000/FRAME_PER_SECOND ); // ms 
         if ( realImpTime < timeOneFrame ){
@@ -109,11 +105,6 @@ int  Game:: playGame(){
                 SDL_Delay(delayTime);
             }
         }
-    }
-    
-    close();
-    return 0;
-
 }
 
 void Game:: resetGame (){
@@ -341,7 +332,25 @@ void Game:: playBGMusic (){
 Game :: ~Game(){
 
 }
+
 Game:: Game (){
     
 }
 
+
+void Game ::  pointManage(){
+    LAST = NOW;
+        NOW = SDL_GetPerformanceCounter();
+        deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
+
+        currentTime += deltaTime;
+        // std::cout<<currentTime<<std::endl;
+        if ( currentTime >= 200 ){
+            // std::cout<<currentTime<<std::endl;
+            currentTime =0;
+            if(isUpdateScore == true ){
+                point++ ; 
+            }   
+        }
+
+}

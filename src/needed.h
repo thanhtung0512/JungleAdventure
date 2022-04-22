@@ -4,8 +4,8 @@
 #include <SDL.h>
 #include <stdio.h>
 #include <iostream>
-#include<ctime>
-#include<cstdlib>
+#include <ctime>
+#include <cstdlib>
 
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
@@ -22,14 +22,16 @@
 #include "Character.h"
 #include "Fireball.h"
 #include "impTimer.h" 
-#include"Phoenix.h"
+#include "Phoenix.h"
 
 #include "Character.h"
 #include "Enemy.h"
-#include"GameMenu.h"
-#include"Boss.h"
-#include"SkyFireball.h"
-#include"Background.h"
-#include"Game.h"
+#include "GameMenu.h"
+#include "Boss.h"
+#include "SkyFireball.h"
+#include "Background.h"
+#include "Game.h"
+
+static Game gGame ; 
 
 #endif

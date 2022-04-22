@@ -19,6 +19,7 @@ class SkyFireball : public LTexture {
         void manageFireball (SDL_Renderer * screen , int * point , Character *gTestCharacter );
     private:
     
+    bool isAppeared ;
     double mPosX, mPosY;
     SDL_Rect skyFireballFrames[61];
     int frameSkyfireball ;

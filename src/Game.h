@@ -70,8 +70,8 @@
 
 ///////////////////////////////
 
-#define ENEMY_COORDINATION_X  (double)SCREEN_WIDTH - 130
-#define ENEMY_COORDINATION_Y  (double )DEFAULT_MAIN_CHARACTER_Y+70 
+#define ENEMY_COORDINATION_X  ( double ) SCREEN_WIDTH - 130
+#define ENEMY_COORDINATION_Y  ( double ) DEFAULT_MAIN_CHARACTER_Y+70 
 
 class Game {
     private :
@@ -111,6 +111,7 @@ class Game {
         bool isUpdateScore = true ;
         Background scrollingBG ;
         Enemy gEnemy[NUMS_OF_ENEMY];
+        
 
 
     public : 
@@ -129,6 +130,8 @@ class Game {
     void close ();
     bool loadAllNeeded ();
     void playBGMusic ();
+    void pointManage();
+    void fpsManage();
 
 
 };

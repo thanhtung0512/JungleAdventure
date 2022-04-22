@@ -2,6 +2,7 @@
 #include"SkyFireball.h"
 
 SkyFireball :: SkyFireball(){
+    isAppeared = false; 
     mPosX = SCREEN_WIDTH/2 ; 
     mPosY = 0;
     mVel=1 + rand() % 5;
@@ -38,6 +39,7 @@ bool SkyFireball :: loadFireball(SDL_Renderer * screen){
 void SkyFireball:: renderSkyFireball (SDL_Renderer * screen , const int * point  ){
     if ( *point >= 100 )
     {
+        isAppeared =  true ; 
         render(mPosX,mPosY,screen,&skyFireballFrames[frameSkyfireball/5]);
         frameProcessing();
     }
@@ -78,6 +80,8 @@ void SkyFireball ::  setVelocity(double vel ){
 
 void SkyFireball:: manageFireball (SDL_Renderer * screen , int * point , Character *gTestCharacter ){
     renderSkyFireball(screen,point);
-    autoMove();
-    checkCollisionWithMainCharacter(gTestCharacter);
+    if ( isAppeared ){
+        autoMove();
+        checkCollisionWithMainCharacter(gTestCharacter);
+    }
 }

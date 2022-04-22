@@ -407,7 +407,7 @@ int Character :: getFrameAttack(){
  }
 
  void Character :: resetCharacter(){
-     mPosX =SCREEN_WIDTH / 2 -  140 ;
+    mPosX =SCREEN_WIDTH / 2 -  140 ;
     mPosY=DEFAULT_MAIN_CHARACTER_Y ;
     mVelCharX =0;
     mVelCharY =0; 
