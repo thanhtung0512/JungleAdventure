@@ -3,6 +3,7 @@
 
 
 Fireball :: Fireball (){
+     affectDamage =1; 
     mPosX = 40;
     mPosY = DEFAULT_PHOENIX_Y + 90;
     status = NONE_CREATED;
@@ -13,6 +14,7 @@ Fireball :: Fireball (){
 
 
 void Fireball ::  resetFireball (){
+     affectDamage =1; 
     mPosX = 40;
     mPosY = DEFAULT_PHOENIX_Y + 90;
     status = NONE_CREATED;
@@ -51,8 +53,7 @@ void Fireball :: autoMove (){
             mPosX += 0.0000009;
         }
         if (mPosX + FIREBALL_WIDTH >= 2*SCREEN_WIDTH + 1000){
-        mPosX = 40;
-        mVelX = 0;
+        resetFireball();
         }
     }
 
@@ -61,8 +62,7 @@ void Fireball :: autoMove (){
         while ( mPosX < 2*SCREEN_WIDTH + 1000 ){
             mPosX += 0.001;
         }
-        mPosX = 40;
-        mVelX = 0;
+        resetFireball();
     }
 
     
@@ -98,3 +98,10 @@ void Fireball ::  manageFireball (SDL_Renderer * screen ){
     autoMove();
 }
 
+int Fireball ::  getStatusDamage (){
+    return affectDamage ; 
+}
+
+void Fireball ::  setStatusDamage(int status ){
+    affectDamage  = status ;
+}

@@ -28,15 +28,17 @@ class Fireball : public Dot  {
     void resetFireball ();
     void manageFireball (SDL_Renderer * screen );
 
+    int getStatusDamage ();
+    void setStatusDamage(int status );
+
     private :
 
     SDL_Rect  spriteOfFireball [33];
     double  mPosX , mPosY ;
     int status ;
     double mVelX;
-
     int frameFireball ; 
-
+    int affectDamage ; 
 } ;
 
 

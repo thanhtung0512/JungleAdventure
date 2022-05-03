@@ -30,7 +30,7 @@ bool Background:: loadlayer(SDL_Renderer * screen){
       for(int i=NUMS_OF_LAYERS;i>=1;i--){
         bgl[i].render(scrollingOffset[i],0,screen,NULL);
         bgl[i].render(scrollingOffset[i]+SCREEN_WIDTH,0,screen,NULL);
-        if( i==5  && *point >= 100 ){
+        if( i==5  && *point >= TO_RENDER_BOSS_POINT ){
             {   
                 gBoss->renderBoss(screen);    
             }

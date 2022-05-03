@@ -31,7 +31,7 @@ class Enemy : public Character {
 
     protected :
 
-    SDL_Rect frame_running [22];
+    SDL_Rect frame_running [41];
     SDL_Rect frame_dead [34];
     int status ;
     double mPosX  , mPosY; 

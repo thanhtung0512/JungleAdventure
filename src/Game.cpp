@@ -9,10 +9,15 @@ int  Game:: playGame(){
         return -1;
     }
 
+
+    for (int i=0;i<NUMS_OF_ENEMY;i++){
+        gEnemy[i].loadFromFile("img/Enemie/moving_3.png",gRenderer);
+    }
+
     int first = ENEMY_COORDINATION_X ;
     for (int i=0;i<3;i++){
         gEnemy[i].setCoordinate(first,ENEMY_COORDINATION_Y );
-        first += 400;
+        first += 800 ;
     }
 
     scrollingBG.loadlayer(gRenderer);
@@ -25,30 +30,31 @@ int  Game:: playGame(){
 
     while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
-        while ( SDL_PollEvent(&gEvent)){
-            if(gEvent.type == SDL_QUIT ){
-               stop=true ;
-               returnGame= false ;
+        if (gTestCharacter.getStatus()!=DEAD_CHARACTER ){
+            while ( SDL_PollEvent(&gEvent)){
+                if(gEvent.type == SDL_QUIT ){
+                    stop=true ;
+                    returnGame= false ;
+                }
+                gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2 );
             }
-            gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2 );
-        }
-        
-        SDL_SetRenderDrawColor(gRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
-        SDL_RenderClear(gRenderer);
-        
-        scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
-        gTestCharacter.manageCharacter(gRenderer , &gFireball );
-        if( point >= 100 ){
-            for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
-                gSkyFireball[i].manageFireball(gRenderer,&point,&gTestCharacter);
-            }
-        }
-        for (int i=0;i<NUMS_OF_ENEMY;i++){
-            gEnemy[i].autoMove();
-            gEnemy[i].ShowEnemie(gRenderer);
-            gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);
-            gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());
             
+            SDL_SetRenderDrawColor(gRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
+            SDL_RenderClear(gRenderer);
+            
+            scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
+            gTestCharacter.manageCharacter(gRenderer , &gFireball );
+            if( point >= TO_RENDER_BOSS_POINT ){
+                for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
+                    gSkyFireball[i].manageFireball(gRenderer,&point,&gTestCharacter);
+                }
+            }
+            for (int i=0;i<NUMS_OF_ENEMY;i++){
+                gEnemy[i].autoMove();
+                gEnemy[i].ShowEnemie(gRenderer);
+                gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);
+                gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());   
+            }
         }
         if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
                 isUpdateScore=false ;

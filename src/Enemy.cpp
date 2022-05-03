@@ -5,15 +5,15 @@
 
 #define TIME_TO_NEXT_FRAME_WALKING 3 
 #define FRAME_WALKING_ENEMY 21 
-#define TIME_TO_NEXT_FRAME_DEAD_ENEMY 5 
-#define ENEMY_DEAD_FRAME 30 
+#define TIME_TO_NEXT_FRAME_DEAD_ENEMY 10 
+#define ENEMY_DEAD_FRAME 12
 
 
 
 Enemy ::  Enemy (){
     status = ALIVE;   
     mVelX =0 ;
-    frameEnemyDead = 20 ;
+    frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
     setFrameEnemiesRun();
     setFrameDead();
@@ -24,7 +24,7 @@ Enemy ::  Enemy (){
 void Enemy ::  resetEnemy(){
     status = ALIVE;   
     mVelX =0 ;
-    frameEnemyDead = TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
+    frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
     mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
@@ -45,7 +45,7 @@ void Enemy :: handleHitFromCharacter(Character* gTestCharacter , int frameAttack
 
 
 void Enemy :: setFrameEnemiesRun (){
-    for (int i =1 ;i<=21; i++){
+    for (int i =1 ;i<=40; i++){
         frame_running[i].x= (i-1)* 80 ; 
         frame_running[i].y= 0;
         frame_running[i].w= 80; 
@@ -66,25 +66,16 @@ void Enemy :: setFrameDead (){
 }
 
 void Enemy :: ShowEnemie (SDL_Renderer* screen ){
-    if ( status == ALIVE ){
-        if (loadFromFile("img/Enemie/moving.png",screen)== false ){
-            std::cout<<"could not load enemy walkiing "<<std::endl;
-        }
-    }
-    else if (status == DEAD) {
-        if (loadFromFile("img/Enemie/dead.png",screen)== false ){
-            std::cout<<"could not load enemy walkiing "<<std::endl;
-        }
-    }
+    
 
-    SDL_Rect* currentFrame;
+    SDL_Rect* currentFrame=NULL;
     
     if ( status== ALIVE ){
         currentFrame = &frame_running[frameWalkingEnemie / TIME_TO_NEXT_FRAME_WALKING ];
         render(mPosX,mPosY,screen , currentFrame);
     }
    else if (status == DEAD ){
-        currentFrame = & frame_dead[frameEnemyDead / TIME_TO_NEXT_FRAME_DEAD_ENEMY ];
+        currentFrame = & frame_running[frameEnemyDead / TIME_TO_NEXT_FRAME_DEAD_ENEMY ];
         render(mPosX , mPosY , screen , currentFrame);
     }
     frameProcessing();
@@ -102,21 +93,23 @@ void Enemy::frameProcessing (){
         if ( frameWalkingEnemie >= FRAME_WALKING_ENEMY * TIME_TO_NEXT_FRAME_WALKING ){
             frameWalkingEnemie = TIME_TO_NEXT_FRAME_WALKING;
         }
-        if  ( frameEnemyDead <=ENEMY_DEAD_FRAME  * TIME_TO_NEXT_FRAME_DEAD_ENEMY ){
+        if  (status ==DEAD &&  frameEnemyDead < (ENEMY_DEAD_FRAME + 22)  * TIME_TO_NEXT_FRAME_DEAD_ENEMY ){
             frameEnemyDead ++ ;
         }
+        
 }
 
 void Enemy ::  getHitFromFireball(Fireball * gFireball){
-    if( gFireball ->getXPos ()+ FIREBALL_WIDTH  >= mPosX && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + 80 && status == ALIVE ){
+    if( gFireball ->getXPos ()+ FIREBALL_WIDTH  >= mPosX && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + 80 && status == ALIVE && gFireball->getStatusDamage()==1  ){
+        std:: cout << " Fireball vs Enemy "<<std::endl;
         status = DEAD ;
         gFireball->setXPos(SCREEN_WIDTH);
+        gFireball->setStatusDamage(0);
     }
 }
 
 void Enemy::  collisionWithPhoenix (Phoenix * gPhoenix ){
-    if ( gPhoenix->getPhoenixX() + PHOENIX_FRAME_WIDTH == mPosX  ){
-        
+    if ( gPhoenix->getPhoenixX() + PHOENIX_FRAME_WIDTH == mPosX   ){
         resetEnemy();
     }
     

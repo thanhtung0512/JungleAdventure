@@ -64,7 +64,7 @@
 #define TIME_TO_NEXT_FRAME_JUMP_DOWN 13 
 #define TIME_TO_NEXT_FRAME_DEAD 13
 #define NUMS_OF_SKY_FIREBALL 7
-#define NUMS_OF_ENEMY 3
+#define NUMS_OF_ENEMY 5
 
 #define LEFT_LIMIT_X 0 
 
@@ -75,7 +75,10 @@
 #define SCORE_X 430
 #define SCORE_Y 466
 
+#define TO_RENDER_BOSS_POINT 100
+
 class Game {
+
     private :
         SDL_Window *gWindow = NULL;
         SDL_Renderer *gRenderer = NULL;
@@ -113,8 +116,6 @@ class Game {
         bool isUpdateScore = true ;
         Background scrollingBG ;
         Enemy gEnemy[NUMS_OF_ENEMY];
-        
-
 
     public : 
         Game();
@@ -134,7 +135,6 @@ class Game {
         void playBGMusic ();
         void pointManage();
         void fpsManage();
-        
         bool isOnReturnGameArea ( const int& x , const int& y );
         bool isOnExitArea( const int &x, const int & y) ;
 
