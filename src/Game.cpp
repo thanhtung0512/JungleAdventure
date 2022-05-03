@@ -11,7 +11,7 @@ int  Game:: playGame(){
 
     int first = ENEMY_COORDINATION_X ;
     for (int i=0;i<3;i++){
-        gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
+        gEnemy[i].setCoordinate(first,ENEMY_COORDINATION_Y );
         first += 400;
     }
 
@@ -19,7 +19,7 @@ int  Game:: playGame(){
 
     bool stop = false;
     gGameMenu.render(0,0,gRenderer,NULL);
-    gGameMenu.menuControl(gRenderer,gEvent,button,gBackgroundTexture,gFont,gWindow);
+    gGameMenu.menuControl(gRenderer,gEvent,button,&gBackgroundTexture,gFont,gWindow);
 
     playBGMusic();
 

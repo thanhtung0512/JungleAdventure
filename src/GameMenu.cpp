@@ -11,7 +11,7 @@ gameMenu :: ~gameMenu (){
 }
 
 void gameMenu:: setMenuFrame(){
-    for (int i=1;i<=5;i++){
+    for (int i=1;i<=6;i++){
         currentMenu[i].x=(i-1)*SCREEN_WIDTH;
         currentMenu[i].y=0;
         currentMenu[i].w=SCREEN_WIDTH;
@@ -21,7 +21,7 @@ void gameMenu:: setMenuFrame(){
 
 bool  gameMenu:: loadMenu ( SDL_Renderer * screen ){
     confirmSound = Mix_LoadWAV("sound/confirm.wav");
-    if ( loadFromFile("img/mainmenu/menu3.png",screen) == false ){
+    if ( loadFromFile("img/mainmenu/menu4.jpg",screen) == false ){
         std::cout<<"could not load Menu "<<std::endl;
         return false ;
     }
@@ -79,9 +79,9 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
 }
 
 
-void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button,LTexture &gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow){
+void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow){
     int isPlay=0, isExit =0 ,isInfo =0;
-        while( isPlay == 0  && isInfo == 0  ){
+        while( isPlay == 0   ){
             while (SDL_PollEvent(&gEvent)){
                 if (gEvent.type == SDL_MOUSEBUTTONDOWN){
                     if (isClickPlayButton(gEvent)== true ){
@@ -90,7 +90,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     }
                      if(isClickExitButton(gEvent)== true ){
                         Mix_PlayChannel(-1,confirmSound,0);
-                        gBackgroundTexture.free();
+                        gBackgroundTexture->free();
                         SDL_DestroyRenderer(screen);
                         TTF_CloseFont ( gFont );
                         gFont = NULL;
@@ -105,6 +105,10 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                      if ( isClickInfoButton(gEvent)== true ){
                         Mix_PlayChannel(-1,confirmSound,0);
                         isInfo = 1 ;
+                    }   
+                    if ( isClickReturnButton(gEvent)== true ){
+                        render(0,0,screen,NULL);
+                        isInfo=0;
                     }
                 }
                 else if ( gEvent.type == SDL_MOUSEMOTION){
@@ -123,7 +127,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     }
                 }
                 else if (gEvent.type==SDL_QUIT){
-                    gBackgroundTexture.free();
+                    gBackgroundTexture->free();
                     SDL_DestroyRenderer(screen);
                     TTF_CloseFont ( gFont );
                     gFont = NULL;
@@ -134,6 +138,11 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     SDL_Quit();
                     IMG_Quit();
                 }
+                if ( isInfo == 1 ){
+                    render(0,0,screen,&currentMenu[6]);
+                }
+                
+
             }
             SDL_RenderPresent(screen);
         }
@@ -183,8 +192,24 @@ bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
         return false;
 }
 
+bool gameMenu ::  isClickReturnButton ( SDL_Event & gEvent){
+    if(gEvent.button.button== SDL_BUTTON_LEFT ){
+            int mouseX = gEvent.button.x;
+            int mouseY = gEvent.button.y;
+            if(  isOnReturnArea(mouseX,mouseY) ){
+                std::cout<<"Clicking on return button "<<std::endl;
+                return true ;
+            }
+        }
+        return false;
+}
+
 void gameMenu ::  renderMainMenu ( SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[4]);
+}
+
+void gameMenu :: renderInsideInfor ( SDL_Renderer  * screen ){
+    render(0,0,screen,&currentMenu[6]);
 }
 
 bool gameMenu :: isOnPlayArea  ( int mouseX, int mouseY )  {
@@ -197,4 +222,8 @@ bool gameMenu :: isOnExitArea  ( int mouseX, int mouseY )  {
 bool gameMenu :: isOnInfoArea  ( int mouseX, int mouseY )  {
     return mouseX >=464 && mouseX <=542 && mouseY >= 602 && mouseY <= 666;
 
+}
+
+bool gameMenu::  isOnReturnArea ( int mouseX, int mouseY) {
+    return mouseX >= 6 && mouseX <=73 && mouseY >=5 && mouseY<= 70 ;
 }
