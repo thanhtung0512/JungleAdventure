@@ -115,23 +115,23 @@ class Game {
 
 
     public : 
-    Game();
-    ~Game();
-    int  playGame();
-    void resetGame ();
-    bool loadSkyFireball();
-    bool loadFireball();
-    bool loadPhoenix();
-    bool loadBoss();
-    bool loadMainMenu ();
-    bool initData();
-    bool loadAudio();
-    bool loadBG();
-    void close ();
-    bool loadAllNeeded ();
-    void playBGMusic ();
-    void pointManage();
-    void fpsManage();
+        Game();
+        ~Game();
+        int  playGame();
+        void resetGame ();
+        bool loadSkyFireball();
+        bool loadFireball();
+        bool loadPhoenix();
+        bool loadBoss();
+        bool loadMainMenu ();
+        bool initData();
+        bool loadAudio();
+        bool loadBG();
+        void close ();
+        bool loadAllNeeded ();
+        void playBGMusic ();
+        void pointManage();
+        void fpsManage();
 
 
 };

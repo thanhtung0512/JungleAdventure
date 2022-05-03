@@ -24,7 +24,12 @@ class gameMenu : public LTexture {
     void renderInfor(SDL_Renderer * screen );
     void renderWhenDead(SDL_Renderer * screen );
     
-    
+    void renderMainMenu ( SDL_Renderer * screen );
+
+    bool isOnPlayArea  (  int mouseX, int mouseY )  ;
+    bool isOnExitArea  (  int mouseX, int mouseY )  ;
+    bool isOnInfoArea  (  int mouseX, int mouseY )  ;
+
 
     private :
     

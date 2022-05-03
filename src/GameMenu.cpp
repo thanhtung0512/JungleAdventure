@@ -21,7 +21,7 @@ void gameMenu:: setMenuFrame(){
 
 bool  gameMenu:: loadMenu ( SDL_Renderer * screen ){
     confirmSound = Mix_LoadWAV("sound/confirm.wav");
-    if ( loadFromFile("img/mainmenu/MENU1.png",screen) == false ){
+    if ( loadFromFile("img/mainmenu/menu3.png",screen) == false ){
         std::cout<<"could not load Menu "<<std::endl;
         return false ;
     }
@@ -33,18 +33,18 @@ bool gameMenu::  isClickPlayButton(SDL_Event& gEvent ){
         int mouseX = gEvent.button.x;
         int mouseY = gEvent.button.y;
         std::cout << mouseX <<" "<<mouseY <<std::endl;
-        if(  mouseX >= 398 && mouseX <=495 && mouseY >= 527 && mouseY<=630 ){
+        if(  isOnPlayArea(mouseX , mouseY ) ){
             return true ;
         }
     }
     return false;
 }
 
-bool gameMenu::  motionOnPlayButton(SDL_Event & gEvent){
+bool gameMenu:: motionOnPlayButton(SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
-        int x=gEvent.motion.x;
-        int y =gEvent.motion.y;
-        if(  x >= 398 && x <=495 && y >= 527 && y<=630 ){
+        int mouseX=gEvent.motion.x;
+        int mouseY =gEvent.motion.y;
+        if(  isOnPlayArea(mouseX,mouseY) ){
             return true ;
         }
         return false ;
@@ -57,7 +57,7 @@ bool gameMenu:: motionOnExitButton (SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
         int x=gEvent.motion.x;
         int y =gEvent.motion.y;
-        if(  x >= 247 && x <=351 && y >= 638 && y<=743 ){
+        if(  isOnExitArea(x,y) ){
             return true ;
         }
         return false ;
@@ -70,7 +70,7 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
         int x=gEvent.motion.x;
         int y =gEvent.motion.y;
-        if(  x >= 553 && x <= 694 && y >= 638 && y<=746 ){
+        if(  isOnInfoArea(x,y) ){
             return true ;
         }
         return false ;
@@ -140,7 +140,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
 }
 
 
-void gameMenu:: renderPlay(SDL_Renderer * screen ){
+void gameMenu :: renderPlay(SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[2]);
 }
 
@@ -159,7 +159,7 @@ bool gameMenu:: isClickExitButton(SDL_Event & gEvent){
     if(gEvent.button.button== SDL_BUTTON_LEFT ){
         int mouseX = gEvent.button.x;
         int mouseY = gEvent.button.y;
-        if(  mouseX >= 247 && mouseX <=351 && mouseY >= 638 && mouseY<=743 ){
+        if(  isOnExitArea(mouseX,mouseY) ){
             Mix_PlayChannel(-1,confirmSound,0);
             std::cout<<"Clicking on exit button "<<std::endl;
             return true ;
@@ -174,11 +174,27 @@ bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
     if(gEvent.button.button== SDL_BUTTON_LEFT ){
             int mouseX = gEvent.button.x;
             int mouseY = gEvent.button.y;
-            if(  mouseX >= 553 && mouseX <= 694 && mouseY >= 638 && mouseY<=746 ){
+            if(  isOnInfoArea(mouseX,mouseY) ){
                 std::cout<<"Clicking on info button "<<std::endl;
                 Mix_PlayChannel(-1,confirmSound,0);
                 return true ;
             }
         }
         return false;
+}
+
+void gameMenu ::  renderMainMenu ( SDL_Renderer * screen ){
+    render(0,0,screen,&currentMenu[4]);
+}
+
+bool gameMenu :: isOnPlayArea  ( int mouseX, int mouseY )  {
+    return mouseX >= 344 && mouseX <=552 && mouseY >= 384 && mouseY<= 590 ;
+
+}
+bool gameMenu :: isOnExitArea  ( int mouseX, int mouseY )  {
+    return mouseX >= 346 && mouseX <=421 && mouseY >=599 && mouseY <= 670;
+}
+bool gameMenu :: isOnInfoArea  ( int mouseX, int mouseY )  {
+    return mouseX >=464 && mouseX <=542 && mouseY >= 602 && mouseY <= 666;
+
 }

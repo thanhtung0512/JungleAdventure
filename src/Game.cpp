@@ -23,7 +23,6 @@ int  Game:: playGame(){
 
     playBGMusic();
 
-    
     while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
         while ( SDL_PollEvent(&gEvent)){
@@ -63,14 +62,16 @@ int  Game:: playGame(){
                             returnGame =  true ;
                             resetGame();
                         }
-                        if ( x>=471 && x<= 539 && y>=515 && y<= 578 ){
+                        else if ( x>=471 && x<= 539 && y>=515 && y<= 578 ){
                             stop= true ;
                             returnGame= false;
                         }
                     }
-                    else if  ( gEvent.type == SDL_QUIT){
+                    else if  ( gEvent.type == SDL_QUIT ){
                         stop= true ;
-                        returnGame= false;
+                        returnGame = false;
+                        close();
+                        return 0 ;
                     }
 
                 }
