@@ -68,10 +68,12 @@
 
 #define LEFT_LIMIT_X 0 
 
-///////////////////////////////
 
 #define ENEMY_COORDINATION_X  ( double ) SCREEN_WIDTH - 130
 #define ENEMY_COORDINATION_Y  ( double ) DEFAULT_MAIN_CHARACTER_Y+70 
+
+#define SCORE_X 430
+#define SCORE_Y 466
 
 class Game {
     private :
@@ -132,7 +134,9 @@ class Game {
         void playBGMusic ();
         void pointManage();
         void fpsManage();
-
+        
+        bool isOnReturnGameArea ( const int& x , const int& y );
+        bool isOnExitArea( const int &x, const int & y) ;
 
 };
 

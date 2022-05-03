@@ -19,7 +19,7 @@ int  Game:: playGame(){
 
     bool stop = false;
     gGameMenu.render(0,0,gRenderer,NULL);
-    gGameMenu.menuControl(gRenderer,gEvent,button,&gBackgroundTexture,gFont,gWindow);
+    gGameMenu.menuControl(gRenderer,gEvent,button,&gBackgroundTexture,gFont,gWindow,&stop,&returnGame );
 
     playBGMusic();
 
@@ -38,7 +38,7 @@ int  Game:: playGame(){
         
         scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
         gTestCharacter.manageCharacter(gRenderer , &gFireball );
-        if( point>=100 ){
+        if( point >= 100 ){
             for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
                 gSkyFireball[i].manageFireball(gRenderer,&point,&gTestCharacter);
             }
@@ -53,25 +53,23 @@ int  Game:: playGame(){
         if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
                 isUpdateScore=false ;
                 gGameMenu.renderWhenDead(gRenderer);
-                gScore.showText(430,466,&point,gRenderer);
+                gScore.showText(SCORE_X ,SCORE_Y ,&point,gRenderer);
                 while( SDL_PollEvent (&gEvent) ){
                     if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
                         int x = gEvent.button.x;
                         int y = gEvent.button.y;
-                        if ( x>= 334 && x<= 400 && y>=518 && y<=579 ){
+                        if ( isOnReturnGameArea(x,y) ){
                             returnGame =  true ;
                             resetGame();
                         }
-                        else if ( x>=471 && x<= 539 && y>=515 && y<= 578 ){
+                        else if ( isOnExitArea(x,y) ){
                             stop= true ;
                             returnGame= false;
                         }
                     }
-                    else if  ( gEvent.type == SDL_QUIT ){
+                     if  ( gEvent.type == SDL_QUIT ){
                         stop= true ;
                         returnGame = false;
-                        close();
-                        return 0 ;
                     }
 
                 }
@@ -354,4 +352,13 @@ void Game ::  pointManage(){
             }   
         }
 
+}
+
+
+bool Game:: isOnReturnGameArea ( const int& x , const int& y ){
+    return x>= 334 && x<= 400 && y>=518 && y<=579;
+}
+
+bool Game :: isOnExitArea( const int &x, const int & y) {
+    return x>=471 && x<= 539 && y>=515 && y<= 578;
 }

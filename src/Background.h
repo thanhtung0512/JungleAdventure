@@ -2,6 +2,9 @@
 #define BACKGROUND_H
 #include"needed.h"
 
+
+#define NUMS_OF_LAYERS 12
+
 class Background  {
     private : 
     double scrollingOffset[14];

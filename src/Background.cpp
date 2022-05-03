@@ -3,7 +3,7 @@
 
 bool Background:: loadlayer(SDL_Renderer * screen){
     bool success = 1;
-    for (int i=1;i<=12; i++){
+    for (int i=1;i<=NUMS_OF_LAYERS; i++){
         std::string path = "img/bg/" + std::to_string(i) + ".png"; 
         std::cout<<path<<std::endl;
         if ( bgl[i].loadFromFile(path , screen)==false ){
@@ -14,21 +14,20 @@ bool Background:: loadlayer(SDL_Renderer * screen){
     return success;
 }
 
-
  void Background ::  minusScrolling (){
-     double  minus = 1.8;
-    for(int i=1;i<=12;i++){
+    double  minus = 1.8;
+    for(int i=1;i<=NUMS_OF_LAYERS;i++){
         scrollingOffset[i] -= minus ;
         if (scrollingOffset[i] < -SCREEN_WIDTH){
             scrollingOffset[i]=0;
         }
-        minus -= (1.8/12);
+        minus -= (1.8/NUMS_OF_LAYERS);
     }
  }
 
 
  void Background ::  renderLayers(Boss * gBoss,SDL_Renderer * screen , int * point  ){
-      for(int i=12;i>=1;i--){
+      for(int i=NUMS_OF_LAYERS;i>=1;i--){
         bgl[i].render(scrollingOffset[i],0,screen,NULL);
         bgl[i].render(scrollingOffset[i]+SCREEN_WIDTH,0,screen,NULL);
         if( i==5  && *point >= 100 ){
@@ -68,7 +67,7 @@ Background :: ~Background(){
 }
 void Background ::  setSrolling(){
     int first = 0;
-    for(int i=1;i<=12;i++){
+    for(int i=1;i<=NUMS_OF_LAYERS;i++){
         scrollingOffset[i]=first;
     }
 }

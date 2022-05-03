@@ -18,7 +18,7 @@ class gameMenu : public LTexture {
     bool motionOnInfoButton (SDL_Event & gEvent);
     
 
-    void menuControl (SDL_Renderer * screen , SDL_Event & gEvent,Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow );
+    void menuControl (SDL_Renderer * screen , SDL_Event & gEvent,Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow, bool * isStop , bool * returnGame );
     void setMenuFrame();
     void renderPlay(SDL_Renderer * screen );
     void renderExit ( SDL_Renderer * screen );

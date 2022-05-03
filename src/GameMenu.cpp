@@ -79,31 +79,22 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
 }
 
 
-void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow){
-    int isPlay=0, isExit =0 ,isInfo =0;
-        while( isPlay == 0   ){
+void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame ){
+    int isContinue=0, isExit =0 ,isInfo =0;
+        while( isContinue == 0   ){
             while (SDL_PollEvent(&gEvent)){
                 if (gEvent.type == SDL_MOUSEBUTTONDOWN){
                     if (isClickPlayButton(gEvent)== true ){
                         Mix_PlayChannel(-1,confirmSound,0);
-                        isPlay =1 ;
+                        isContinue =1 ;
                     }
                      if(isClickExitButton(gEvent)== true ){
-                        Mix_PlayChannel(-1,confirmSound,0);
-                        gBackgroundTexture->free();
-                        SDL_DestroyRenderer(screen);
-                        TTF_CloseFont ( gFont );
-                        gFont = NULL;
-                        screen=NULL;
-                        SDL_DestroyWindow(gWindow);
-                        gWindow=NULL;
-                        TTF_Quit();
-                        SDL_Quit();
-                        IMG_Quit();
-                        isExit=1;
+                        *isStop = true ;
+                        *returnGame = false ;
+                        
+                        isContinue =1 ;
                     }
-                     if ( isClickInfoButton(gEvent)== true ){
-                        Mix_PlayChannel(-1,confirmSound,0);
+                    if ( isClickInfoButton(gEvent)== true ){
                         isInfo = 1 ;
                     }   
                     if ( isClickReturnButton(gEvent)== true ){
@@ -127,16 +118,9 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     }
                 }
                 else if (gEvent.type==SDL_QUIT){
-                    gBackgroundTexture->free();
-                    SDL_DestroyRenderer(screen);
-                    TTF_CloseFont ( gFont );
-                    gFont = NULL;
-                    screen=NULL;
-                    SDL_DestroyWindow(gWindow);
-                    gWindow=NULL;
-                    TTF_Quit();
-                    SDL_Quit();
-                    IMG_Quit();
+                        *isStop = true ;
+                        *returnGame = false ;
+                        isContinue = 1; 
                 }
                 if ( isInfo == 1 ){
                     render(0,0,screen,&currentMenu[6]);
@@ -185,7 +169,6 @@ bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
             int mouseY = gEvent.button.y;
             if(  isOnInfoArea(mouseX,mouseY) ){
                 std::cout<<"Clicking on info button "<<std::endl;
-                Mix_PlayChannel(-1,confirmSound,0);
                 return true ;
             }
         }
