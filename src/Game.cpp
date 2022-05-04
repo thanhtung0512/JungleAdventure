@@ -27,10 +27,10 @@ int  Game:: playGame(){
     gGameMenu.menuControl(gRenderer,gEvent,button,&gBackgroundTexture,gFont,gWindow,&stop,&returnGame );
 
     playBGMusic();
-
     while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
         if (gTestCharacter.getStatus()!=DEAD_CHARACTER ){
+           
             while ( SDL_PollEvent(&gEvent)){
                 if(gEvent.type == SDL_QUIT ){
                     stop=true ;
@@ -130,7 +130,6 @@ void Game:: resetGame (){
     }
     point=0;
     isUpdateScore=true ;
-
 }
 
 
