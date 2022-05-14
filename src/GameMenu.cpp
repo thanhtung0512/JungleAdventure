@@ -4,13 +4,13 @@
 gameMenu :: gameMenu(){
     setMenuFrame();
     confirmSound= NULL;
-    currentTrack = KHONG_BANG ; 
+
 }
 
 gameMenu :: gameMenu(SDL_Renderer * screen ){
     setMenuFrame();
     confirmSound= NULL;
-    currentTrack = KHONG_BANG ; 
+    
     loadMenu(screen);
 }
 
@@ -37,19 +37,12 @@ bool gameMenu:: loadMenu ( SDL_Renderer * screen ){
     }
  
     confirmSound = Mix_LoadWAV("sound/confirm.wav");
-    track1=Mix_LoadMUS("sound/track1_khongbang.mp3");
+   
     if ( loadFromFile("img/mainmenu/menu4.jpg",screen) == false ){
         std::cout<<"could not load Menu "<<std::endl;
         return false ;
     }
-    if ( mp3Player.loadFromFile("img/mp3Player/2States.png",screen) == false ){
-        std :: cout << "Could not load mp3 player img "<<SDL_GetError()<<std::endl;
-        return false ; 
-    }
-    if ( tracks.loadFromFile("img/mp3Player/track1.png",screen)== false ){
-        std :: cout << "Could not load tracks img "<< SDL_GetError()<<std::endl;
-        return false ;
-    }
+  
     else return true ;
 }
 
@@ -65,22 +58,9 @@ bool gameMenu::  isClickPlayButton(SDL_Event& gEvent ){
     return false;
 }
 
-bool gameMenu::  isClickPlayMusicButton(SDL_Event& gEvent ){
-    if(gEvent.button.button== SDL_BUTTON_LEFT ){
-        int mouseX = gEvent.button.x;
-        int mouseY = gEvent.button.y;
-        std::cout << mouseX <<" "<<mouseY <<std::endl;
-        if(  isOnPlayMusicArea(mouseX , mouseY ) ){
-            return true ;
-        }
-    }
-    return false;
-}
 
-  bool gameMenu:: isOnPlayMusicArea  (  int mouseX, int mouseY )  {
-      return mouseX >= 77 && mouseX <= 118 && mouseY>=0 && mouseY <= 50 ;
-  }
 
+ 
 
 bool gameMenu:: motionOnPlayButton(SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
@@ -120,8 +100,12 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
     return false;
 }
 
+void gameMenu::  playConfirmSound (){
+    Mix_PlayChannel(2,confirmSound,0);
+}
 
-void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame ){
+
+void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame,int * continueToPlay ){
     render(0,0,screen,NULL);
     int isContinue=0, isExit =0 ,isInfo =0;
     int isPlayMusic =1 ;
@@ -129,13 +113,15 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
         while (SDL_PollEvent(&gEvent)){
             if (gEvent.type == SDL_MOUSEBUTTONDOWN){
                 if ( isClickPlayButton(gEvent)== true && isContinue ==0 && isInfo ==0  ){
-                    Mix_PlayChannel(-1,confirmSound,0);
+                    std :: cout << "PLAY "<<std::endl;
                     isContinue =1 ;
+                    *continueToPlay=1;
                 }
                     if( isClickExitButton(gEvent)== true && isContinue == 0 && isInfo ==0   ){
                     *isStop = true ;
                     *returnGame = false ;
                     isContinue =1 ;
+                    * continueToPlay = 0 ;
                 }
                 if ( isClickInfoButton(gEvent)== true && isInfo == 0  ){
                     isInfo = 1 ;
@@ -144,14 +130,7 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
                     render(0,0,screen,NULL);
                     isInfo=0;
                 }
-                if ( isClickPlayMusicButton(gEvent) == true  ){
-                    if ( isPlayMusic == 0){
-                        isPlayMusic = 1 ; 
-                    }
-                    else {
-                        isPlayMusic = 0 ;
-                    }
-                }
+                
             }
             else if ( gEvent.type == SDL_MOUSEMOTION){
                 if ( motionOnPlayButton(gEvent)== true ){
@@ -175,26 +154,13 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
             }
         }
         if ( isInfo == 1 ){
-                render(0,0,screen,&currentMenu[6]);
+            render(0,0,screen,&currentMenu[6]);
         }
-        else {
-            if ( isPlayMusic == 0 ){
-                mp3Player.render(0,0,screen,&mp3Rect[2]);
-            }
-            else {
-                mp3Player.render(0,0,screen,&mp3Rect[1]);     
-            }
-            if ( currentTrack == KHONG_BANG ){
-                tracks.render (200,0,screen,NULL);
-                if ( isPlayMusic == 1) {  
-                    Mix_PlayMusic(track1,-1);
-                }
-            }
-        }
-                
         SDL_RenderPresent(screen);
-        SDL_Delay(1);
+        SDL_Delay(10);
     }
+    playConfirmSound();
+    
 }
 
 

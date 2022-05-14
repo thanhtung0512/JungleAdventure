@@ -23,7 +23,7 @@ class gameMenu : public LTexture {
     bool motionOnInfoButton (SDL_Event & gEvent);
     
 
-    void menuControl (SDL_Renderer * screen , SDL_Event & gEvent,Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow, bool * isStop , bool * returnGame );
+    void menuControl (SDL_Renderer * screen , SDL_Event & gEvent,Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow, bool * isStop , bool * returnGame , int * continueToPlay  );
     void setMenuFrame();
     
     void renderPlay(SDL_Renderer * screen );
@@ -41,6 +41,8 @@ class gameMenu : public LTexture {
     bool isClickPlayMusicButton(SDL_Event& gEvent );
     bool isOnPlayMusicArea  (  int mouseX, int mouseY )  ;
 
+    void playConfirmSound ();
+
 
 
 
@@ -49,10 +51,9 @@ class gameMenu : public LTexture {
     SDL_Rect currentMenu[8];
     Mix_Chunk  * confirmSound ;
     Mix_Music  * track1 ;
-    LTexture mp3Player; 
-    LTexture tracks ; 
+  
     SDL_Rect mp3Rect [3];
-    int currentTrack ; 
+  
    
 
 

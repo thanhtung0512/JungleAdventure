@@ -16,6 +16,7 @@ int  Game:: playGame(){
     Boss gBoss(gRenderer);
     Phoenix gPhoenix(gRenderer);
 
+    int continueToPlay = 0 ;
     
    
     for (int i=0;i<NUMS_OF_ENEMY;i++){
@@ -31,8 +32,9 @@ int  Game:: playGame(){
 
     bool stop = false;
 
-    gGameMenu.menuControl(gRenderer,gEvent,button,gFont,gWindow,&stop,&returnGame );
-    
+    gGameMenu.menuControl(gRenderer,gEvent,button,gFont,gWindow,&stop,&returnGame, &continueToPlay );
+    if ( continueToPlay ) waitUntilKeyPressed(); 
+
     playBGMusic(&gTestCharacter);
     
     
@@ -268,14 +270,19 @@ void Game:: close (){
 
 
 bool Game:: loadAllNeeded (){
+    
     if(initData()==false){
        return false;
     }
+
+
     if(loadAudio()== false ){
         return false ;
     }
+    
     if ( loadFireball()== false ) return false;
     if ( loadSkyFireball()== false ) return false ;
+    loadSplashScreen();
     return true; 
 }
 
@@ -306,7 +313,8 @@ Game:: Game (){
     sword = NULL;
     sword_2 = NULL;
     fireball = NULL;
-     button = NULL ;
+    button = NULL ;
+    
 }
 
 void Game ::  pointManage(){
@@ -337,4 +345,20 @@ bool Game :: isOnExitArea( const int &x, const int & y) {
 void Game ::  pauseAllMusic (Boss * gBoss, Character * gTestCharacter  ){
     gBoss->pauseSound();
     gTestCharacter->pauseRunningSound();
+}
+
+void Game ::  waitUntilKeyPressed (){
+    SDL_Event e;
+    while (true) {
+        if ( SDL_WaitEvent(&e) != 0 &&
+             (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
+            return;
+        splashScreen.render(0,0,gRenderer,NULL);
+        SDL_RenderPresent(gRenderer);
+        SDL_Delay(100);
+    }
+}
+
+void Game ::  loadSplashScreen (){
+    splashScreen.loadFromFile("img/bg/waitKey.jpg",gRenderer);
 }

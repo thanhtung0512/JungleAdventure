@@ -115,6 +115,7 @@ class Game {
         bool returnGame ;
         double  currentTime  ; 
         bool isUpdateScore  ;
+        LTexture splashScreen ;
         
         
 
@@ -123,6 +124,8 @@ class Game {
     public : 
         Game();
         ~Game();
+        void loadSplashScreen ();
+        void waitUntilKeyPressed ();
         int  playGame();
         void resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter ) ;
         bool loadSkyFireball();
