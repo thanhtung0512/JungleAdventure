@@ -85,43 +85,46 @@ class Game {
         SDL_Event gEvent;
         SDL_Texture *gCurrentImage = NULL;
         TTF_Font *gFont = NULL;
-        LTexture gBackgroundTexture;
+      
         LTexture gScore;
         LTexture gDotTexture;
-        Phoenix gPhoenix;
+        
         Character gMainCharacterTexture;
-        Character gTestCharacter;
+        
         SDL_Rect spriteMainCharacter[9];
         SDL_Rect spriteOfPhoenix [50];
         Fireball gFireball  ; 
-        Mix_Chunk *chunk = NULL;
-        Mix_Music *music = NULL;
-        Mix_Music *phoenixWing = NULL;
-        Mix_Chunk *sword = NULL;
-        Mix_Chunk *sword_2 = NULL;
-        Mix_Chunk *fireball = NULL;
-        Mix_Chunk * button = NULL ;
-        gameMenu gGameMenu ; 
+        
+        Mix_Music *music ;
+        Mix_Music *phoenixWing;
+        Mix_Chunk *sword ;
+        Mix_Chunk *sword_2 ;
+        Mix_Chunk *fireball ;
+        Mix_Chunk * button  ;
+        
         impTimer fpsTimer ; 
-        Boss gBoss ; 
+        Enemy gEnemy [NUMS_OF_ENEMY];
         SkyFireball gSkyFireball[11];
-        int originXFireball = 0 , originYFireball  = 0 ;
-        int countFireball = 0;
-        Uint64 NOW = SDL_GetPerformanceCounter();
-        Uint64 LAST = 0;
-        double deltaTime = 0;
-        int point=0 ; 
-        bool returnGame = false;
-        double  currentTime = 0 ; 
-        bool isUpdateScore = true ;
-        Background scrollingBG ;
-        Enemy gEnemy[NUMS_OF_ENEMY];
+
+        int originXFireball , originYFireball  ;
+        int countFireball ;
+        Uint64 NOW ;
+        Uint64 LAST ;
+        double deltaTime ;
+        int point ; 
+        bool returnGame ;
+        double  currentTime  ; 
+        bool isUpdateScore  ;
+        
+        
+
+       
 
     public : 
         Game();
         ~Game();
         int  playGame();
-        void resetGame ();
+        void resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter ) ;
         bool loadSkyFireball();
         bool loadFireball();
         bool loadPhoenix();
@@ -129,14 +132,14 @@ class Game {
         bool loadMainMenu ();
         bool initData();
         bool loadAudio();
-        bool loadBG();
         void close ();
         bool loadAllNeeded ();
-        void playBGMusic ();
+        void playBGMusic (Character  * gTestCharacter );
         void pointManage();
         void fpsManage();
         bool isOnReturnGameArea ( const int& x , const int& y );
         bool isOnExitArea( const int &x, const int & y) ;
+        void pauseAllMusic (Boss * gBoss , Character * gTestCharacter  );
 
 };
 

@@ -17,7 +17,7 @@ class Character : public Dot {
     void setCharacterPosX(int posX);
 
 
-    void handleInputAction(SDL_Event &e , SDL_Renderer *screen ,Mix_Chunk * chunk ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
+    void handleInputAction(SDL_Event &e , SDL_Renderer *screen  ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
     
     void setClipsRun (int frameNumbers); // set dimensions for clips texture run right 
     
@@ -47,14 +47,14 @@ class Character : public Dot {
 
     void getHitFromFireball (Fireball* gFireball );
 
-   
-
     void frameProcessing ();
 
     int getFrameAttack();
     int getFrameAttack2 ();
     void resetCharacter();
-    
+    void playRunningSound ();
+    void pauseRunningSound();
+    void loadRunningSound ();
     void manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball );
 
     private :
@@ -87,6 +87,8 @@ class Character : public Dot {
     int jumpControl ; 
     int frameMainRunning , frameIdle , frameIdleLeft ;
     int frameAttack ,  frameAttack2  , frameJumpUp , frameJumpDown , frameDead  ;
+
+    Mix_Chunk   *runningSound  ;
 
 };
 

@@ -9,6 +9,19 @@ Boss::Boss(){
     
 }
 
+Boss :: Boss(SDL_Renderer * screen ){
+    setClipsWalk();
+    mPosX = 0 ;
+    mPosY = 530  ;
+    frameOfWalk = 120 ;
+    loadBoss(screen );
+    bossAppeared = NULL; 
+    bossAppeared = Mix_LoadMUS ("sound/bossAppeared.mp3");
+    if ( bossAppeared== NULL) {
+        std :: cout <<"Could not load sound boss"<<std::endl;
+    }
+}
+
 void Boss ::  resetBoss(){
     mPosX = 0 ;
     mPosY = 530  ;
@@ -71,6 +84,10 @@ bool Boss:: loadBoss(SDL_Renderer * screen ){
 
 }
 
+void Boss::  playSound (){
+    Mix_PlayMusic(bossAppeared,-1);
+}
 
-
-
+void Boss ::  pauseSound ( ){
+    Mix_HaltMusic();
+}

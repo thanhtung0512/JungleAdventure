@@ -9,34 +9,47 @@ int  Game:: playGame(){
         return -1;
     }
 
+    Character gTestCharacter;
+    gTestCharacter.loadRunningSound();
+    gameMenu gGameMenu (gRenderer);
+    Background scrollingBG (gRenderer);
+    Boss gBoss(gRenderer);
+    Phoenix gPhoenix(gRenderer);
 
+    
+   
     for (int i=0;i<NUMS_OF_ENEMY;i++){
-        gEnemy[i].loadFromFile("img/Enemie/moving_3.png",gRenderer);
+        gEnemy[i].loadEnemy(gRenderer);
     }
 
     int first = ENEMY_COORDINATION_X ;
+    
     for (int i=0;i<3;i++){
         gEnemy[i].setCoordinate(first,ENEMY_COORDINATION_Y );
         first += 800 ;
     }
 
-    scrollingBG.loadlayer(gRenderer);
-
     bool stop = false;
-    gGameMenu.render(0,0,gRenderer,NULL);
-    gGameMenu.menuControl(gRenderer,gEvent,button,&gBackgroundTexture,gFont,gWindow,&stop,&returnGame );
 
-    playBGMusic();
+    gGameMenu.menuControl(gRenderer,gEvent,button,gFont,gWindow,&stop,&returnGame );
+    
+    playBGMusic(&gTestCharacter);
+    
+    
+    int bossPlaySound  = 1 ;
     while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
         if (gTestCharacter.getStatus()!=DEAD_CHARACTER ){
-           
+            if ( returnGame ==  true ){
+                returnGame = false ; 
+                playBGMusic(&gTestCharacter);
+            }
             while ( SDL_PollEvent(&gEvent)){
                 if(gEvent.type == SDL_QUIT ){
                     stop=true ;
                     returnGame= false ;
                 }
-                gTestCharacter.handleInputAction(gEvent,gRenderer,chunk,sword,sword_2 );
+                gTestCharacter.handleInputAction(gEvent,gRenderer,sword,sword_2 );
             }
             
             SDL_SetRenderDrawColor(gRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
@@ -44,10 +57,16 @@ int  Game:: playGame(){
             
             scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
             gTestCharacter.manageCharacter(gRenderer , &gFireball );
+
             if( point >= TO_RENDER_BOSS_POINT ){
                 for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
                     gSkyFireball[i].manageFireball(gRenderer,&point,&gTestCharacter);
                 }
+                if ( bossPlaySound == 1 ){
+                    bossPlaySound =0 ;
+                    gBoss.playSound();
+                }
+                
             }
             for (int i=0;i<NUMS_OF_ENEMY;i++){
                 gEnemy[i].autoMove();
@@ -55,8 +74,14 @@ int  Game:: playGame(){
                 gEnemy[i].checkCollision(&gPhoenix,&gFireball,&gTestCharacter);
                 gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());   
             }
+
+            gScore.showText(0,0,&point,gRenderer);
+            gFireball.manageFireball(gRenderer);
+            gPhoenix.renderPhoenix(gRenderer);
+            
         }
-        if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
+        else if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
+                pauseAllMusic(&gBoss, &gTestCharacter);
                 isUpdateScore=false ;
                 gGameMenu.renderWhenDead(gRenderer);
                 gScore.showText(SCORE_X ,SCORE_Y ,&point,gRenderer);
@@ -65,8 +90,9 @@ int  Game:: playGame(){
                         int x = gEvent.button.x;
                         int y = gEvent.button.y;
                         if ( isOnReturnGameArea(x,y) ){
+                            bossPlaySound=1; 
                             returnGame =  true ;
-                            resetGame();
+                            resetGame(&gBoss,&gPhoenix,&gTestCharacter);
                         }
                         else if ( isOnExitArea(x,y) ){
                             stop= true ;
@@ -77,18 +103,10 @@ int  Game:: playGame(){
                         stop= true ;
                         returnGame = false;
                     }
-
                 }
-            
         }
-        if ( gTestCharacter.getStatus()!=DEAD_CHARACTER){
-            gScore.showText(0,0,&point,gRenderer);
-            gFireball.manageFireball(gRenderer);
-            gPhoenix.renderPhoenix(gRenderer);
-        }
-       
+ 
         SDL_RenderPresent(gRenderer); 
-
         pointManage();
         fpsManage();
         
@@ -101,9 +119,9 @@ int  Game:: playGame(){
 
 void Game ::  fpsManage(){
     int realImpTime = fpsTimer.getTicks();
-        
         int timeOneFrame = (1000/FRAME_PER_SECOND ); // ms 
-        if ( realImpTime < timeOneFrame ){
+        if ( realImpTime < timeOneFrame )
+        {
             int delayTime = timeOneFrame - realImpTime ; 
             if ( delayTime > 0 )
             {
@@ -112,15 +130,15 @@ void Game ::  fpsManage(){
         }
 }
 
-void Game:: resetGame (){
-    int first = ENEMY_COORDINATION_X ;
+void Game:: resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter ){
+    int first = ENEMY_COORDINATION_X + rand() % 200 ;
     for (int i=0;i<3;i++){
         gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
         first += 400;
     }
-    gTestCharacter.resetCharacter();
-    gBoss.resetBoss();
-    gPhoenix.resetPhoenix();
+    mainCharacter->resetCharacter();
+    gBoss->resetBoss();
+    gPhoenix->resetPhoenix();
     gFireball.resetFireball();
     for(int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
         gSkyFireball[i].resetSkyFireball();
@@ -155,41 +173,6 @@ bool Game:: loadFireball(){
     }
     return true ;
 }
-
-
-
-
-bool Game:: loadPhoenix(){
-    if ( gPhoenix.loadPhoenix(gRenderer)== false ){
-        std::cout<<"Could not load Phoenix"<<SDL_GetError()<<std::endl;
-        return false ;
-
-    }
-    return true ;
-}
-
-
-
-
-bool Game:: loadBoss(){
-    if (gBoss.loadBoss(gRenderer)== false ){
-        std::cout<<"Could not load boss "<<SDL_GetError()<<std::endl;
-        return false;
-    }
-    return true ;
-}   
-
-
-
-
-bool Game:: loadMainMenu (){
-    if(gGameMenu.loadMenu(gRenderer)== true ){
-        return true ;
-    }
-    else return false ;
-}
-
-
 
 
 bool Game:: initData(){
@@ -232,11 +215,7 @@ bool Game:: initData(){
 
 
 bool Game:: loadAudio(){
-    chunk =Mix_LoadWAV("sound/running.wav");
-    if ( chunk == NULL) {
-        std::cout<<"Could not load chunk "<<SDL_GetError()<<std::endl;
-        return false;
-    }
+    
 
     sword = Mix_LoadWAV("sound/sword.wav");
     if(sword == NULL){
@@ -275,21 +254,7 @@ bool Game:: loadAudio(){
 }
 
 
-
-
-bool Game:: loadBG(){
-    if(gBackgroundTexture.loadFromFile ( "img/bg/Background.png",gRenderer)==false){
-        std::cout<<"Could not load BG "<<SDL_GetError()<<std::endl;
-        return 0;
-    }
-    return 1;
-}
-
-
-
-
 void Game:: close (){
-    gBackgroundTexture.free();
     SDL_DestroyRenderer(gRenderer);
     TTF_CloseFont ( gFont );
     gFont = NULL;
@@ -302,8 +267,6 @@ void Game:: close (){
 }
 
 
-
-
 bool Game:: loadAllNeeded (){
     if(initData()==false){
        return false;
@@ -311,42 +274,45 @@ bool Game:: loadAllNeeded (){
     if(loadAudio()== false ){
         return false ;
     }
-
-    if ( loadBG()== false) {
-        return false;
-    }
-
-    if ( loadMainMenu() == false  ) return false ; 
-    if (loadBoss()== false ) return false ;
     if ( loadFireball()== false ) return false;
-    if ( loadPhoenix()== false ) return false;
     if ( loadSkyFireball()== false ) return false ;
     return true; 
 }
 
 
-
-
-void Game:: playBGMusic (){
+void Game:: playBGMusic (Character * gTestCharacter ){
     Mix_PlayMusic(music,-1);
     Mix_PlayMusic(phoenixWing, -1 );
+    gTestCharacter->playRunningSound();
+    
 }
-
 
 Game :: ~Game(){
 
 }
 
 Game:: Game (){
-    
+    originXFireball = 0 , originYFireball  = 0 ;
+    countFireball = 0;
+    NOW = SDL_GetPerformanceCounter();
+    LAST = 0;
+    deltaTime = 0;
+    point=0 ; 
+    returnGame = false;
+    currentTime = 0 ; 
+    isUpdateScore = true ;
+    music = NULL;
+    phoenixWing = NULL;
+    sword = NULL;
+    sword_2 = NULL;
+    fireball = NULL;
+     button = NULL ;
 }
-
 
 void Game ::  pointManage(){
     LAST = NOW;
         NOW = SDL_GetPerformanceCounter();
         deltaTime = (double)((NOW - LAST)*1000 / (double)SDL_GetPerformanceFrequency() );
-
         currentTime += deltaTime;
         // std::cout<<currentTime<<std::endl;
         if ( currentTime >= 200 ){
@@ -366,4 +332,9 @@ bool Game:: isOnReturnGameArea ( const int& x , const int& y ){
 
 bool Game :: isOnExitArea( const int &x, const int & y) {
     return x>=471 && x<= 539 && y>=515 && y<= 578;
+}
+
+void Game ::  pauseAllMusic (Boss * gBoss, Character * gTestCharacter  ){
+    gBoss->pauseSound();
+    gTestCharacter->pauseRunningSound();
 }

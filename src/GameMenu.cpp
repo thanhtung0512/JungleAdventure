@@ -4,6 +4,14 @@
 gameMenu :: gameMenu(){
     setMenuFrame();
     confirmSound= NULL;
+    currentTrack = KHONG_BANG ; 
+}
+
+gameMenu :: gameMenu(SDL_Renderer * screen ){
+    setMenuFrame();
+    confirmSound= NULL;
+    currentTrack = KHONG_BANG ; 
+    loadMenu(screen);
 }
 
 gameMenu :: ~gameMenu (){
@@ -19,10 +27,27 @@ void gameMenu:: setMenuFrame(){
     }
 }
 
-bool  gameMenu:: loadMenu ( SDL_Renderer * screen ){
+bool gameMenu:: loadMenu ( SDL_Renderer * screen ){
+    for (int i=1;i<=2;i++){
+        mp3Rect[i].x=(i-1)* 200 ;
+        mp3Rect[i].y=0;
+        mp3Rect[i].w=200;
+        mp3Rect[i].h=50;
+
+    }
+ 
     confirmSound = Mix_LoadWAV("sound/confirm.wav");
+    track1=Mix_LoadMUS("sound/track1_khongbang.mp3");
     if ( loadFromFile("img/mainmenu/menu4.jpg",screen) == false ){
         std::cout<<"could not load Menu "<<std::endl;
+        return false ;
+    }
+    if ( mp3Player.loadFromFile("img/mp3Player/2States.png",screen) == false ){
+        std :: cout << "Could not load mp3 player img "<<SDL_GetError()<<std::endl;
+        return false ; 
+    }
+    if ( tracks.loadFromFile("img/mp3Player/track1.png",screen)== false ){
+        std :: cout << "Could not load tracks img "<< SDL_GetError()<<std::endl;
         return false ;
     }
     else return true ;
@@ -39,6 +64,23 @@ bool gameMenu::  isClickPlayButton(SDL_Event& gEvent ){
     }
     return false;
 }
+
+bool gameMenu::  isClickPlayMusicButton(SDL_Event& gEvent ){
+    if(gEvent.button.button== SDL_BUTTON_LEFT ){
+        int mouseX = gEvent.button.x;
+        int mouseY = gEvent.button.y;
+        std::cout << mouseX <<" "<<mouseY <<std::endl;
+        if(  isOnPlayMusicArea(mouseX , mouseY ) ){
+            return true ;
+        }
+    }
+    return false;
+}
+
+  bool gameMenu:: isOnPlayMusicArea  (  int mouseX, int mouseY )  {
+      return mouseX >= 77 && mouseX <= 118 && mouseY>=0 && mouseY <= 50 ;
+  }
+
 
 bool gameMenu:: motionOnPlayButton(SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
@@ -67,10 +109,10 @@ bool gameMenu:: motionOnExitButton (SDL_Event & gEvent){
 }
 
 bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
-    if ( gEvent.type==SDL_MOUSEMOTION ){
+    if ( gEvent.type == SDL_MOUSEMOTION ){
         int x=gEvent.motion.x;
         int y =gEvent.motion.y;
-        if(  isOnInfoArea(x,y) ){
+        if(   isOnInfoArea(x,y)  ){
             return true ;
         }
         return false ;
@@ -79,57 +121,80 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
 }
 
 
-void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button,LTexture *gBackgroundTexture, TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame ){
+void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame ){
+    render(0,0,screen,NULL);
     int isContinue=0, isExit =0 ,isInfo =0;
-        while( isContinue == 0   ){
-            while (SDL_PollEvent(&gEvent)){
-                if (gEvent.type == SDL_MOUSEBUTTONDOWN){
-                    if (isClickPlayButton(gEvent)== true ){
-                        Mix_PlayChannel(-1,confirmSound,0);
-                        isContinue =1 ;
-                    }
-                     if(isClickExitButton(gEvent)== true ){
-                        *isStop = true ;
-                        *returnGame = false ;
-                        
-                        isContinue =1 ;
-                    }
-                    if ( isClickInfoButton(gEvent)== true ){
-                        isInfo = 1 ;
-                    }   
-                    if ( isClickReturnButton(gEvent)== true ){
-                        render(0,0,screen,NULL);
-                        isInfo=0;
-                    }
+    int isPlayMusic =1 ;
+    while( isContinue == 0   ){
+        while (SDL_PollEvent(&gEvent)){
+            if (gEvent.type == SDL_MOUSEBUTTONDOWN){
+                if ( isClickPlayButton(gEvent)== true && isContinue ==0 && isInfo ==0  ){
+                    Mix_PlayChannel(-1,confirmSound,0);
+                    isContinue =1 ;
                 }
-                else if ( gEvent.type == SDL_MOUSEMOTION){
-                    if ( motionOnPlayButton(gEvent)== true ){
-                        renderPlay(screen);
-                    }
-                    else if (motionOnExitButton(gEvent)==true ){
-                        renderExit(screen);
-                    }
-                    else if (motionOnInfoButton(gEvent)== true ){
-                        renderInfor(screen);
+                    if( isClickExitButton(gEvent)== true && isContinue == 0 && isInfo ==0   ){
+                    *isStop = true ;
+                    *returnGame = false ;
+                    isContinue =1 ;
+                }
+                if ( isClickInfoButton(gEvent)== true && isInfo == 0  ){
+                    isInfo = 1 ;
+                }   
+                if ( isClickReturnButton(gEvent)== true && isInfo == 1  ){
+                    render(0,0,screen,NULL);
+                    isInfo=0;
+                }
+                if ( isClickPlayMusicButton(gEvent) == true  ){
+                    if ( isPlayMusic == 0){
+                        isPlayMusic = 1 ; 
                     }
                     else {
-                        Mix_HaltChannel(-1);
-                        render(0,0,screen,NULL);
+                        isPlayMusic = 0 ;
                     }
                 }
-                else if (gEvent.type==SDL_QUIT){
-                        *isStop = true ;
-                        *returnGame = false ;
-                        isContinue = 1; 
-                }
-                if ( isInfo == 1 ){
-                    render(0,0,screen,&currentMenu[6]);
-                }
-                
-
             }
-            SDL_RenderPresent(screen);
+            else if ( gEvent.type == SDL_MOUSEMOTION){
+                if ( motionOnPlayButton(gEvent)== true ){
+                    renderPlay(screen);
+                }
+                else if (motionOnExitButton(gEvent)==true ){
+                    renderExit(screen);
+                }
+                else if (motionOnInfoButton(gEvent)== true ){
+                    renderInfor(screen);
+                }
+                else {
+                    Mix_HaltChannel(-1);
+                    render(0,0,screen,NULL);
+                }
+            }
+            else if (gEvent.type==SDL_QUIT){
+                    *isStop = true ;
+                    *returnGame = false ;
+                    isContinue = 1; 
+            }
         }
+        if ( isInfo == 1 ){
+                render(0,0,screen,&currentMenu[6]);
+        }
+        else {
+            if ( isPlayMusic == 0 ){
+                mp3Player.render(0,0,screen,&mp3Rect[2]);
+            }
+            else {
+                mp3Player.render(0,0,screen,&mp3Rect[1]);     
+            }
+            if ( currentTrack == KHONG_BANG ){
+                tracks.render (200,0,screen,NULL);
+                if ( isPlayMusic == 1) {  
+                    Mix_PlayMusic(track1,-1);
+                }
+            }
+        }
+                
+        SDL_RenderPresent(screen);
+        SDL_Delay(1);
+    }
 }
 
 
@@ -144,10 +209,10 @@ void gameMenu:: renderInfor(SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[4]);
 }
 
-
 void gameMenu::  renderWhenDead(SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[5]);
 }
+
 bool gameMenu:: isClickExitButton(SDL_Event & gEvent){
     if(gEvent.button.button== SDL_BUTTON_LEFT ){
         int mouseX = gEvent.button.x;
@@ -161,7 +226,6 @@ bool gameMenu:: isClickExitButton(SDL_Event & gEvent){
     return false;
 
 }
-
 
 bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
     if(gEvent.button.button== SDL_BUTTON_LEFT ){
@@ -188,7 +252,7 @@ bool gameMenu ::  isClickReturnButton ( SDL_Event & gEvent){
 }
 
 void gameMenu ::  renderMainMenu ( SDL_Renderer * screen ){
-    render(0,0,screen,&currentMenu[4]);
+    render(0,0,screen,&currentMenu[4]); 
 }
 
 void gameMenu :: renderInsideInfor ( SDL_Renderer  * screen ){
@@ -210,3 +274,4 @@ bool gameMenu :: isOnInfoArea  ( int mouseX, int mouseY )  {
 bool gameMenu::  isOnReturnArea ( int mouseX, int mouseY) {
     return mouseX >= 6 && mouseX <=73 && mouseY >=5 && mouseY<= 70 ;
 }
+

@@ -11,6 +11,15 @@ Phoenix :: Phoenix(){
     framePhoenix = 10; 
 
 }
+
+Phoenix :: Phoenix(SDL_Renderer  * screen ){
+    mPosX = 0 ;
+    mPosY = DEFAULT_PHOENIX_Y; 
+    setSpritePhoenix();
+    framePhoenix = 10; 
+    loadPhoenix(screen);
+}
+
 void Phoenix ::  resetPhoenix (){
     mPosX = 0 ;
     mPosY = DEFAULT_PHOENIX_Y; 

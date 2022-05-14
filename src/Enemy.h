@@ -13,8 +13,10 @@ class Enemy : public Character {
     public :
     const double enemyVelocity = 2; 
     Enemy();
+    Enemy(SDL_Renderer * screen );
     ~Enemy();
     void autoMove ( );
+    void loadEnemy(SDL_Renderer * screen );
     void handleHitFromCharacter (Character* gTestCharacter,  int  frameAttack , int frameAttack2  );
     void setFrameEnemiesRun ();
     void setFrameDead ();

@@ -21,6 +21,19 @@ Enemy ::  Enemy (){
     mPosY = ENEMY_COORDINATION_Y;
 }
 
+Enemy :: Enemy(SDL_Renderer * screen ){
+    status = ALIVE;   
+    mVelX =0 ;
+    frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
+    frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
+    setFrameEnemiesRun();
+    setFrameDead();
+    mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
+    mPosY = ENEMY_COORDINATION_Y;
+    loadEnemy(screen);
+    
+}
+
 void Enemy ::  resetEnemy(){
     status = ALIVE;   
     mVelX =0 ;
@@ -29,13 +42,16 @@ void Enemy ::  resetEnemy(){
     mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
 }
+void Enemy :: loadEnemy(SDL_Renderer * screen ){
+    loadFromFile("img/Enemie/moving_3.png",screen);
+}
 
 Enemy :: ~Enemy(){
     free();
 }
 
 void Enemy :: handleHitFromCharacter(Character* gTestCharacter , int frameAttack ,int frameAttack2 ){
-    if (  (gTestCharacter->getStatus() == ATTACK && frameAttack/ TIME_TO_NEXT_FRAME_ATTACK >=12 && frameAttack/TIME_TO_NEXT_FRAME_ATTACK <=15  ) || ( gTestCharacter->getStatus()==ATTACK_2 && frameAttack2 >= 5*TIME_TO_NEXT_FRAME_ATTACK_2 && frameAttack2 <= 18 * TIME_TO_NEXT_FRAME_ATTACK_2     ) ){
+    if (  (gTestCharacter->getStatus() == ATTACK && frameAttack/ TIME_TO_NEXT_FRAME_ATTACK >=12 && frameAttack/TIME_TO_NEXT_FRAME_ATTACK <=15  ) || ( gTestCharacter->getStatus()==ATTACK_2 && frameAttack2 >= 5*TIME_TO_NEXT_FRAME_ATTACK_2 && frameAttack2 <= 19 * TIME_TO_NEXT_FRAME_ATTACK_2     ) ){
         if ( gTestCharacter->getCharacterPosX()+ 190  >= mPosX + 5 && gTestCharacter->getCharacterPosX() <= mPosX + 52){
             status = DEAD ;
         }

@@ -22,9 +22,7 @@
 #define LEFT_LIMIT_X 0 
 const double jumpVelocity  = 2.5; 
 
-
-
-Character :: Character (){
+Character :: Character ( ){
     mPosX =SCREEN_WIDTH / 2 -  140 ;
     mPosY=DEFAULT_MAIN_CHARACTER_Y ;
     mVelCharX =0;
@@ -38,12 +36,12 @@ Character :: Character (){
     setJumpUpClips();
     setJumpDownClips();
     setDeadClips();
-
     frameMainRunning = 10;
     frameIdle = 15; 
     frameIdleLeft = 15;
     frameAttack = 6; frameAttack2 = 6 ; frameJumpUp = 14; frameJumpDown = 26 ; frameDead = 13 ;
-
+    runningSound= NULL;
+    
     
 }
 
@@ -51,23 +49,22 @@ Character :: ~Character (){
     free();
 }
 
-void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chunk * chunk,Mix_Chunk * sword ,Mix_Chunk * sword_2  ){
+void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chunk * sword ,Mix_Chunk * sword_2  ){
     if ( e.type == SDL_KEYDOWN  && e.key.repeat == 0 ){
         switch ( e.key.keysym.sym  ){
-
             case SDLK_RIGHT :{
-                if (status != JUMP_DOWN && status != JUMP_UP  ){
-                Mix_PlayChannel(-1,chunk ,0);
-                status = RUN_RIGHT ;
+                if ( status != JUMP_DOWN && status != JUMP_UP && status !=DEAD_CHARACTER  ){
+                  
+                    status = RUN_RIGHT ;
                 }
                 mVelCharX  += CHARACTER_VEL ;
                 break;
             }
 
             case SDLK_LEFT :{
-                if (status != JUMP_DOWN && status != JUMP_UP)
+                if (status != JUMP_DOWN && status != JUMP_UP && status !=DEAD_CHARACTER )
                 {
-                    Mix_PlayChannel(-1,chunk ,0);
+                    
                     status =RUN_LEFT ;
                 }
                 mVelCharX -=CHARACTER_VEL;
@@ -77,7 +74,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
 
             case SDLK_t:{
                 frameAttack = 8; 
-                if ( status != JUMP_DOWN  && status !=JUMP_UP )
+                if ( status != JUMP_DOWN  && status !=JUMP_UP && status != DEAD_CHARACTER )
                 {
                     Mix_PlayChannel(-1,sword,-1);  
                     status = ATTACK;
@@ -86,7 +83,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
             }
 
             case SDLK_y :{
-                if ( status != JUMP_DOWN  && status !=JUMP_UP )
+                if ( status != JUMP_DOWN  && status !=JUMP_UP && status !=DEAD_CHARACTER )
                 {
                     Mix_PlayChannel(-1,sword_2,-1);
                     status = ATTACK_2 ;
@@ -123,6 +120,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
 
             case SDLK_LEFT :{
                 Mix_HaltChannel(-1);
+                playRunningSound();
                 if (status != JUMP_DOWN && status != JUMP_UP  )
                 status = RUN_RIGHT ;
                 mVelCharX +=CHARACTER_VEL;
@@ -131,6 +129,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
 
             case SDLK_t:{
                 Mix_HaltChannel(-1);
+                playRunningSound();
                 if (status != JUMP_DOWN && status != JUMP_UP  )
                 status = RUN_RIGHT ;
                 break;
@@ -139,6 +138,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
             case SDLK_y :{
                 
                 Mix_HaltChannel(-1);
+                playRunningSound();
                 if (status != JUMP_DOWN && status != JUMP_UP  )
                 status = RUN_RIGHT;
                 break;
@@ -146,6 +146,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen, Mix_Chu
 
 
             case SDLK_UP:{
+                Mix_Pause(-1);
                 status = JUMP_DOWN ;
                 break; 
             }
@@ -176,6 +177,7 @@ void Character :: movingCharacter (){
         }
         if ( mPosY == DEFAULT_MAIN_CHARACTER_Y ){
             status = RUN_RIGHT ;
+            playRunningSound();
         }
     }
 }
@@ -424,4 +426,19 @@ int Character :: getFrameAttack(){
      getHitFromFireball (gFireball);
      movingCharacter();
      showCharacter(screen);
+ }
+
+ void Character ::  playRunningSound (){
+     Mix_PlayChannel(0,runningSound,-1);
+ }  
+
+ void  Character :: loadRunningSound (){
+    runningSound  = Mix_LoadWAV("sound/running.mp3");
+    if ( runningSound  == NULL) {
+        std::cout<<"Could not load chunk "<<SDL_GetError()<<std::endl;
+    }
+ }
+
+ void Character ::  pauseRunningSound(){
+     Mix_HaltChannel(-1);
  }
