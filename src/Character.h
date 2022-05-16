@@ -104,6 +104,7 @@ class Character : public Dot {
 
 
     SDL_Texture * mTexture ;
+    LTexture countDount ; 
     // SDL_Rect frame_clip_left  [50];
 
     

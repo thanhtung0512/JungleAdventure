@@ -86,18 +86,11 @@ class Game {
         SDL_Texture *gCurrentImage = NULL;
         TTF_Font *gFont = NULL;
       
-        LTexture gScore;
-        LTexture textNumsOfKilledEnemyIs; 
-        LTexture numsKilledEnemy ;
-        LTexture gDotTexture;
+       
 
-        
-        
-        Character gMainCharacterTexture;
-        
         SDL_Rect spriteMainCharacter[9];
         SDL_Rect spriteOfPhoenix [50];
-        Fireball gFireball  ; 
+         
         
         Mix_Music *music ;
         Mix_Music *phoenixWing;
@@ -119,7 +112,7 @@ class Game {
         bool returnGame ;
         double  currentTime  ; 
         bool isUpdateScore  ;
-        LTexture splashScreen ;
+        
         
         
 
@@ -128,19 +121,19 @@ class Game {
     public : 
         Game();
         ~Game();
-        void loadSplashScreen ();
-        void waitUntilKeyPressed ();
+        void loadSplashScreen (LTexture * splashScreen);
+        void waitUntilKeyPressed (LTexture * splashScreen);
         int  playGame();
-        void resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter ) ;
+        void resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter , Fireball * gFireball) ;
         bool loadSkyFireball();
-        bool loadFireball();
+        bool loadFireball(Fireball*gFireball );
         bool loadPhoenix();
         bool loadBoss();
         bool loadMainMenu ();
         bool initData();
         bool loadAudio();
         void close ();
-        bool loadAllNeeded ();
+        bool loadAllNeeded (LTexture * splashScreen , Fireball *  gFireball );
         void playBGMusic (Character  * gTestCharacter );
         void pointManage();
         void fpsManage();

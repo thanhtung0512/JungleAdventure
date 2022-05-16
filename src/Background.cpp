@@ -39,7 +39,7 @@ bool Background:: loadlayer(SDL_Renderer * screen){
  }
 
 Background :: Background (){
-    setSrolling();
+   
 }
 Background :: Background (SDL_Renderer * screen ){
     setSrolling();

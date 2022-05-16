@@ -2,10 +2,7 @@
 #include"Boss.h"
 #define TIME_TO_NEXT_FRAME_BOSS 3 
 Boss::Boss(){
-    setClipsWalk();
-    mPosX = 0 ;
-    mPosY = 530  ;
-    frameOfWalk = 120 ;
+    
     
 }
 
@@ -17,7 +14,7 @@ Boss :: Boss(SDL_Renderer * screen ){
     loadBoss(screen );
     bossAppeared = NULL; 
     bossAppeared = Mix_LoadMUS ("sound/bossAppeared.mp3");
-    if ( bossAppeared== NULL) {
+    if ( bossAppeared == NULL) {
         std :: cout <<"Could not load sound boss"<<std::endl;
     }
 }

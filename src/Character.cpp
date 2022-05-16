@@ -27,6 +27,7 @@ Character :: Character ( ){
 }
 
 Character :: Character(SDL_Renderer * screen ){
+   
     loadFromFile("img/mainChar/allBehaFinish.png",screen);
     numsKilledEnemy=0;
     isVisible = true ; 
@@ -190,57 +191,7 @@ void Character :: movingCharacter (){
 
 void Character :: showCharacter (SDL_Renderer * screen  ){
 
-    // if ( isVisible  ){
-    //     loadFromFile("img/mainChar/allBehaviour1.png",screen);
-    // }
-    // else {
-    //     if ( status == RUN_RIGHT){
-    //     if ( loadFromFile("img/mainChar/invisible/toright.png",screen) == false ){
-    //         std::cout<<"could not load right animation "<<std::endl;
-    //     }
-    //     }
-    //     else if ( status == RUN_LEFT ){
-    //     if ( loadFromFile("img/mainChar/invisible/toleft.png",screen) == false ){
-    //         std::cout<<"coudl not load left animation "<<std::endl;
-    //     }
-    //     }
-    //     else if ( status == IDLE){
-    //         if ( loadFromFile("img/mainChar/invisible/idle.png",screen) ==false ){
-    //             std::cout<<"coudl not load idle right  animation "<<std::endl;
-    //         }
-    //     }
-    //     else if (status == IDLE_LEFT){
-    //         if ( loadFromFile("img/mainChar/invisible/idlemirror.png",screen) ==false ){
-    //             std::cout<<"coudl not load idle left animation "<<std::endl;
-    //         }
-    //     }
-    //     else if ( status == ATTACK){
-    //         if ( loadFromFile("img/mainChar/invisible/attack.png",screen) ==false ){
-    //             std::cout<<"coudl not load attack  animation "<<std::endl;
-    //         }
-    //     }
-    //     else if ( status == ATTACK_2 ){
-    //         if ( loadFromFile("img/mainChar/invisible/attack2.png",screen) ==false ){
-    //             std::cout<<"coudl not load attack2  animation "<<std::endl;
-    //         }
-    //     }
-    //     else  if ( status == JUMP_UP){
-    //         if ( loadFromFile("img/mainChar/invisible/jumpUp.png",screen) == false ){
-    //             std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
-    //         }
-    //     }
-    //     else if ( status == JUMP_DOWN ){
-    //         if ( loadFromFile("img/mainChar/invisible/jumpDown.png",screen) == false ){
-    //             std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
-    //         }
-    //     }
-    //     else if ( status == DEAD_CHARACTER){
-    //         if ( loadFromFile("img/mainChar/invisible/dead.png",screen) == false ){
-    //             std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
-    //         }
-    //     }
-    // }
-    
+   
     SDL_Rect * currentFrame;
 
     if ( isVisible ){
@@ -483,15 +434,17 @@ int Character :: getFrameAttack(){
  }
 
  void Character ::  manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball , int * point , int* recentPointVisible  ){
-     if ( numsKilledEnemy % 10 == 0  && numsKilledEnemy !=0  ){
+     if ( (numsKilledEnemy % 10 == 0 || numsKilledEnemy % 10 == 1 )  && numsKilledEnemy !=0 &&  numsKilledEnemy !=1  ){
          isVisible = false   ;
          * recentPointVisible = *point; 
      }
      if ( * point == * recentPointVisible + 30  ){
          isVisible = true ;
      }
-     if (!isVisible){
+     if (!isVisible && (* point != * recentPointVisible + 30) ){
+         int cd =  * recentPointVisible + 30 - * point;
          visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"You are invisible",screen,12);
+         countDount.showText(SCREEN_WIDTH - 40 , SCREEN_HEIGHT - 40 , &cd , screen ,12 );
      }
      getHitFromFireball (gFireball);
      movingCharacter();
@@ -502,16 +455,16 @@ int Character :: getFrameAttack(){
      Mix_PlayChannel(0,runningSound,-1);
  }  
 
- void  Character :: loadRunningSound (){
+void  Character :: loadRunningSound (){
     runningSound  = Mix_LoadWAV("sound/running.mp3");
     if ( runningSound  == NULL) {
         std::cout<<"Could not load chunk "<<SDL_GetError()<<std::endl;
     }
- }
+}
 
- void Character ::  pauseRunningSound(){
-     Mix_HaltChannel(-1);
- }
+void Character ::  pauseRunningSound(){
+    Mix_HaltChannel(-1);
+}
 
 bool Character :: getIsVisible (){
     return isVisible ;
@@ -593,12 +546,4 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
         i_frame_dead[i].h= 112;
 
     }
-
-
-
-
-
-
-
-
 }   

@@ -5,9 +5,15 @@
 int  Game:: playGame(){
     
     srand(time(0));
-    if(loadAllNeeded()==false){
+    LTexture splashScreen ;
+    Fireball gFireball ;
+    if(loadAllNeeded(&splashScreen , &gFireball )==false){
         return -1;
     }
+
+    LTexture gScore;
+    LTexture textNumsOfKilledEnemyIs; 
+    LTexture numsKilledEnemy ;
 
     Character gTestCharacter(gRenderer);
     gTestCharacter.loadRunningSound();
@@ -15,6 +21,8 @@ int  Game:: playGame(){
     Background scrollingBG (gRenderer);
     Boss gBoss(gRenderer);
     Phoenix gPhoenix(gRenderer);
+    
+    
 
     int continueToPlay = 0 ;
     
@@ -35,7 +43,7 @@ int  Game:: playGame(){
     int recentPointVisible = 0 ;
 
     gGameMenu.menuControl(gRenderer,gEvent,button,gFont,gWindow,&stop,&returnGame, &continueToPlay );
-    if ( continueToPlay ) waitUntilKeyPressed(); 
+    if ( continueToPlay ) waitUntilKeyPressed(&splashScreen); 
 
     playBGMusic(&gTestCharacter);
     
@@ -96,7 +104,7 @@ int  Game:: playGame(){
                         if ( isOnReturnGameArea(x,y) ){
                             bossPlaySound=1; 
                             returnGame =  true ;
-                            resetGame(&gBoss,&gPhoenix,&gTestCharacter);
+                            resetGame(&gBoss,&gPhoenix,&gTestCharacter,&gFireball);
                         }
                         else if ( isOnExitArea(x,y) ){
                             stop= true ;
@@ -113,7 +121,6 @@ int  Game:: playGame(){
         SDL_RenderPresent(gRenderer); 
         pointManage();
         fpsManage();
-        
     }
     
     close();
@@ -134,7 +141,7 @@ void Game ::  fpsManage(){
         }
 }
 
-void Game:: resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter ){
+void Game:: resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharacter , Fireball * gFireball ){
     int first = ENEMY_COORDINATION_X + rand() % 200 ;
     for (int i=0;i<3;i++){
         gEnemy[i].setCoordinate( first ,  ENEMY_COORDINATION_Y );
@@ -143,7 +150,7 @@ void Game:: resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharact
     mainCharacter->resetCharacter();
     gBoss->resetBoss();
     gPhoenix->resetPhoenix();
-    gFireball.resetFireball();
+    gFireball->resetFireball();
     for(int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
         gSkyFireball[i].resetSkyFireball();
     }
@@ -157,7 +164,7 @@ void Game:: resetGame (Boss * gBoss,Phoenix * gPhoenix , Character * mainCharact
 
 
 
-bool Game:: loadSkyFireball(){
+bool Game:: loadSkyFireball(  ){
     for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
         if ( gSkyFireball[i].loadFireball(gRenderer)== false ){
         std:: cout<<"Could not load sky fireball "<<SDL_GetError()<<std::endl;
@@ -170,8 +177,8 @@ bool Game:: loadSkyFireball(){
 
 
 
-bool Game:: loadFireball(){
-    if ( gFireball.loadFireball(gRenderer)== false ){
+bool Game:: loadFireball(Fireball *gFireball ){
+    if ( gFireball->loadFireball(gRenderer)== false ){
         std::cout<<"Could not load Fireball "<<std::endl;
         return false ;
     }
@@ -271,7 +278,7 @@ void Game:: close (){
 }
 
 
-bool Game:: loadAllNeeded (){
+bool Game:: loadAllNeeded (LTexture * splashScreen,Fireball* gFireball ){
     
     if(initData()==false){
        return false;
@@ -282,9 +289,9 @@ bool Game:: loadAllNeeded (){
         return false ;
     }
     
-    if ( loadFireball()== false ) return false;
+    if ( loadFireball(gFireball)== false ) return false;
     if ( loadSkyFireball()== false ) return false ;
-    loadSplashScreen();
+    loadSplashScreen( splashScreen);
     return true; 
 }
 
@@ -349,18 +356,18 @@ void Game ::  pauseAllMusic (Boss * gBoss, Character * gTestCharacter  ){
     gTestCharacter->pauseRunningSound();
 }
 
-void Game ::  waitUntilKeyPressed (){
+void Game ::  waitUntilKeyPressed (LTexture  *  splashScreen){
     SDL_Event e;
     while (true) {
         if ( SDL_WaitEvent(&e) != 0 &&
              (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
             return;
-        splashScreen.render(0,0,gRenderer,NULL);
+        splashScreen->render(0,0,gRenderer,NULL);
         SDL_RenderPresent(gRenderer);
         SDL_Delay(100);
     }
 }
 
-void Game ::  loadSplashScreen (){
-    splashScreen.loadFromFile("img/bg/waitKey.jpg",gRenderer);
+void Game ::  loadSplashScreen (LTexture * splashScreen){
+    splashScreen->loadFromFile("img/bg/waitKey.jpg",gRenderer);
 }
