@@ -39,6 +39,7 @@ class Enemy : public Character {
     double mPosX  , mPosY; 
     double mVelX ;
     int frameEnemyDead , frameWalkingEnemie ; 
+    int first ; 
     
 
 

@@ -11,9 +11,11 @@ class LTexture {
         void loadFont ();
 
         // create image form font string 
-         bool loadFromRenderedText ( std::string textureText, SDL_Color textColor, SDL_Renderer * screen  );
+         bool loadFromRenderedText ( std::string textureText, SDL_Color textColor, SDL_Renderer * screen , const int sizeText   );
         
-        void showText(int x, int y , const int *  point , SDL_Renderer * screen );
+        void showText(int x, int y , const int *  point , SDL_Renderer * screen  , int textSize);
+
+        void showTextt(int x, int y ,const std::string inpText , SDL_Renderer * screen , int textSize );
         //deallocates textures
         void free();
 
@@ -27,7 +29,7 @@ class LTexture {
         int getWidth();
         int getHeight();
         
-    protected:
+    private :
     //actual hardware texture 
     SDL_Texture * mTexture;
     //texture dimension information 

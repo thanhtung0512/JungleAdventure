@@ -23,6 +23,8 @@
 const double jumpVelocity  = 2.5; 
 
 Character :: Character ( ){
+    numsKilledEnemy=0;
+    isVisible = true ; 
     mPosX =SCREEN_WIDTH / 2 -  140 ;
     mPosY=DEFAULT_MAIN_CHARACTER_Y ;
     mVelCharX =0;
@@ -184,51 +186,101 @@ void Character :: movingCharacter (){
 
 void Character :: showCharacter (SDL_Renderer * screen  ){
 
-    if ( status == RUN_RIGHT){
-       if ( loadFromFile("img/mainChar/toright.png",screen) == false ){
-           std::cout<<"could not load right animation "<<std::endl;
-       }
-    }
-    else if ( status == RUN_LEFT ){
-       if ( loadFromFile("img/mainChar/toleft.png",screen) == false ){
-           std::cout<<"coudl not load left animation "<<std::endl;
-       }
-    }
-    else if ( status == IDLE){
-        if ( loadFromFile("img/mainChar/idle.png",screen) ==false ){
-            std::cout<<"coudl not load idle right  animation "<<std::endl;
+    if ( isVisible  ){
+        if ( status == RUN_RIGHT){
+        if ( loadFromFile("img/mainChar/toright.png",screen) == false ){
+            std::cout<<"could not load right animation "<<std::endl;
+        }
+        }
+        else if ( status == RUN_LEFT ){
+        if ( loadFromFile("img/mainChar/toleft.png",screen) == false ){
+            std::cout<<"coudl not load left animation "<<std::endl;
+        }
+        }
+        else if ( status == IDLE){
+            if ( loadFromFile("img/mainChar/idle.png",screen) ==false ){
+                std::cout<<"coudl not load idle right  animation "<<std::endl;
+            }
+        }
+        else if (status == IDLE_LEFT){
+            if ( loadFromFile("img/mainChar/idlemirror.png",screen) ==false ){
+                std::cout<<"coudl not load idle left animation "<<std::endl;
+            }
+        }
+        else if ( status == ATTACK){
+            if ( loadFromFile("img/mainChar/attack.png",screen) ==false ){
+                std::cout<<"coudl not load attack  animation "<<std::endl;
+            }
+        }
+        else if ( status == ATTACK_2 ){
+            if ( loadFromFile("img/mainChar/attack2.png",screen) ==false ){
+                std::cout<<"coudl not load attack2  animation "<<std::endl;
+            }
+        }
+        else  if ( status == JUMP_UP){
+            if ( loadFromFile("img/mainChar/jumpUp.png",screen) == false ){
+                std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
+            }
+        }
+        else if ( status == JUMP_DOWN ){
+            if ( loadFromFile("img/mainChar/jumpDown.png",screen) == false ){
+                std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
+            }
+        }
+        else if ( status == DEAD_CHARACTER){
+            if ( loadFromFile("img/mainChar/dead.png",screen) == false ){
+                std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
+            }
         }
     }
-    else if (status == IDLE_LEFT){
-        if ( loadFromFile("img/mainChar/idlemirror.png",screen) ==false ){
-            std::cout<<"coudl not load idle left animation "<<std::endl;
+    else {
+        if ( status == RUN_RIGHT){
+        if ( loadFromFile("img/mainChar/invisible/toright.png",screen) == false ){
+            std::cout<<"could not load right animation "<<std::endl;
+        }
+        }
+        else if ( status == RUN_LEFT ){
+        if ( loadFromFile("img/mainChar/invisible/toleft.png",screen) == false ){
+            std::cout<<"coudl not load left animation "<<std::endl;
+        }
+        }
+        else if ( status == IDLE){
+            if ( loadFromFile("img/mainChar/invisible/idle.png",screen) ==false ){
+                std::cout<<"coudl not load idle right  animation "<<std::endl;
+            }
+        }
+        else if (status == IDLE_LEFT){
+            if ( loadFromFile("img/mainChar/invisible/idlemirror.png",screen) ==false ){
+                std::cout<<"coudl not load idle left animation "<<std::endl;
+            }
+        }
+        else if ( status == ATTACK){
+            if ( loadFromFile("img/mainChar/invisible/attack.png",screen) ==false ){
+                std::cout<<"coudl not load attack  animation "<<std::endl;
+            }
+        }
+        else if ( status == ATTACK_2 ){
+            if ( loadFromFile("img/mainChar/invisible/attack2.png",screen) ==false ){
+                std::cout<<"coudl not load attack2  animation "<<std::endl;
+            }
+        }
+        else  if ( status == JUMP_UP){
+            if ( loadFromFile("img/mainChar/invisible/jumpUp.png",screen) == false ){
+                std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
+            }
+        }
+        else if ( status == JUMP_DOWN ){
+            if ( loadFromFile("img/mainChar/invisible/jumpDown.png",screen) == false ){
+                std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
+            }
+        }
+        else if ( status == DEAD_CHARACTER){
+            if ( loadFromFile("img/mainChar/invisible/dead.png",screen) == false ){
+                std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
+            }
         }
     }
-    else if ( status == ATTACK){
-        if ( loadFromFile("img/mainChar/attack.png",screen) ==false ){
-            std::cout<<"coudl not load attack  animation "<<std::endl;
-        }
-    }
-    else if ( status == ATTACK_2 ){
-        if ( loadFromFile("img/mainChar/attack2.png",screen) ==false ){
-            std::cout<<"coudl not load attack2  animation "<<std::endl;
-        }
-    }
-    else  if ( status == JUMP_UP){
-        if ( loadFromFile("img/mainChar/jumpUp.png",screen) == false ){
-            std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
-        }
-    }
-    else if ( status == JUMP_DOWN ){
-        if ( loadFromFile("img/mainChar/jumpDown.png",screen) == false ){
-            std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
-        }
-    }
-    else if ( status == DEAD_CHARACTER){
-        if ( loadFromFile("img/mainChar/dead.png",screen) == false ){
-            std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
-        }
-    }
+    
     SDL_Rect * currentFrame;
 
     if ( status == IDLE || status == IDLE_LEFT){
@@ -287,8 +339,7 @@ void Character :: setIdleClip (){
         frame_idle [i].x=(i-1) * 224  ;
         frame_idle [i].y=0;
         frame_idle [i].w=224;
-        frame_idle [i].h=112;
-        
+        frame_idle [i].h=112; 
     }
 }
 
@@ -340,7 +391,7 @@ void Character :: setJumpDownClips(){
 }
 
 void Character :: getHitFromFireball ( Fireball* gFireball ){
-    if( gFireball ->getXPos ()+FIREBALL_WIDTH  >= mPosX+ 80 && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + MAIN_CHAR_WIDTH  && status !=DEAD_CHARACTER){
+    if( gFireball ->getXPos ()+FIREBALL_WIDTH  >= mPosX+ 80 && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + MAIN_CHAR_WIDTH  && status !=DEAD_CHARACTER && isVisible == true ){
         if (DEFAULT_PHOENIX_Y + 90 >= mPosY && DEFAULT_PHOENIX_Y + 90 <= mPosY + MAIN_CHAR_HEIGHT ){
             status = DEAD_CHARACTER;
             gFireball->setXPos(SCREEN_WIDTH * 2  );
@@ -409,6 +460,8 @@ int Character :: getFrameAttack(){
  }
 
  void Character :: resetCharacter(){
+    numsKilledEnemy=0;
+    isVisible = true ;
     mPosX =SCREEN_WIDTH / 2 -  140 ;
     mPosY=DEFAULT_MAIN_CHARACTER_Y ;
     mVelCharX =0;
@@ -422,7 +475,17 @@ int Character :: getFrameAttack(){
 
  }
 
- void Character ::  manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball  ){
+ void Character ::  manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball , int * point , int* recentPointVisible  ){
+     if ( numsKilledEnemy % 10 == 0  && numsKilledEnemy !=0  ){
+         isVisible = false   ;
+         * recentPointVisible = *point; 
+     }
+     if ( * point == * recentPointVisible + 30  ){
+         isVisible = true ;
+     }
+     if (!isVisible){
+         visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"You are invisible",screen,12);
+     }
      getHitFromFireball (gFireball);
      movingCharacter();
      showCharacter(screen);
@@ -442,3 +505,18 @@ int Character :: getFrameAttack(){
  void Character ::  pauseRunningSound(){
      Mix_HaltChannel(-1);
  }
+
+bool Character :: getIsVisible (){
+    return isVisible ;
+}
+
+void Character ::  setIsVisible ( bool isVisiblee  ){
+    isVisible = isVisiblee ; 
+}
+
+int Character ::  getNumsKilledEnemy (){
+    return numsKilledEnemy; 
+}
+void Character ::  increaseNumsKilledEnemy (){
+    numsKilledEnemy ++; 
+}

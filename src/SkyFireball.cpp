@@ -63,7 +63,7 @@ void SkyFireball :: autoMove(){
 
 
 void SkyFireball :: checkCollisionWithMainCharacter(Character * gTestCharacter){
-    if ( mPosY  >= gTestCharacter->getCharacterPosY() + 15 && mPosY  <= gTestCharacter->getPosY() + 40 && mPosX >= gTestCharacter->getCharacterPosX() + 90 && mPosX + 9 <= gTestCharacter->getCharacterPosX() + 160  && gTestCharacter->getStatus()!=DEAD_CHARACTER ){
+    if ( mPosY  >= gTestCharacter->getCharacterPosY() + 15 && mPosY  <= gTestCharacter->getPosY() + 40 && mPosX >= gTestCharacter->getCharacterPosX() + 90 && mPosX + 9 <= gTestCharacter->getCharacterPosX() + 160  && gTestCharacter->getStatus()!=DEAD_CHARACTER  && gTestCharacter->getIsVisible()== true ){
         std::cout<<"Collision "<<std::endl;
         gTestCharacter->setStatus(DEAD_CHARACTER);
         mPosY=0;

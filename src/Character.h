@@ -55,7 +55,15 @@ class Character : public Dot {
     void playRunningSound ();
     void pauseRunningSound();
     void loadRunningSound ();
-    void manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball );
+    void manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball , int * point, int* recentPointVisible   );
+
+    bool getIsVisible ();
+    void setIsVisible ( bool isVisiblee  );
+
+
+    int getNumsKilledEnemy ();
+    void increaseNumsKilledEnemy ();
+
 
     private :
 
@@ -84,11 +92,17 @@ class Character : public Dot {
 
     int frame ; // current frame 
     int status ;
+
+    bool isVisible ; 
+
     int jumpControl ; 
     int frameMainRunning , frameIdle , frameIdleLeft ;
     int frameAttack ,  frameAttack2  , frameJumpUp , frameJumpDown , frameDead  ;
 
-    Mix_Chunk   *runningSound  ;
+    Mix_Chunk * runningSound  ;
+
+    int numsKilledEnemy ; 
+    LTexture visibleNoti ; 
 
 };
 

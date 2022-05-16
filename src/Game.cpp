@@ -31,6 +31,7 @@ int  Game:: playGame(){
     }
 
     bool stop = false;
+    int recentPointVisible = 0 ;
 
     gGameMenu.menuControl(gRenderer,gEvent,button,gFont,gWindow,&stop,&returnGame, &continueToPlay );
     if ( continueToPlay ) waitUntilKeyPressed(); 
@@ -58,7 +59,7 @@ int  Game:: playGame(){
             SDL_RenderClear(gRenderer);
             
             scrollingBG.manageBGWhenRunning(&gBoss , gRenderer, &point);
-            gTestCharacter.manageCharacter(gRenderer , &gFireball );
+            
 
             if( point >= TO_RENDER_BOSS_POINT ){
                 for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
@@ -77,16 +78,18 @@ int  Game:: playGame(){
                 gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());   
             }
 
-            gScore.showText(0,0,&point,gRenderer);
+            gScore.showText(0,0,&point,gRenderer,28);
             gFireball.manageFireball(gRenderer);
             gPhoenix.renderPhoenix(gRenderer);
-            
+            textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",gRenderer,12);
+            int numsKilledEnemyy = gTestCharacter.getNumsKilledEnemy();
+            numsKilledEnemy.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20, &numsKilledEnemyy , gRenderer,12);
         }
         else if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
                 pauseAllMusic(&gBoss, &gTestCharacter);
                 isUpdateScore=false ;
                 gGameMenu.renderWhenDead(gRenderer);
-                gScore.showText(SCORE_X ,SCORE_Y ,&point,gRenderer);
+                gScore.showText(SCORE_X ,SCORE_Y ,&point,gRenderer,28);
                 while( SDL_PollEvent (&gEvent) ){
                     if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
                         int x = gEvent.button.x;
@@ -107,7 +110,7 @@ int  Game:: playGame(){
                     }
                 }
         }
- 
+        gTestCharacter.manageCharacter(gRenderer , &gFireball,&point , & recentPointVisible );
         SDL_RenderPresent(gRenderer); 
         pointManage();
         fpsManage();

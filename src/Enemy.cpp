@@ -11,6 +11,7 @@
 
 
 Enemy ::  Enemy (){
+    first = 1; 
     status = ALIVE;   
     mVelX =0 ;
     frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
@@ -22,6 +23,7 @@ Enemy ::  Enemy (){
 }
 
 Enemy :: Enemy(SDL_Renderer * screen ){
+    first = 1; 
     status = ALIVE;   
     mVelX =0 ;
     frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
@@ -35,6 +37,7 @@ Enemy :: Enemy(SDL_Renderer * screen ){
 }
 
 void Enemy ::  resetEnemy(){
+    first = 1; 
     status = ALIVE;   
     mVelX =0 ;
     frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
@@ -53,10 +56,13 @@ Enemy :: ~Enemy(){
 void Enemy :: handleHitFromCharacter(Character* gTestCharacter , int frameAttack ,int frameAttack2 ){
     if (  (gTestCharacter->getStatus() == ATTACK && frameAttack/ TIME_TO_NEXT_FRAME_ATTACK >=12 && frameAttack/TIME_TO_NEXT_FRAME_ATTACK <=15  ) || ( gTestCharacter->getStatus()==ATTACK_2 && frameAttack2 >= 5*TIME_TO_NEXT_FRAME_ATTACK_2 && frameAttack2 <= 19 * TIME_TO_NEXT_FRAME_ATTACK_2     ) ){
         if ( gTestCharacter->getCharacterPosX()+ 190  >= mPosX + 5 && gTestCharacter->getCharacterPosX() <= mPosX + 52){
-            status = DEAD ;
-        }
+            status = DEAD ;  
+            if ( first == 1 ){
+                first =0 ;
+                gTestCharacter->increaseNumsKilledEnemy();
+            }
+        } 
     }
-    
 }
 
 
@@ -82,10 +88,7 @@ void Enemy :: setFrameDead (){
 }
 
 void Enemy :: ShowEnemie (SDL_Renderer* screen ){
-    
-
     SDL_Rect* currentFrame=NULL;
-    
     if ( status== ALIVE ){
         currentFrame = &frame_running[frameWalkingEnemie / TIME_TO_NEXT_FRAME_WALKING ];
         render(mPosX,mPosY,screen , currentFrame);
@@ -142,12 +145,12 @@ double Enemy :: getEnemyPosX (){
 }
 
 void Enemy ::  collisionWithMainCharacter ( Character * gTestCharacter){
-    if ( gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 80 && gTestCharacter->getStatus() != ATTACK && gTestCharacter->getStatus() != JUMP_DOWN  && gTestCharacter->getStatus()!= JUMP_UP  && status ==ALIVE  && gTestCharacter->getStatus()!=DEAD_CHARACTER ){
+    if ( gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 80 && gTestCharacter->getStatus() != ATTACK && gTestCharacter->getStatus() != JUMP_DOWN  && gTestCharacter->getStatus()!= JUMP_UP  && status ==ALIVE  && gTestCharacter->getStatus()!=DEAD_CHARACTER  && gTestCharacter-> getIsVisible()== true ){
         std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setCharacterPosX( gTestCharacter->getCharacterPosX()- 10);
         gTestCharacter->setStatus(DEAD_CHARACTER);
     }
-    if(gTestCharacter->getStatus()==JUMP_DOWN  && gTestCharacter->getCharacterPosY()+112 >= mPosY && gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 120 && status == ALIVE){
+    if(gTestCharacter->getStatus()==JUMP_DOWN  && gTestCharacter->getCharacterPosY()+112 >= mPosY && gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 120 && status == ALIVE && gTestCharacter-> getIsVisible() == true){
         std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setStatus(DEAD_CHARACTER );
     }

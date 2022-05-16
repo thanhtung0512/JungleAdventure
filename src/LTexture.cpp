@@ -40,9 +40,9 @@ bool LTexture :: loadFromFile(std::string path ,SDL_Renderer * screen ){
 
 }
 
-bool LTexture :: loadFromRenderedText ( std::string textureText, SDL_Color textColor , SDL_Renderer * screen ){
+bool LTexture :: loadFromRenderedText ( std::string textureText, SDL_Color textColor , SDL_Renderer * screen , const int sizeText   ){
     // render text surface 
-    this->arcadeFont = TTF_OpenFont ("fonts/ARCADE_R.ttf",28);
+    this->arcadeFont = TTF_OpenFont ("fonts/ARCADE_R.ttf",sizeText);
     SDL_Surface  * textSurface = TTF_RenderText_Solid( arcadeFont ,textureText.c_str(), textColor);
     if ( textSurface == NULL ){
         std::cout<<"Could not load text surface "<< SDL_GetError()<<std::endl;
@@ -97,8 +97,13 @@ int LTexture::getHeight(){
     return mHeight;
 }
 
-void LTexture ::  showText(int x, int y ,const int * point , SDL_Renderer * screen){
-    loadFromRenderedText(std::to_string(*point),{84,153,32},screen );
+void LTexture ::  showText(int x, int y ,const int * point , SDL_Renderer * screen, int textSize){
+    loadFromRenderedText(std::to_string(*point),{84,153,32},screen, textSize );
+    render(x,y,screen,NULL);
+}
+
+void LTexture ::  showTextt(int x, int y ,const std::string inpText , SDL_Renderer * screen, int textSize){
+    loadFromRenderedText(inpText,{84,153,32},screen , textSize );
     render(x,y,screen,NULL);
 }
 

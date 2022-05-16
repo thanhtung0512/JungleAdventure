@@ -87,7 +87,11 @@ class Game {
         TTF_Font *gFont = NULL;
       
         LTexture gScore;
+        LTexture textNumsOfKilledEnemyIs; 
+        LTexture numsKilledEnemy ;
         LTexture gDotTexture;
+
+        
         
         Character gMainCharacterTexture;
         
