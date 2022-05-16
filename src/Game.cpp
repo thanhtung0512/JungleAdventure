@@ -9,7 +9,7 @@ int  Game:: playGame(){
         return -1;
     }
 
-    Character gTestCharacter;
+    Character gTestCharacter(gRenderer);
     gTestCharacter.loadRunningSound();
     gameMenu gGameMenu (gRenderer);
     Background scrollingBG (gRenderer);
@@ -22,6 +22,7 @@ int  Game:: playGame(){
     for (int i=0;i<NUMS_OF_ENEMY;i++){
         gEnemy[i].loadEnemy(gRenderer);
     }
+
 
     int first = ENEMY_COORDINATION_X ;
     
@@ -37,7 +38,6 @@ int  Game:: playGame(){
     if ( continueToPlay ) waitUntilKeyPressed(); 
 
     playBGMusic(&gTestCharacter);
-    
     
     int bossPlaySound  = 1 ;
     while (stop == false  || returnGame == true ){  

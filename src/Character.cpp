@@ -23,6 +23,11 @@
 const double jumpVelocity  = 2.5; 
 
 Character :: Character ( ){
+       
+}
+
+Character :: Character(SDL_Renderer * screen ){
+    loadFromFile("img/mainChar/allBehaFinish.png",screen);
     numsKilledEnemy=0;
     isVisible = true ; 
     mPosX =SCREEN_WIDTH / 2 -  140 ;
@@ -31,20 +36,20 @@ Character :: Character ( ){
     mVelCharY =0; 
     frame = 0 ; // current frame 
     status = RUN_RIGHT;
-    setClipsRun(MAIN_CHAR_FRAME_RUN);
+    setClipsRunRight(MAIN_CHAR_FRAME_RUN);
+    setClipsRunLeft(MAIN_CHAR_FRAME_RUN);
     setIdleClip();
     setAttackClip();
     setAttackClip2();
     setJumpUpClips();
     setJumpDownClips();
     setDeadClips();
+    setAllClipsForInvisibleMode(MAIN_CHAR_FRAME_RUN);
     frameMainRunning = 10;
     frameIdle = 15; 
     frameIdleLeft = 15;
     frameAttack = 6; frameAttack2 = 6 ; frameJumpUp = 14; frameJumpDown = 26 ; frameDead = 13 ;
     runningSound= NULL;
-    
-    
 }
 
 Character :: ~Character (){
@@ -119,7 +124,6 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
                 mVelCharX  -= CHARACTER_VEL ;
                 break;
             }
-
             case SDLK_LEFT :{
                 Mix_HaltChannel(-1);
                 playRunningSound();
@@ -186,145 +190,148 @@ void Character :: movingCharacter (){
 
 void Character :: showCharacter (SDL_Renderer * screen  ){
 
-    if ( isVisible  ){
-        if ( status == RUN_RIGHT){
-        if ( loadFromFile("img/mainChar/toright.png",screen) == false ){
-            std::cout<<"could not load right animation "<<std::endl;
-        }
-        }
-        else if ( status == RUN_LEFT ){
-        if ( loadFromFile("img/mainChar/toleft.png",screen) == false ){
-            std::cout<<"coudl not load left animation "<<std::endl;
-        }
-        }
-        else if ( status == IDLE){
-            if ( loadFromFile("img/mainChar/idle.png",screen) ==false ){
-                std::cout<<"coudl not load idle right  animation "<<std::endl;
-            }
-        }
-        else if (status == IDLE_LEFT){
-            if ( loadFromFile("img/mainChar/idlemirror.png",screen) ==false ){
-                std::cout<<"coudl not load idle left animation "<<std::endl;
-            }
-        }
-        else if ( status == ATTACK){
-            if ( loadFromFile("img/mainChar/attack.png",screen) ==false ){
-                std::cout<<"coudl not load attack  animation "<<std::endl;
-            }
-        }
-        else if ( status == ATTACK_2 ){
-            if ( loadFromFile("img/mainChar/attack2.png",screen) ==false ){
-                std::cout<<"coudl not load attack2  animation "<<std::endl;
-            }
-        }
-        else  if ( status == JUMP_UP){
-            if ( loadFromFile("img/mainChar/jumpUp.png",screen) == false ){
-                std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
-            }
-        }
-        else if ( status == JUMP_DOWN ){
-            if ( loadFromFile("img/mainChar/jumpDown.png",screen) == false ){
-                std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
-            }
-        }
-        else if ( status == DEAD_CHARACTER){
-            if ( loadFromFile("img/mainChar/dead.png",screen) == false ){
-                std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
-            }
-        }
-    }
-    else {
-        if ( status == RUN_RIGHT){
-        if ( loadFromFile("img/mainChar/invisible/toright.png",screen) == false ){
-            std::cout<<"could not load right animation "<<std::endl;
-        }
-        }
-        else if ( status == RUN_LEFT ){
-        if ( loadFromFile("img/mainChar/invisible/toleft.png",screen) == false ){
-            std::cout<<"coudl not load left animation "<<std::endl;
-        }
-        }
-        else if ( status == IDLE){
-            if ( loadFromFile("img/mainChar/invisible/idle.png",screen) ==false ){
-                std::cout<<"coudl not load idle right  animation "<<std::endl;
-            }
-        }
-        else if (status == IDLE_LEFT){
-            if ( loadFromFile("img/mainChar/invisible/idlemirror.png",screen) ==false ){
-                std::cout<<"coudl not load idle left animation "<<std::endl;
-            }
-        }
-        else if ( status == ATTACK){
-            if ( loadFromFile("img/mainChar/invisible/attack.png",screen) ==false ){
-                std::cout<<"coudl not load attack  animation "<<std::endl;
-            }
-        }
-        else if ( status == ATTACK_2 ){
-            if ( loadFromFile("img/mainChar/invisible/attack2.png",screen) ==false ){
-                std::cout<<"coudl not load attack2  animation "<<std::endl;
-            }
-        }
-        else  if ( status == JUMP_UP){
-            if ( loadFromFile("img/mainChar/invisible/jumpUp.png",screen) == false ){
-                std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
-            }
-        }
-        else if ( status == JUMP_DOWN ){
-            if ( loadFromFile("img/mainChar/invisible/jumpDown.png",screen) == false ){
-                std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
-            }
-        }
-        else if ( status == DEAD_CHARACTER){
-            if ( loadFromFile("img/mainChar/invisible/dead.png",screen) == false ){
-                std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
-            }
-        }
-    }
+    // if ( isVisible  ){
+    //     loadFromFile("img/mainChar/allBehaviour1.png",screen);
+    // }
+    // else {
+    //     if ( status == RUN_RIGHT){
+    //     if ( loadFromFile("img/mainChar/invisible/toright.png",screen) == false ){
+    //         std::cout<<"could not load right animation "<<std::endl;
+    //     }
+    //     }
+    //     else if ( status == RUN_LEFT ){
+    //     if ( loadFromFile("img/mainChar/invisible/toleft.png",screen) == false ){
+    //         std::cout<<"coudl not load left animation "<<std::endl;
+    //     }
+    //     }
+    //     else if ( status == IDLE){
+    //         if ( loadFromFile("img/mainChar/invisible/idle.png",screen) ==false ){
+    //             std::cout<<"coudl not load idle right  animation "<<std::endl;
+    //         }
+    //     }
+    //     else if (status == IDLE_LEFT){
+    //         if ( loadFromFile("img/mainChar/invisible/idlemirror.png",screen) ==false ){
+    //             std::cout<<"coudl not load idle left animation "<<std::endl;
+    //         }
+    //     }
+    //     else if ( status == ATTACK){
+    //         if ( loadFromFile("img/mainChar/invisible/attack.png",screen) ==false ){
+    //             std::cout<<"coudl not load attack  animation "<<std::endl;
+    //         }
+    //     }
+    //     else if ( status == ATTACK_2 ){
+    //         if ( loadFromFile("img/mainChar/invisible/attack2.png",screen) ==false ){
+    //             std::cout<<"coudl not load attack2  animation "<<std::endl;
+    //         }
+    //     }
+    //     else  if ( status == JUMP_UP){
+    //         if ( loadFromFile("img/mainChar/invisible/jumpUp.png",screen) == false ){
+    //             std::cout<<"could not load jump png "<<SDL_GetError()<<std::endl;
+    //         }
+    //     }
+    //     else if ( status == JUMP_DOWN ){
+    //         if ( loadFromFile("img/mainChar/invisible/jumpDown.png",screen) == false ){
+    //             std::cout<<"could not load jump Down "<<SDL_GetError()<<std::endl;
+    //         }
+    //     }
+    //     else if ( status == DEAD_CHARACTER){
+    //         if ( loadFromFile("img/mainChar/invisible/dead.png",screen) == false ){
+    //             std::cout<<"could not load dead "<<SDL_GetError()<<std::endl;
+    //         }
+    //     }
+    // }
     
     SDL_Rect * currentFrame;
 
-    if ( status == IDLE || status == IDLE_LEFT){
-         frameIdle ++;
-         currentFrame = & frame_idle[frameIdle/TIME_TO_NEXT_FRAME_IDLE];
-         render(mPosX , mPosY, screen , currentFrame );
-         if ( frameIdle >= TIME_TO_NEXT_FRAME_IDLE*8 ){
-             frameIdle = TIME_TO_NEXT_FRAME_IDLE;
-         }
+    if ( isVisible ){
+        if ( status == IDLE || status == IDLE_LEFT){
+            frameIdle ++;
+            currentFrame = & frame_idle[frameIdle/TIME_TO_NEXT_FRAME_IDLE];
+            render(mPosX , mPosY, screen , currentFrame );
+            if ( frameIdle >= TIME_TO_NEXT_FRAME_IDLE*8 ){
+                frameIdle = TIME_TO_NEXT_FRAME_IDLE;
+            }
+        }
+        if ( status == RUN_RIGHT || status == RUN_LEFT){
+            currentFrame = & frame_clips_run_right[frameMainRunning/TIME_TO_NEXT_FRAME_RUNNING_CHARACTER ];
+            render(mPosX  , mPosY, screen , currentFrame );
+        }
+        if ( status == ATTACK){
+            currentFrame = & frame_attack[frameAttack/TIME_TO_NEXT_FRAME_ATTACK];
+            render(mPosX , mPosY, screen , currentFrame ); 
+        }
+        if ( status ==ATTACK_2 ){ 
+            currentFrame = & frame_attack_2[frameAttack2 /TIME_TO_NEXT_FRAME_ATTACK_2 ];
+            render(mPosX,mPosY ,screen,currentFrame);
+        }
+        if(status == JUMP_UP ){
+            currentFrame = &frame_jump_up[ frameJumpUp/ TIME_TO_NEXT_FRAME_JUMP_UP ];
+            render(mPosX , mPosY , screen, currentFrame);
+        }
+        if ( status == JUMP_DOWN ){
+            currentFrame =  & frame_jump_down [frameJumpDown/ TIME_TO_NEXT_FRAME_JUMP_DOWN];
+            render(mPosX , mPosY , screen ,currentFrame );
+        }
+        
+        if (status == DEAD_CHARACTER){
+            currentFrame=  & frame_dead [frameDead / TIME_TO_NEXT_FRAME_DEAD] ;
+            render(mPosX , mPosY ,screen ,currentFrame);
+        }
     }
-    if ( status == RUN_RIGHT || status == RUN_LEFT){
-        currentFrame = & frame_clips[frameMainRunning/TIME_TO_NEXT_FRAME_RUNNING_CHARACTER ];
-        render(mPosX  , mPosY, screen , currentFrame );
-    }
-    if ( status == ATTACK){
-         currentFrame = & frame_attack[frameAttack/TIME_TO_NEXT_FRAME_ATTACK];
-         render(mPosX , mPosY, screen , currentFrame ); 
-    }
-    if ( status ==ATTACK_2 ){ 
-        currentFrame = & frame_attack_2[frameAttack2 /TIME_TO_NEXT_FRAME_ATTACK_2 ];
-        render(mPosX,mPosY ,screen,currentFrame);
-    }
-    if(status == JUMP_UP ){
-        currentFrame = &frame_jump_up[ frameJumpUp/ TIME_TO_NEXT_FRAME_JUMP_UP ];
-        render(mPosX , mPosY , screen, currentFrame);
-    }
-    if ( status == JUMP_DOWN ){
-        currentFrame =  & frame_jump_down [frameJumpDown/ TIME_TO_NEXT_FRAME_JUMP_DOWN];
-        render(mPosX , mPosY , screen ,currentFrame );
-    }
-    
-    if (status == DEAD_CHARACTER){
-        currentFrame=  & frame_dead [frameDead / TIME_TO_NEXT_FRAME_DEAD] ;
-        render(mPosX , mPosY ,screen ,currentFrame);
+    else {
+        if ( status == IDLE || status == IDLE_LEFT){
+            frameIdle ++;
+            currentFrame = & i_frame_idle[frameIdle/TIME_TO_NEXT_FRAME_IDLE];
+            render(mPosX , mPosY, screen , currentFrame );
+            if ( frameIdle >= TIME_TO_NEXT_FRAME_IDLE*8 ){
+                frameIdle = TIME_TO_NEXT_FRAME_IDLE;
+            }
+        }
+        if ( status == RUN_RIGHT || status == RUN_LEFT){
+            currentFrame = & i_frame_clips_run_right[frameMainRunning/TIME_TO_NEXT_FRAME_RUNNING_CHARACTER ];
+            render(mPosX  , mPosY, screen , currentFrame );
+        }
+        if ( status == ATTACK){
+            currentFrame = & i_frame_attack[frameAttack/TIME_TO_NEXT_FRAME_ATTACK];
+            render(mPosX , mPosY, screen , currentFrame ); 
+        }
+        if ( status ==ATTACK_2 ){ 
+            currentFrame = & i_frame_attack_2[frameAttack2 /TIME_TO_NEXT_FRAME_ATTACK_2 ];
+            render(mPosX,mPosY ,screen,currentFrame);
+        }
+        if(status == JUMP_UP ){
+            currentFrame = &i_frame_jump_up[ frameJumpUp/ TIME_TO_NEXT_FRAME_JUMP_UP ];
+            render(mPosX , mPosY , screen, currentFrame);
+        }
+        if ( status == JUMP_DOWN ){
+            currentFrame =  & i_frame_jump_down [frameJumpDown/ TIME_TO_NEXT_FRAME_JUMP_DOWN];
+            render(mPosX , mPosY , screen ,currentFrame );
+        }
+        
+        if (status == DEAD_CHARACTER){
+            currentFrame=  & i_frame_dead [frameDead / TIME_TO_NEXT_FRAME_DEAD] ;
+            render(mPosX , mPosY ,screen ,currentFrame);
+        }
     }
     frameProcessing();
 }
 
-void Character :: setClipsRun (int frameNumbers ){
+void Character :: setClipsRunRight (int frameNumbers ){
     for(int i=1;i<= frameNumbers ;i++){
-        frame_clips [i].x = (i-1)* 224  ;
-        frame_clips [i].y = 0;
-        frame_clips [i].w = 224;
-        frame_clips [i].h = 112;
+        frame_clips_run_right [i].x = (i-1)* 224  ;
+        frame_clips_run_right [i].y = 8*112 ;
+        frame_clips_run_right [i].w = 224;
+        frame_clips_run_right [i].h = 112;
+        
+    }
+}
+
+void Character ::  setClipsRunLeft(int frameNumbers){
+    for(int i=1;i<= frameNumbers ;i++){
+        frame_clips_run_left [i].x = (i-1)* 224  ;
+        frame_clips_run_left [i].y = 7*112 ;
+        frame_clips_run_left [i].w = 224;
+        frame_clips_run_left [i].h = 112;
         
     }
 }
@@ -334,10 +341,9 @@ int  Character :: getStatus (){
 }
 
 void Character :: setIdleClip (){
-    
     for(int i=1 ;i<=IDLE_CLIPS ;i++){
         frame_idle [i].x=(i-1) * 224  ;
-        frame_idle [i].y=0;
+        frame_idle [i].y=3*112;
         frame_idle [i].w=224;
         frame_idle [i].h=112; 
     }
@@ -355,9 +361,10 @@ void Character :: setAttackClip (){
 }
 
 void Character :: setAttackClip2(){
+    
     for(int i=1 ;i<=28 ;i++){
         frame_attack_2[i].x = (i-1)* 224;
-        frame_attack_2[i].y = 0;
+        frame_attack_2[i].y = 112;
         frame_attack_2[i].w = 224 ;
         frame_attack_2[i].h = 112;
     }
@@ -374,7 +381,7 @@ int  Character ::getCharacterPosY(){
 void Character ::  setJumpUpClips (){
     for(int i=1 ;i<=7 ;i++){
         frame_jump_up[i].x=(i-1)*224 ;
-        frame_jump_up[i].y= 0 ;
+        frame_jump_up[i].y= 6*112 ;
         frame_jump_up[i].w = 224 ;
         frame_jump_up[i].h = 112 ;
     }
@@ -383,7 +390,7 @@ void Character ::  setJumpUpClips (){
 void Character :: setJumpDownClips(){
     for(int i=1;i<=13;i++){
         frame_jump_down[i].x = (i-1)*224 ;
-        frame_jump_down[i].y = 0 ;
+        frame_jump_down[i].y = 5*112 ;
         frame_jump_down[i].w = 224 ; 
         frame_jump_down[i].h = 112;
 
@@ -403,7 +410,7 @@ void Character :: getHitFromFireball ( Fireball* gFireball ){
 void Character :: setDeadClips (){
     for(int i=1 ;i<=13;i++){
         frame_dead[i].x=(i-1) * 224;  
-        frame_dead[i].y= 0; 
+        frame_dead[i].y= 2*112; 
         frame_dead[i].w= 224 ;
         frame_dead[i].h= 112;
 
@@ -520,3 +527,78 @@ int Character ::  getNumsKilledEnemy (){
 void Character ::  increaseNumsKilledEnemy (){
     numsKilledEnemy ++; 
 }
+
+void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
+    //1 . run right 
+    for(int i=1;i<= frameNumbers ;i++){
+        i_frame_clips_run_right [i].x = (i-1)* 224  ;
+        i_frame_clips_run_right [i].y = (8+9)*112 ;
+        i_frame_clips_run_right [i].w = 224;
+        i_frame_clips_run_right [i].h = 112;
+    }
+
+    //2 . run left 
+    for(int i=1;i<= frameNumbers ;i++){
+        i_frame_clips_run_left [i].x = (i-1)* 224  ;
+        i_frame_clips_run_left [i].y = (7+9)*112 ;
+        i_frame_clips_run_left [i].w = 224;
+        i_frame_clips_run_left [i].h = 112;
+    }
+
+    //3.idle  
+    for(int i=1 ;i<=IDLE_CLIPS ;i++){
+        i_frame_idle [i].x=(i-1) * 224  ;
+        i_frame_idle [i].y=(3+9)*112;
+        i_frame_idle [i].w=224;
+        i_frame_idle [i].h=112; 
+    }
+
+    //4. attack 
+    for(int i=1 ;i <= 18;i++){
+        i_frame_attack[i].x=(i-1)* 224 ;
+        i_frame_attack[i].y=(0+9) * 112;
+        i_frame_attack[i].w=224;
+        i_frame_attack[i].h=112;
+    }
+
+    //5. attack2
+    for(int i=1 ;i<=28 ;i++){
+        i_frame_attack_2[i].x = (i-1)* 224;
+        i_frame_attack_2[i].y = (1+9)*112;
+        i_frame_attack_2[i].w = 224 ;
+        i_frame_attack_2[i].h = 112;
+    }
+
+    //6. jump up  
+    for(int i=1 ;i<=7 ;i++){
+        i_frame_jump_up[i].x=(i-1)*224 ;
+        i_frame_jump_up[i].y= (6+9)*112 ;
+        i_frame_jump_up[i].w = 224 ;
+        i_frame_jump_up[i].h = 112 ;
+    }
+
+    //7. jump down 
+    for(int i=1;i<=13;i++){
+        i_frame_jump_down[i].x = (i-1)*224 ;
+        i_frame_jump_down[i].y = (5+9)*112 ;
+        i_frame_jump_down[i].w = 224 ; 
+        i_frame_jump_down[i].h = 112;
+    }
+
+    //8. dead 
+    for(int i=1 ;i<=13;i++){
+        i_frame_dead[i].x=(i-1) * 224;  
+        i_frame_dead[i].y= (2+9)*112; 
+        i_frame_dead[i].w= 224 ;
+        i_frame_dead[i].h= 112;
+
+    }
+
+
+
+
+
+
+
+
+}   

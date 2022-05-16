@@ -11,6 +11,7 @@ class Character : public Dot {
     const int CHARACTER_VEL = 3 ;
 
     Character();
+    Character(SDL_Renderer * screen );
     ~Character();
 
     
@@ -19,7 +20,9 @@ class Character : public Dot {
 
     void handleInputAction(SDL_Event &e , SDL_Renderer *screen  ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
     
-    void setClipsRun (int frameNumbers); // set dimensions for clips texture run right 
+    void setClipsRunRight (int frameNumbers); // set dimensions for clips texture run right 
+
+    void setClipsRunLeft(int frameNumbers);
     
     void setIdleClip ();
 
@@ -64,6 +67,11 @@ class Character : public Dot {
     int getNumsKilledEnemy ();
     void increaseNumsKilledEnemy ();
 
+    void setAllClipsForInvisibleMode (int frameNumbers);
+
+
+
+
 
     private :
 
@@ -76,13 +84,23 @@ class Character : public Dot {
     int surfaceHeight ;
 
 
-    SDL_Rect frame_clips [20];
+    SDL_Rect frame_clips_run_right [20];
+    SDL_Rect frame_clips_run_left [20];
     SDL_Rect frame_idle  [20];
     SDL_Rect frame_attack [30];
     SDL_Rect frame_attack_2 [30];
     SDL_Rect frame_jump_up [9];
     SDL_Rect frame_jump_down [14];
     SDL_Rect frame_dead [14];
+
+    SDL_Rect i_frame_clips_run_right [20];
+    SDL_Rect i_frame_clips_run_left [20];
+    SDL_Rect i_frame_idle  [20];
+    SDL_Rect i_frame_attack [30];
+    SDL_Rect i_frame_attack_2 [30];
+    SDL_Rect i_frame_jump_up [9];
+    SDL_Rect i_frame_jump_down [14];
+    SDL_Rect i_frame_dead [14];
 
 
     SDL_Texture * mTexture ;
