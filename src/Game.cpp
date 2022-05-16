@@ -69,7 +69,6 @@ int  Game:: playGame(){
                     bossPlaySound =0 ;
                     gBoss.playSound();
                 }
-                
             }
             for (int i=0;i<NUMS_OF_ENEMY;i++){
                 gEnemy[i].autoMove();
@@ -110,7 +109,7 @@ int  Game:: playGame(){
                     }
                 }
         }
-        gTestCharacter.manageCharacter(gRenderer , &gFireball,&point , & recentPointVisible );
+        gTestCharacter.manageCharacter(gRenderer,&gFireball,&point,&recentPointVisible );
         SDL_RenderPresent(gRenderer); 
         pointManage();
         fpsManage();

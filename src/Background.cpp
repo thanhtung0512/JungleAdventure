@@ -5,7 +5,7 @@ bool Background:: loadlayer(SDL_Renderer * screen){
     bool success = 1;
     for (int i=1;i<=NUMS_OF_LAYERS; i++){
         std::string path = "img/bg/" + std::to_string(i) + ".png"; 
-        std::cout<<path<<std::endl;
+       // std::cout<<path<<std::endl;
         if ( bgl[i].loadFromFile(path , screen)==false ){
                 std::cout<<"Could not load image "<<SDL_GetError()<<std::endl;
                 success=0;   

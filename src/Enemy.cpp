@@ -120,7 +120,7 @@ void Enemy::frameProcessing (){
 
 void Enemy ::  getHitFromFireball(Fireball * gFireball){
     if( gFireball ->getXPos ()+ FIREBALL_WIDTH  >= mPosX && gFireball ->getXPos ()+FIREBALL_WIDTH <= mPosX + 80 && status == ALIVE && gFireball->getStatusDamage()==1  ){
-        std:: cout << " Fireball vs Enemy "<<std::endl;
+      //  std:: cout << " Fireball vs Enemy "<<std::endl;
         status = DEAD ;
         gFireball->setXPos(SCREEN_WIDTH);
         gFireball->setStatusDamage(0);
@@ -146,12 +146,12 @@ double Enemy :: getEnemyPosX (){
 
 void Enemy ::  collisionWithMainCharacter ( Character * gTestCharacter){
     if ( gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 80 && gTestCharacter->getStatus() != ATTACK && gTestCharacter->getStatus() != JUMP_DOWN  && gTestCharacter->getStatus()!= JUMP_UP  && status ==ALIVE  && gTestCharacter->getStatus()!=DEAD_CHARACTER  && gTestCharacter-> getIsVisible()== true ){
-        std::cout<<"Collision enemy "<<std::endl;
+  //      std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setCharacterPosX( gTestCharacter->getCharacterPosX()- 10);
         gTestCharacter->setStatus(DEAD_CHARACTER);
     }
     if(gTestCharacter->getStatus()==JUMP_DOWN  && gTestCharacter->getCharacterPosY()+112 >= mPosY && gTestCharacter->getCharacterPosX() + 160 >=  mPosX  && gTestCharacter->getCharacterPosX() + 190 <= mPosX + 120 && status == ALIVE && gTestCharacter-> getIsVisible() == true){
-        std::cout<<"Collision enemy "<<std::endl;
+//        std::cout<<"Collision enemy "<<std::endl;
         gTestCharacter->setStatus(DEAD_CHARACTER );
     }
 }
