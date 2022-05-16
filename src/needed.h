@@ -31,7 +31,7 @@
 #include "SkyFireball.h"
 #include "Background.h"
 #include "Game.h"
+static  Game gGame ; 
 
-static Game gGame ; 
 
 #endif

@@ -27,7 +27,6 @@ Character :: Character ( ){
 }
 
 Character :: Character(SDL_Renderer * screen ){
-   
     loadFromFile("img/mainChar/allBehaFinish.png",screen);
     numsKilledEnemy=0;
     isVisible = true ; 
@@ -97,7 +96,6 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
                     status = ATTACK_2 ;
                     
                 }
-                
                 frameAttack2 = 6 ;
                 break;
             
@@ -150,14 +148,11 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
                 status = RUN_RIGHT;
                 break;
             }
-
-
             case SDLK_UP:{
                 Mix_Pause(-1);
                 status = JUMP_DOWN ;
                 break; 
             }
-            
         }
     }
 
@@ -442,9 +437,9 @@ int Character :: getFrameAttack(){
          isVisible = true ;
      }
      if (!isVisible && (* point != * recentPointVisible + 30) ){
-         int cd =  * recentPointVisible + 30 - * point;
+         int countDownTime =  * recentPointVisible + 30 - * point;
          visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"You are invisible",screen,12);
-         countDount.showText(SCREEN_WIDTH - 40 , SCREEN_HEIGHT - 40 , &cd , screen ,12 );
+         countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,12 );
      }
      getHitFromFireball (gFireball);
      movingCharacter();
@@ -544,6 +539,5 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
         i_frame_dead[i].y= (2+9)*112; 
         i_frame_dead[i].w= 224 ;
         i_frame_dead[i].h= 112;
-
     }
 }   

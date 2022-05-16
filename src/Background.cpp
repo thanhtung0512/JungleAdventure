@@ -62,7 +62,9 @@ void Background :: manageBGWhenRunning(Boss * gBoss,SDL_Renderer * screen , int 
 }
 
 Background :: ~Background(){
-    
+    for (int i=0;i<13;i++){
+        bgl[i].free();
+    }
 }
 void Background ::  setSrolling(){
     int first = 0;

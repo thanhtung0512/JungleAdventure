@@ -91,6 +91,7 @@ int  Game:: playGame(){
             textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",gRenderer,12);
             int numsKilledEnemyy = gTestCharacter.getNumsKilledEnemy();
             numsKilledEnemy.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20, &numsKilledEnemyy , gRenderer,12);
+            gTestCharacter.manageCharacter(gRenderer,&gFireball,&point,&recentPointVisible );
         }
         else if  (gTestCharacter.getStatus() == DEAD_CHARACTER ){
                 pauseAllMusic(&gBoss, &gTestCharacter);
@@ -117,7 +118,7 @@ int  Game:: playGame(){
                     }
                 }
         }
-        gTestCharacter.manageCharacter(gRenderer,&gFireball,&point,&recentPointVisible );
+        
         SDL_RenderPresent(gRenderer); 
         pointManage();
         fpsManage();

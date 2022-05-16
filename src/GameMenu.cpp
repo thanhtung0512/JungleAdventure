@@ -10,7 +10,6 @@ gameMenu :: gameMenu(){
 gameMenu :: gameMenu(SDL_Renderer * screen ){
     setMenuFrame();
     confirmSound= NULL;
-    
     loadMenu(screen);
 }
 
