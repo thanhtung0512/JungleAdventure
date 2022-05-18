@@ -17,7 +17,6 @@ class Character : public Dot {
     
     void setCharacterPosX(int posX);
 
-
     void handleInputAction(SDL_Event &e , SDL_Renderer *screen  ,Mix_Chunk * sword ,Mix_Chunk * sword_2);
     
     void setClipsRunRight (int frameNumbers); // set dimensions for clips texture run right 
@@ -41,8 +40,6 @@ class Character : public Dot {
     void  setStatus (int status );
 
     void movingCharacter ();
-
-
     void showCharacter (SDL_Renderer * screen   ) ;
 
     int getCharacterPosX ();
@@ -105,6 +102,8 @@ class Character : public Dot {
 
     SDL_Texture * mTexture ;
     LTexture countDount ; 
+    LTexture pointText ; 
+    LTexture gScore ; 
     // SDL_Rect frame_clip_left  [50];
 
     

@@ -21,6 +21,7 @@
 
 #define LEFT_LIMIT_X 0 
 const double jumpVelocity  = 2.5; 
+const int fontSize = 12 ;
 
 Character :: Character ( ){
        
@@ -93,8 +94,7 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
                 if ( status != JUMP_DOWN  && status !=JUMP_UP && status !=DEAD_CHARACTER )
                 {
                     Mix_PlayChannel(-1,sword_2,-1);
-                    status = ATTACK_2 ;
-                    
+                    status = ATTACK_2 ;   
                 }
                 frameAttack2 = 6 ;
                 break;
@@ -308,7 +308,7 @@ void Character :: setAttackClip (){
 
 void Character :: setAttackClip2(){
     
-    for(int i=1 ;i<=28 ;i++){
+    for(int i=1 ;i<=FRAME_OF_ATTACK_2 ;i++){
         frame_attack_2[i].x = (i-1)* 224;
         frame_attack_2[i].y = 112;
         frame_attack_2[i].w = 224 ;
@@ -325,7 +325,7 @@ int  Character ::getCharacterPosY(){
 }
 
 void Character ::  setJumpUpClips (){
-    for(int i=1 ;i<=7 ;i++){
+    for(int i=1 ;i<=FRAME_JUMP_UP ;i++){
         frame_jump_up[i].x=(i-1)*224 ;
         frame_jump_up[i].y= 6*112 ;
         frame_jump_up[i].w = 224 ;
@@ -334,7 +334,7 @@ void Character ::  setJumpUpClips (){
 }
 
 void Character :: setJumpDownClips(){
-    for(int i=1;i<=13;i++){
+    for(int i=1;i<=FRAME_JUMP_DOWN;i++){
         frame_jump_down[i].x = (i-1)*224 ;
         frame_jump_down[i].y = 5*112 ;
         frame_jump_down[i].w = 224 ; 
@@ -354,7 +354,7 @@ void Character :: getHitFromFireball ( Fireball* gFireball ){
 }
 
 void Character :: setDeadClips (){
-    for(int i=1 ;i<=13;i++){
+    for(int i=1 ;i<=FRAME_DEAD;i++){
         frame_dead[i].x=(i-1) * 224;  
         frame_dead[i].y= 2*112; 
         frame_dead[i].w= 224 ;
@@ -429,17 +429,22 @@ int Character :: getFrameAttack(){
  }
 
  void Character ::  manageCharacter ( SDL_Renderer * screen ,Fireball *gFireball , int * point , int* recentPointVisible  ){
-     if ( (numsKilledEnemy % 10 == 0 || numsKilledEnemy % 10 == 1 )  && numsKilledEnemy !=0 &&  numsKilledEnemy !=1  ){
+     
+     if ( (numsKilledEnemy % 10 == 0 || numsKilledEnemy % 10 == 1 )  && numsKilledEnemy >= 2   ){
          isVisible = false   ;
          * recentPointVisible = *point; 
      }
      if ( * point == * recentPointVisible + 30  ){
          isVisible = true ;
      }
-     if (!isVisible && (* point != * recentPointVisible + 30) ){
-         int countDownTime =  * recentPointVisible + 30 - * point;
-         visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"You are invisible",screen,12);
-         countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,12 );
+     if ( !isVisible   ){
+        int countDownTime =  * recentPointVisible + 30 - * point;
+        visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Time invisible : ",screen,fontSize);
+        countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,fontSize );
+     }
+     else {
+        gScore.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40,point,screen,fontSize);
+        pointText.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Your score is ",screen,fontSize);
      }
      getHitFromFireball (gFireball);
      movingCharacter();
@@ -502,7 +507,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //4. attack 
-    for(int i=1 ;i <= 18;i++){
+    for(int i=1 ;i <= FRAME_OF_ATTACK;i++){
         i_frame_attack[i].x=(i-1)* 224 ;
         i_frame_attack[i].y=(0+9) * 112;
         i_frame_attack[i].w=224;
@@ -510,7 +515,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //5. attack2
-    for(int i=1 ;i<=28 ;i++){
+    for(int i=1 ;i<=FRAME_OF_ATTACK_2 ;i++){
         i_frame_attack_2[i].x = (i-1)* 224;
         i_frame_attack_2[i].y = (1+9)*112;
         i_frame_attack_2[i].w = 224 ;
@@ -518,7 +523,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //6. jump up  
-    for(int i=1 ;i<=7 ;i++){
+    for(int i=1 ;i<=FRAME_JUMP_UP ;i++){
         i_frame_jump_up[i].x=(i-1)*224 ;
         i_frame_jump_up[i].y= (6+9)*112 ;
         i_frame_jump_up[i].w = 224 ;
@@ -526,7 +531,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //7. jump down 
-    for(int i=1;i<=13;i++){
+    for(int i=1;i<=FRAME_JUMP_DOWN;i++){
         i_frame_jump_down[i].x = (i-1)*224 ;
         i_frame_jump_down[i].y = (5+9)*112 ;
         i_frame_jump_down[i].w = 224 ; 
@@ -534,7 +539,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //8. dead 
-    for(int i=1 ;i<=13;i++){
+    for(int i=1 ;i<=FRAME_DEAD;i++){
         i_frame_dead[i].x=(i-1) * 224;  
         i_frame_dead[i].y= (2+9)*112; 
         i_frame_dead[i].w= 224 ;

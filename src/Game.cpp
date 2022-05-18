@@ -11,10 +11,9 @@ int  Game:: playGame(){
         return -1;
     }
 
-    LTexture gScore;
+    LTexture gScore ;
     LTexture textNumsOfKilledEnemyIs; 
     LTexture numsKilledEnemy ;
-
     Character gTestCharacter(gRenderer);
     gTestCharacter.loadRunningSound();
     gameMenu gGameMenu (gRenderer);
@@ -22,23 +21,7 @@ int  Game:: playGame(){
     Boss gBoss(gRenderer);
     Phoenix gPhoenix(gRenderer);
     
-    
-
     int continueToPlay = 0 ;
-    
-   
-    for (int i=0;i<NUMS_OF_ENEMY;i++){
-        gEnemy[i].loadEnemy(gRenderer);
-    }
-
-
-    int first = ENEMY_COORDINATION_X ;
-    
-    for (int i=0;i<3;i++){
-        gEnemy[i].setCoordinate(first,ENEMY_COORDINATION_Y );
-        first += 800 ;
-    }
-
     bool stop = false;
     int recentPointVisible = 0 ;
 
@@ -85,7 +68,7 @@ int  Game:: playGame(){
                 gEnemy[i].handleHitFromCharacter(&gTestCharacter,gTestCharacter.getFrameAttack(),gTestCharacter.getFrameAttack2());   
             }
 
-            gScore.showText(0,0,&point,gRenderer,28);
+           
             gFireball.manageFireball(gRenderer);
             gPhoenix.renderPhoenix(gRenderer);
             textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",gRenderer,12);
@@ -293,6 +276,14 @@ bool Game:: loadAllNeeded (LTexture * splashScreen,Fireball* gFireball ){
     if ( loadFireball(gFireball)== false ) return false;
     if ( loadSkyFireball()== false ) return false ;
     loadSplashScreen( splashScreen);
+    for (int i=0;i<NUMS_OF_ENEMY;i++){
+        gEnemy[i].loadEnemy(gRenderer);
+    }
+
+    for (int i=0;i<3;i++){
+        gEnemy[i].setCoordinate(firstCoordinate,ENEMY_COORDINATION_Y );
+        firstCoordinate += 800 ;
+    }
     return true; 
 }
 
@@ -309,6 +300,7 @@ Game :: ~Game(){
 }
 
 Game:: Game (){
+    firstCoordinate  = ENEMY_COORDINATION_X ;
     originXFireball = 0 , originYFireball  = 0 ;
     countFireball = 0;
     NOW = SDL_GetPerformanceCounter();

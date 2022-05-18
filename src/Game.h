@@ -76,7 +76,7 @@
 #define SCORE_Y 466
 
 #define TO_RENDER_BOSS_POINT 100
-
+#define NUMS_OF_SKYFIREBALL 11 
 class Game {
 
     private :
@@ -85,13 +85,6 @@ class Game {
         SDL_Event gEvent;
         SDL_Texture *gCurrentImage = NULL;
         TTF_Font *gFont = NULL;
-      
-       
-
-        SDL_Rect spriteMainCharacter[9];
-        SDL_Rect spriteOfPhoenix [50];
-         
-        
         Mix_Music *music ;
         Mix_Music *phoenixWing;
         Mix_Chunk *sword ;
@@ -101,7 +94,7 @@ class Game {
         
         impTimer fpsTimer ; 
         Enemy gEnemy [NUMS_OF_ENEMY];
-        SkyFireball gSkyFireball[11];
+        SkyFireball gSkyFireball[NUMS_OF_SKYFIREBALL];
 
         int originXFireball , originYFireball  ;
         int countFireball ;
@@ -112,6 +105,7 @@ class Game {
         bool returnGame ;
         double  currentTime  ; 
         bool isUpdateScore  ;
+        int firstCoordinate;
         
         
         
