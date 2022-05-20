@@ -2,7 +2,7 @@
 ## Advanced Programming 's Project _ VNU University of Engineering and Technology 
 ### Nguyễn Vũ Thanh Tùng  _ K66-CQ-C-C 
 ####    1. Cách cài đặt : 
-- Tải folder source code và giải nén từ ***https://github.com/thanhtung0512/JungleAdventure_Game*** và Codeblock tại ***https://www.codeblocks.org/downloads/***. 
+- Tải ***[Codeblock](https://www.codeblocks.org/downloads/)*** và folder source code, giải nén từ ***[Github](https://github.com/thanhtung0512/JungleAdventure_Game)*** . 
 - Copy đường dẫn folder ./bin trong installation folder của Codeblock, add vào ***environment path***.
 - Chạy file ***Main.exe*** để chơi game.
 
