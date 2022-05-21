@@ -4,11 +4,12 @@
 
 
 #define NUMS_OF_LAYERS 12
-
+using namespace std;
 class Background  {
     private : 
     double scrollingOffset[14];
-    LTexture bgl[13];
+
+    LTexture * bgl = new LTexture [13];
 
 
     public :

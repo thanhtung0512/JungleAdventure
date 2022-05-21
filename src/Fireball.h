@@ -33,7 +33,7 @@ class Fireball : public Dot  {
 
     private :
 
-    SDL_Rect  spriteOfFireball [33];
+    SDL_Rect  spriteOfFireball [31];
     double  mPosX , mPosY ;
     int status ;
     double mVelX;

@@ -4,7 +4,6 @@
 gameMenu :: gameMenu(){
     setMenuFrame();
     confirmSound= NULL;
-
 }
 
 gameMenu :: gameMenu(SDL_Renderer * screen ){
@@ -45,34 +44,16 @@ bool gameMenu:: loadMenu ( SDL_Renderer * screen ){
     else return true ;
 }
 
-bool gameMenu::  isClickPlayButton(SDL_Event& gEvent ){
-    if(gEvent.button.button== SDL_BUTTON_LEFT ){
-        int mouseX = gEvent.button.x;
-        int mouseY = gEvent.button.y;
-        std::cout << mouseX <<" "<<mouseY <<std::endl;
-        if(  isOnPlayArea(mouseX , mouseY ) ){
+bool gameMenu::  isClickPlayButton( ){
+    int mouseX, mouseY ;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    if ( isOnPlayArea(mouseX,mouseY)){
+           
             return true ;
-        }
     }
-    return false;
+    return false ;
 }
 
-
-
- 
-
-bool gameMenu:: motionOnPlayButton(SDL_Event & gEvent){
-    if ( gEvent.type==SDL_MOUSEMOTION ){
-        int mouseX=gEvent.motion.x;
-        int mouseY =gEvent.motion.y;
-        if(  isOnPlayArea(mouseX,mouseY) ){
-            return true ;
-        }
-        return false ;
-        
-    }
-    return false;
-}
 
 bool gameMenu:: motionOnExitButton (SDL_Event & gEvent){
     if ( gEvent.type==SDL_MOUSEMOTION ){
@@ -91,7 +72,7 @@ bool gameMenu:: motionOnInfoButton (SDL_Event & gEvent){
     if ( gEvent.type == SDL_MOUSEMOTION ){
         int x=gEvent.motion.x;
         int y =gEvent.motion.y;
-        if(   isOnInfoArea(x,y)  ){
+        if( isOnInfoArea(x,y)  ){
             return true ;
         }
         return false ;
@@ -105,40 +86,42 @@ void gameMenu::  playConfirmSound (){
 
 
 void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chunk * button , TTF_Font * gFont,SDL_Window * gWindow,bool * isStop,bool * returnGame,int * continueToPlay ){
-    render(0,0,screen,NULL);
-    int isContinue=0, isExit =0 ,isInfo =0;
-    int isPlayMusic =1 ;
-    while( isContinue == 0   ){
+    int * isContinue = new int (0);
+    int * isExit = new int (0);
+    int * isInfo= new int (0);
+    int * isPlayMusic = new int (1);
+    
+    while( *isContinue == 0   ){
         while (SDL_PollEvent(&gEvent)){
             if (gEvent.type == SDL_MOUSEBUTTONDOWN){
-                if ( isClickPlayButton(gEvent)== true && isContinue ==0 && isInfo ==0  ){
+                if ( isClickPlayButton()== true && *isContinue ==0 && *isInfo ==0  ){
                     std :: cout << "PLAY "<<std::endl;
-                    isContinue =1 ;
+                    *isContinue =1 ;
                     *continueToPlay=1;
                 }
-                    if( isClickExitButton(gEvent)== true && isContinue == 0 && isInfo ==0   ){
+                    if( isClickExitButton()== true && *isContinue == 0 && *isInfo ==0   ){
                     *isStop = true ;
                     *returnGame = false ;
-                    isContinue =1 ;
+                    *isContinue =1 ;
                     * continueToPlay = 0 ;
                 }
-                if ( isClickInfoButton(gEvent)== true && isInfo == 0  ){
-                    isInfo = 1 ;
+                if ( isClickInfoButton()== true && *isInfo == 0  ){
+                    *isInfo = 1 ;
                 }   
-                if ( isClickReturnButton(gEvent)== true && isInfo == 1  ){
+                if ( isClickReturnButton()== true && *isInfo == 1  ){
                     render(0,0,screen,NULL);
-                    isInfo=0;
+                    *isInfo=0;
                 }
                 
             }
             else if ( gEvent.type == SDL_MOUSEMOTION){
-                if ( motionOnPlayButton(gEvent)== true ){
+                if ( isClickPlayButton()== true ){
                     renderPlay(screen);
                 }
-                else if (motionOnExitButton(gEvent)==true ){
+                else if (isClickExitButton()==true ){
                     renderExit(screen);
                 }
-                else if (motionOnInfoButton(gEvent)== true ){
+                else if (isClickInfoButton()== true ){
                     renderInfor(screen);
                 }
                 else {
@@ -149,17 +132,20 @@ void gameMenu:: menuControl (SDL_Renderer * screen , SDL_Event & gEvent, Mix_Chu
             else if (gEvent.type==SDL_QUIT){
                     *isStop = true ;
                     *returnGame = false ;
-                    isContinue = 1; 
+                    *isContinue = 1; 
             }
         }
-        if ( isInfo == 1 ){
+        if ( *isInfo == 1 ){
             render(0,0,screen,&currentMenu[6]);
         }
         SDL_RenderPresent(screen);
         SDL_Delay(10);
     }
     playConfirmSound();
-    
+    delete isContinue ;
+    delete isExit  ;
+    delete isInfo ; 
+    delete isPlayMusic ; 
 }
 
 
@@ -178,42 +164,32 @@ void gameMenu::  renderWhenDead(SDL_Renderer * screen ){
     render(0,0,screen,&currentMenu[5]);
 }
 
-bool gameMenu:: isClickExitButton(SDL_Event & gEvent){
-    if(gEvent.button.button== SDL_BUTTON_LEFT ){
-        int mouseX = gEvent.button.x;
-        int mouseY = gEvent.button.y;
-        if(  isOnExitArea(mouseX,mouseY) ){
-            Mix_PlayChannel(-1,confirmSound,0);
-            std::cout<<"Clicking on exit button "<<std::endl;
-            return true ;
-        }
+bool gameMenu:: isClickExitButton(){
+    int mouseX, mouseY ;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    if ( isOnExitArea(mouseX,mouseY)){
+        return true ;
     }
-    return false;
-
+    return false ;
 }
 
-bool gameMenu::  isClickInfoButton(SDL_Event & gEvent){
-    if(gEvent.button.button== SDL_BUTTON_LEFT ){
-            int mouseX = gEvent.button.x;
-            int mouseY = gEvent.button.y;
-            if(  isOnInfoArea(mouseX,mouseY) ){
-                std::cout<<"Clicking on info button "<<std::endl;
-                return true ;
-            }
-        }
-        return false;
+bool gameMenu::  isClickInfoButton(){
+    int mouseX, mouseY ;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    if ( isOnInfoArea (mouseX,mouseY) ){
+            return true ;
+    }
+    return false ;
 }
 
-bool gameMenu ::  isClickReturnButton ( SDL_Event & gEvent){
-    if(gEvent.button.button== SDL_BUTTON_LEFT ){
-            int mouseX = gEvent.button.x;
-            int mouseY = gEvent.button.y;
-            if(  isOnReturnArea(mouseX,mouseY) ){
-                std::cout<<"Clicking on return button "<<std::endl;
-                return true ;
-            }
-        }
-        return false;
+bool gameMenu ::  isClickReturnButton ( ){
+    int mouseX, mouseY ;
+    SDL_GetMouseState(&mouseX, &mouseY);
+    if ( isOnReturnArea(mouseX,mouseY)){
+            
+            return true ;
+    }
+    return false ;
 }
 
 void gameMenu ::  renderMainMenu ( SDL_Renderer * screen ){
@@ -233,7 +209,6 @@ bool gameMenu :: isOnExitArea  ( int mouseX, int mouseY )  {
 }
 bool gameMenu :: isOnInfoArea  ( int mouseX, int mouseY )  {
     return mouseX >=464 && mouseX <=542 && mouseY >= 602 && mouseY <= 666;
-
 }
 
 bool gameMenu::  isOnReturnArea ( int mouseX, int mouseY) {

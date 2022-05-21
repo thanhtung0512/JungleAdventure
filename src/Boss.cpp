@@ -6,7 +6,7 @@ Boss::Boss(){
     
 }
 
-Boss :: Boss(SDL_Renderer * screen ){
+Boss :: Boss(SDL_Renderer ** screen ){
     setClipsWalk();
     mPosX = 0 ;
     mPosY = 530  ;
@@ -73,8 +73,8 @@ void Boss::frameProcessing(){
 
 }
 
-bool Boss:: loadBoss(SDL_Renderer * screen ){
-    if (loadFromFile("img/Boss/Walk3.png",screen)== false ){
+bool Boss:: loadBoss(SDL_Renderer ** screen ){
+    if (loadFromFile("img/Boss/Walk3.png",*screen)== false ){
         std::cout<<"Could not load Boss "<<std::endl;
     }
     return true ;
@@ -82,6 +82,7 @@ bool Boss:: loadBoss(SDL_Renderer * screen ){
 }
 
 void Boss::  playSound (){
+    
     Mix_PlayMusic(bossAppeared,-1);
 }
 

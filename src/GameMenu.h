@@ -13,10 +13,10 @@ class gameMenu : public LTexture {
     
 
     bool  loadMenu ( SDL_Renderer * screen );
-    bool isClickPlayButton(SDL_Event& gEvent );
-    bool isClickExitButton(SDL_Event & gEvent);
-    bool isClickInfoButton(SDL_Event & gEvent);
-    bool isClickReturnButton ( SDL_Event & gEvent);
+    bool isClickPlayButton( );
+    bool isClickExitButton();
+    bool isClickInfoButton();
+    bool isClickReturnButton ( );
 
     bool motionOnPlayButton(SDL_Event & gEvent);
     bool motionOnExitButton (SDL_Event & gEvent);
@@ -48,7 +48,7 @@ class gameMenu : public LTexture {
 
     private :
     
-    SDL_Rect currentMenu[8];
+    SDL_Rect currentMenu[7];
     Mix_Chunk  * confirmSound ;
     Mix_Music  * track1 ;
   

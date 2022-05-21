@@ -1,23 +1,10 @@
 #include"needed.h"
 #include "Character.h"
 
-#define FRAME_OF_RUNNING 8 
-#define FRAME_OF_IDLE 8 
-#define FRAME_OF_ATTACK 18 
-#define FRAME_OF_ATTACK_2 28
-#define FRAME_JUMP_UP 7
-#define FRAME_JUMP_DOWN 13
-#define FRAME_DEAD 13
 
 #define MAX_HEIGHT_JUMP  DEFAULT_MAIN_CHARACTER_Y  - 135
 
-#define TIME_TO_NEXT_FRAME_RUNNING_CHARACTER 6 
-#define TIME_TO_NEXT_FRAME_IDLE 15 
-#define TIME_TO_NEXT_FRAME_ATTACK 4
-#define TIME_TO_NEXT_FRAME_ATTACK_2 3
-#define TIME_TO_NEXT_FRAME_JUMP_UP 7 
-#define TIME_TO_NEXT_FRAME_JUMP_DOWN 13 
-#define TIME_TO_NEXT_FRAME_DEAD 13
+
 
 #define LEFT_LIMIT_X 0 
 const double jumpVelocity  = 2.5; 
@@ -37,15 +24,15 @@ Character :: Character(SDL_Renderer * screen ){
     mVelCharY =0; 
     frame = 0 ; // current frame 
     status = RUN_RIGHT;
-    setClipsRunRight(MAIN_CHAR_FRAME_RUN);
-    setClipsRunLeft(MAIN_CHAR_FRAME_RUN);
+    setClipsRunRight(FRAME_OF_RUNNING);
+    setClipsRunLeft(FRAME_OF_RUNNING);
     setIdleClip();
     setAttackClip();
     setAttackClip2();
     setJumpUpClips();
     setJumpDownClips();
     setDeadClips();
-    setAllClipsForInvisibleMode(MAIN_CHAR_FRAME_RUN);
+    setAllClipsForInvisibleMode(FRAME_OF_RUNNING);
     frameMainRunning = 10;
     frameIdle = 15; 
     frameIdleLeft = 15;
@@ -58,6 +45,7 @@ Character :: ~Character (){
 }
 
 void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chunk * sword ,Mix_Chunk * sword_2  ){
+    
     if ( e.type == SDL_KEYDOWN  && e.key.repeat == 0 ){
         switch ( e.key.keysym.sym  ){
             case SDLK_RIGHT :{
@@ -282,12 +270,12 @@ void Character ::  setClipsRunLeft(int frameNumbers){
     }
 }
 
-int  Character :: getStatus (){
+Status   Character :: getStatus (){
     return status ;
 }
 
 void Character :: setIdleClip (){
-    for(int i=1 ;i<=IDLE_CLIPS ;i++){
+    for(int i=1 ;i<=FRAME_OF_IDLE ;i++){
         frame_idle [i].x=(i-1) * 224  ;
         frame_idle [i].y=3*112;
         frame_idle [i].w=224;
@@ -400,7 +388,7 @@ int Character :: getFrameAttack(){
     return frameAttack ;
 }
 
- void Character ::   setStatus (int statusS ){
+ void Character ::   setStatus (Status statusS ){
      status = statusS ;
  }
 
@@ -499,7 +487,7 @@ void Character ::  setAllClipsForInvisibleMode (int frameNumbers ){
     }
 
     //3.idle  
-    for(int i=1 ;i<=IDLE_CLIPS ;i++){
+    for(int i=1 ;i<=FRAME_OF_IDLE ;i++){
         i_frame_idle [i].x=(i-1) * 224  ;
         i_frame_idle [i].y=(3+9)*112;
         i_frame_idle [i].w=224;

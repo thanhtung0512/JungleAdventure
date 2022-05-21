@@ -3,7 +3,44 @@
 #include"needed.h"
 #include"Fireball.h"
 
- 
+enum Status {
+    RUN_RIGHT ,
+    RUN_LEFT ,
+    IDLE ,
+    IDLE_LEFT, 
+    ATTACK ,
+    ATTACK_2 ,
+    JUMP_UP ,
+    JUMP_DOWN ,  
+    ON_GROUND , 
+    DEAD_CHARACTER  , 
+    
+};
+
+enum AnimationFrames {
+    
+    FRAME_OF_RUNNING= 8 ,
+    FRAME_OF_IDLE= 8 ,
+    FRAME_OF_ATTACK =18 ,
+    FRAME_OF_ATTACK_2 =28,
+    FRAME_JUMP_UP =7,
+    FRAME_JUMP_DOWN= 13,
+    FRAME_DEAD =13,
+};
+
+enum TimeToNextFrame {
+    
+    TIME_TO_NEXT_FRAME_RUNNING_CHARACTER= 6 ,
+    TIME_TO_NEXT_FRAME_IDLE= 15 ,
+    TIME_TO_NEXT_FRAME_ATTACK= 4,
+    TIME_TO_NEXT_FRAME_ATTACK_2= 3,
+    TIME_TO_NEXT_FRAME_JUMP_UP =7 ,
+    TIME_TO_NEXT_FRAME_JUMP_DOWN =13 ,
+    TIME_TO_NEXT_FRAME_DEAD= 13,
+
+};
+
+
 class Character : public Dot {
     public :
     const int frameWidth = 224;
@@ -35,9 +72,9 @@ class Character : public Dot {
 
     void setDeadClips ();
     //bool loadFromFile ( std ::string path,SDL_Renderer * screen)
-    int  getStatus ();
+    Status   getStatus ();
 
-    void  setStatus (int status );
+    void  setStatus (Status status );
 
     void movingCharacter ();
     void showCharacter (SDL_Renderer * screen   ) ;
@@ -109,7 +146,7 @@ class Character : public Dot {
     
 
     int frame ; // current frame 
-    int status ;
+    Status status ;
 
     bool isVisible ; 
 

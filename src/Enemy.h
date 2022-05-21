@@ -5,21 +5,22 @@
 #include"needed.h"
 
 
-#define ALIVE 99
-#define DEAD 100 
+enum EnemyStatus {
+     ALIVE, 
+     DEAD,
+};
 
 class Enemy : public Character {
     
     public :
+
     const double enemyVelocity = 2; 
     Enemy();
-    Enemy(SDL_Renderer * screen );
     ~Enemy();
     void autoMove ( );
-    void loadEnemy(SDL_Renderer * screen );
+    void loadEnemy(SDL_Renderer ** screen );
     void handleHitFromCharacter (Character* gTestCharacter,  int  frameAttack , int frameAttack2  );
     void setFrameEnemiesRun ();
-    void setFrameDead ();
     void ShowEnemie (SDL_Renderer* screen );
     void frameProcessing ();
     void getHitFromFireball(Fireball * gFireball );
@@ -31,18 +32,14 @@ class Enemy : public Character {
     void setVel (double vel );
     void resetEnemy();
 
-    protected :
+    private:
 
     SDL_Rect frame_running [41];
-    SDL_Rect frame_dead [34];
-    int status ;
+    EnemyStatus status ;
     double mPosX  , mPosY; 
     double mVelX ;
     int frameEnemyDead , frameWalkingEnemie ; 
     int first ; 
-    
-
-
 } ;
 
 

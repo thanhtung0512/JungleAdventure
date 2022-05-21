@@ -7,7 +7,7 @@
 Phoenix :: Phoenix(){
 }
 
-Phoenix :: Phoenix(SDL_Renderer  * screen ){
+Phoenix :: Phoenix(SDL_Renderer  ** screen ){
     mPosX = 0 ;
     mPosY = DEFAULT_PHOENIX_Y; 
     setSpritePhoenix();
@@ -25,8 +25,8 @@ Phoenix :: ~Phoenix(){
     free();
 }
 
-bool Phoenix :: loadPhoenix (SDL_Renderer * screen ){
-     if ( loadFromFile("img/phoenix/phoenix.png",screen) == false ){
+bool Phoenix :: loadPhoenix (SDL_Renderer ** screen ){
+     if ( loadFromFile("img/phoenix/phoenix.png",*screen) == false ){
         std::cout<<"Could not load Phoenix "<<SDL_GetError()<<std::endl;
         return false;
     }

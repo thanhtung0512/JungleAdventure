@@ -8,10 +8,10 @@ class Phoenix : public Character
 {
     public :
     Phoenix();
-    Phoenix(SDL_Renderer  * screen );
+    Phoenix( SDL_Renderer  ** screen );
     ~Phoenix();
 
-    bool loadPhoenix (SDL_Renderer * screen );
+    bool loadPhoenix (SDL_Renderer ** screen );
     void setSpritePhoenix ();
     void renderPhoenix ( SDL_Renderer  * screen );
     int getPhoenixX ();

@@ -17,24 +17,11 @@ Enemy ::  Enemy (){
     frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
     frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
     setFrameEnemiesRun();
-    setFrameDead();
     mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
 }
 
-Enemy :: Enemy(SDL_Renderer * screen ){
-    first = 1; 
-    status = ALIVE;   
-    mVelX =0 ;
-    frameEnemyDead = 22 * TIME_TO_NEXT_FRAME_DEAD_ENEMY ;
-    frameWalkingEnemie =TIME_TO_NEXT_FRAME_WALKING  ;
-    setFrameEnemiesRun();
-    setFrameDead();
-    mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
-    mPosY = ENEMY_COORDINATION_Y;
-    loadEnemy(screen);
-    
-}
+
 
 void Enemy ::  resetEnemy(){
     first = 1; 
@@ -45,8 +32,8 @@ void Enemy ::  resetEnemy(){
     mPosX = SCREEN_WIDTH +   rand() % (SCREEN_WIDTH+1);
     mPosY = ENEMY_COORDINATION_Y;
 }
-void Enemy :: loadEnemy(SDL_Renderer * screen ){
-    loadFromFile("img/Enemie/moving_3.png",screen);
+void Enemy :: loadEnemy(SDL_Renderer ** screen ){
+    loadFromFile("img/Enemie/moving_3.png",*screen);
 }
 
 Enemy :: ~Enemy(){
@@ -76,16 +63,6 @@ void Enemy :: setFrameEnemiesRun (){
     }
 }
 
-
-void Enemy :: setFrameDead (){
-    for(int i=1 ;i<= 30;i++){
-        frame_dead[i].x=(i-1)* 80; 
-        frame_dead[i].y=  0;
-        frame_dead[i].w= 80;
-        frame_dead[i].h= 52;
-
-    }
-}
 
 void Enemy :: ShowEnemie (SDL_Renderer* screen ){
     SDL_Rect* currentFrame=NULL;
