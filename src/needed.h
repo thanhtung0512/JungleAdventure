@@ -24,6 +24,7 @@
 #include "SkyFireball.h"
 #include "Background.h"
 #include "Game.h"
+#include"Point.h"
 static  Game gGame ; 
 
 

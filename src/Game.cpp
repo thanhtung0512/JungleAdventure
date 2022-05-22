@@ -5,37 +5,35 @@
 int  Game:: playGame(){
     
     srand(time(0));
-    static SDL_Renderer * thisRenderer = NULL;
-    static SDL_Window *thisWindow = NULL;
+    static SDL_Renderer * mRenderer = NULL;
+    static SDL_Window *mWindow = NULL;
     static LTexture splashScreen ;
     static Fireball phoenixFireball ;
-    if( loadAllNeeded( &splashScreen , &phoenixFireball , &thisRenderer, &thisWindow )==false ){
+    if( loadAllNeeded( &splashScreen , &phoenixFireball , &mRenderer, &mWindow )==false ){
         return -1;
     }
-
+    static Point gamePoint(&mRenderer) ;
     static LTexture gameScore ;
     static LTexture textNumsOfKilledEnemyIs; 
     static LTexture numsKilledEnemy ;
-    static Character mainCharacter(thisRenderer);
+    static Character mainCharacter(mRenderer);
     mainCharacter.loadRunningSound();
-    static gameMenu myMenu ( thisRenderer  );
-    static Background  scrollingBackground (thisRenderer);
-    static Boss boss(&thisRenderer);
-    static Phoenix phoenix(&thisRenderer);
+    static gameMenu myMenu ( mRenderer  );
+    static Background  scrollingBackground (mRenderer);
+    static Boss boss(&mRenderer);
+    static Phoenix phoenix(&mRenderer);
     static int bossPlaySound  = 1 ;
     static int continueToPlay = 0 ;
     static bool stop = false;
     static int recentPointVisible = 0 ;
 
 
-    myMenu.menuControl(thisRenderer,gEvent,button,gFont,thisWindow,&stop,&returnGame, &continueToPlay );
-    if ( continueToPlay ) waitUntilKeyPressed(&splashScreen,&thisRenderer); 
+    myMenu.menuControl(mRenderer,gEvent,button,gFont,mWindow,&stop,&returnGame, &continueToPlay );
+    if ( continueToPlay ) waitUntilKeyPressed(&splashScreen,&mRenderer); 
     playBGMusic(&mainCharacter);
     
     while (stop == false  || returnGame == true ){  
         fpsTimer.start(); 
-        SDL_SetRenderDrawColor(thisRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
-        SDL_RenderClear(thisRenderer);
         if (mainCharacter.getStatus()!=DEAD_CHARACTER ){
             if ( returnGame ==  true ){
                 returnGame = false ; 
@@ -46,13 +44,15 @@ int  Game:: playGame(){
                     stop=true ;
                     returnGame= false ;
                 }
-                mainCharacter.handleInputAction(gEvent,thisRenderer,sword,sword_2 );
+                mainCharacter.handleInputAction(gEvent,mRenderer,sword,sword_2 );
             }
-            scrollingBackground.manageBGWhenRunning(&boss , thisRenderer, &point);
+            SDL_SetRenderDrawColor(mRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
+            SDL_RenderClear(mRenderer);
+            scrollingBackground.manageBGWhenRunning(&boss , mRenderer, &point);
         
             if( point >= TO_RENDER_BOSS_POINT ){
                 for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
-                    gSkyFireball[i].manageFireball(thisRenderer,&point,&mainCharacter);
+                    gSkyFireball[i].manageFireball(mRenderer,&point,&mainCharacter);
                 }
                 if ( bossPlaySound == 1 ){
                     bossPlaySound = 0 ;
@@ -63,49 +63,51 @@ int  Game:: playGame(){
             for (int i=0;i<NUMS_OF_ENEMY;i++)
             {
                 gEnemy[i].autoMove();
-                gEnemy[i].ShowEnemie(thisRenderer);
+                gEnemy[i].ShowEnemie(mRenderer);
                 gEnemy[i].checkCollision(&phoenix,&phoenixFireball,&mainCharacter);
                 gEnemy[i].handleHitFromCharacter(&mainCharacter,mainCharacter.getFrameAttack(),mainCharacter.getFrameAttack2());   
             }
 
-            phoenixFireball.manageFireball(thisRenderer);
-            phoenix.renderPhoenix(thisRenderer);
-            textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",thisRenderer,12);
+            phoenixFireball.manageFireball(mRenderer);
+            phoenix.renderPhoenix(mRenderer);
+            // textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",mRenderer,12);
             int numsKilledEnemyy = mainCharacter.getNumsKilledEnemy();
-            numsKilledEnemy.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20, &numsKilledEnemyy , thisRenderer,12);
-            mainCharacter.manageCharacter(thisRenderer,&phoenixFireball,&point,&recentPointVisible );
+            // numsKilledEnemy.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20, &numsKilledEnemyy , mRenderer,12);
+            
+            gamePoint.showPointInGame(&numsKilledEnemyy,&point,&recentPointVisible,&mRenderer,&mainCharacter);
+            mainCharacter.manageCharacter(mRenderer,&phoenixFireball,&point,&recentPointVisible );
         }
-        else if  (mainCharacter.getStatus() == DEAD_CHARACTER ){
-                pauseAllMusic(&boss, &mainCharacter);
-                isUpdateScore=false ;
-                myMenu.renderWhenDead(thisRenderer);
-                gameScore.showText(SCORE_X ,SCORE_Y ,&point,thisRenderer,28);
-                while( SDL_PollEvent (&gEvent) ){
-                    if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
-                        int x = gEvent.button.x;
-                        int y = gEvent.button.y;
-                        if ( isOnReturnGameArea(x,y) ){
-                            bossPlaySound=1; 
-                            returnGame =  true ;
-                            resetGame(&boss,&phoenix,&mainCharacter,&phoenixFireball);
-                        }
-                        else if ( isOnExitArea(x,y) ){
-                            stop= true ;
-                            returnGame= false;
-                        }
-                    }
-                     if  ( gEvent.type == SDL_QUIT ){
-                        stop= true ;
-                        returnGame = false;
-                    }
-                }
-        }
+        // else if  (mainCharacter.getStatus() == DEAD_CHARACTER ){
+        //         pauseAllMusic(&boss, &mainCharacter);
+        //         isUpdateScore=false ;
+        //         myMenu.renderWhenDead(mRenderer);
+        //         gamePoint.showText(SCORE_X ,SCORE_Y ,&point,mRenderer,28);
+        //         while( SDL_PollEvent (&gEvent) ){
+        //             if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
+        //                 int x = gEvent.button.x;
+        //                 int y = gEvent.button.y;
+        //                 if ( isOnReturnGameArea(x,y) ){
+        //                     bossPlaySound=1; 
+        //                     returnGame =  true ;
+        //                     resetGame(&boss,&phoenix,&mainCharacter,&phoenixFireball);
+        //                 }
+        //                 else if ( isOnExitArea(x,y) ){
+        //                     stop= true ;
+        //                     returnGame= false;
+        //                 }
+        //             }
+        //              if  ( gEvent.type == SDL_QUIT ){
+        //                 stop= true ;
+        //                 returnGame = false;
+        //             }
+        //         }
+        // }
         pointManage();
-        SDL_RenderPresent(thisRenderer); 
+        SDL_RenderPresent(mRenderer); 
         fpsManage();
     }
     
-    close(&thisRenderer,&thisWindow);
+    close(&mRenderer,&mWindow);
     return 0;
 
 }
@@ -118,7 +120,7 @@ void Game ::  fpsManage(){
             int * delayTime = new int ( * timeOneFrame - *realImpTime ); 
             if ( * delayTime > 0 )
             {
-                SDL_Delay( * delayTime);
+                SDL_Delay( * delayTime );
             }
             delete delayTime ; 
         }
@@ -148,9 +150,9 @@ void Game:: resetGame (Boss * boss,Phoenix * phoenix , Character * mainCharacter
 }
 
 
-bool Game:: loadSkyFireball( SDL_Renderer ** thisRenderer  ){
+bool Game:: loadSkyFireball( SDL_Renderer ** mRenderer  ){
     for (int i=1;i<=NUMS_OF_SKY_FIREBALL;i++){
-        if ( gSkyFireball[i].loadFireball(*thisRenderer)== false ){
+        if ( gSkyFireball[i].loadFireball(*mRenderer)== false ){
         std:: cout<<"Could not load sky fireball "<<SDL_GetError()<<std::endl;
         return false ;
         }
@@ -161,8 +163,8 @@ bool Game:: loadSkyFireball( SDL_Renderer ** thisRenderer  ){
 
 
 
-bool Game:: loadFireball(Fireball *phoenixFireball, SDL_Renderer ** thisRenderer ){
-    if ( phoenixFireball->loadFireball(*thisRenderer)== false ){
+bool Game:: loadFireball(Fireball *phoenixFireball, SDL_Renderer ** mRenderer ){
+    if ( phoenixFireball->loadFireball(*mRenderer)== false ){
         std::cout<<"Could not load Fireball "<<std::endl;
         return false ;
     }
@@ -170,7 +172,7 @@ bool Game:: loadFireball(Fireball *phoenixFireball, SDL_Renderer ** thisRenderer
 }
 
 
-bool Game:: initData(SDL_Renderer ** thisRenderer , SDL_Window ** thisWindow ){
+bool Game:: initData(SDL_Renderer ** mRenderer , SDL_Window ** mWindow ){
      bool success =1;
      if( TTF_Init() == -1 )
     {
@@ -188,13 +190,13 @@ bool Game:: initData(SDL_Renderer ** thisRenderer , SDL_Window ** thisWindow ){
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
-    *thisWindow = SDL_CreateWindow ("The Jungle Adventure _ Thanh Tung UET   ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
-    if (*thisWindow!=NULL){
-        *thisRenderer=SDL_CreateRenderer ( *thisWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-        if ( *thisRenderer == NULL){
+    *mWindow = SDL_CreateWindow ("The Jungle Adventure _ Thanh Tung UET   ", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT,SDL_WINDOW_SHOWN);
+    if (*mWindow!=NULL){
+        *mRenderer=SDL_CreateRenderer ( *mWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+        if ( *mRenderer == NULL){
             success=0;
         }else {
-            SDL_SetRenderDrawColor(*thisRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
+            SDL_SetRenderDrawColor(*mRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
             int imgFlags = IMG_INIT_PNG;
             if ( !(IMG_Init(imgFlags) && imgFlags)){
                 success =0;
@@ -248,22 +250,22 @@ bool Game:: loadAudio(){
 
 
 
-void Game:: close (SDL_Renderer ** thisRenderer,SDL_Window ** thisWindow){
-    SDL_DestroyRenderer(*thisRenderer);
+void Game:: close (SDL_Renderer ** mRenderer,SDL_Window ** mWindow){
+    SDL_DestroyRenderer(*mRenderer);
     TTF_CloseFont ( gFont );
     gFont = NULL;
-    *thisRenderer=NULL;
-    SDL_DestroyWindow(*thisWindow);
-    *thisWindow=NULL;
+    *mRenderer=NULL;
+    SDL_DestroyWindow(*mWindow);
+    *mWindow=NULL;
     TTF_Quit();
     SDL_Quit();
     IMG_Quit();
 }
 
 
-bool Game:: loadAllNeeded (LTexture * splashScreen,Fireball* phoenixFireball, SDL_Renderer ** thisRenderer,SDL_Window ** thisWindow ){
+bool Game:: loadAllNeeded (LTexture * splashScreen,Fireball* phoenixFireball, SDL_Renderer ** mRenderer,SDL_Window ** mWindow ){
     
-    if(initData(thisRenderer, thisWindow)==false){
+    if(initData(mRenderer, mWindow)==false){
        return false;
     }
 
@@ -272,11 +274,11 @@ bool Game:: loadAllNeeded (LTexture * splashScreen,Fireball* phoenixFireball, SD
         return false ;
     }
     
-    if ( loadFireball(phoenixFireball,thisRenderer)== false ) return false;
-    if ( loadSkyFireball(thisRenderer)== false ) return false ;
-    loadSplashScreen( splashScreen,thisRenderer);
+    if ( loadFireball(phoenixFireball,mRenderer)== false ) return false;
+    if ( loadSkyFireball(mRenderer)== false ) return false ;
+    loadSplashScreen( splashScreen,mRenderer);
     for (int i=0;i<NUMS_OF_ENEMY;i++){
-        gEnemy[i].loadEnemy(thisRenderer);
+        gEnemy[i].loadEnemy(mRenderer);
     }
 
     for (int i=0;i<3;i++){
@@ -347,18 +349,18 @@ void Game ::  pauseAllMusic (Boss * boss, Character * mainCharacter  ){
     mainCharacter->pauseRunningSound();
 }
 
-void Game ::  waitUntilKeyPressed (LTexture  *  splashScreen, SDL_Renderer ** thisRenderer){
+void Game ::  waitUntilKeyPressed (LTexture  *  splashScreen, SDL_Renderer ** mRenderer){
     SDL_Event e;
     while (true) {
         if ( SDL_WaitEvent(&e) != 0 &&
              (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
             return;
-        splashScreen->render(0,0,*thisRenderer,NULL);
-        SDL_RenderPresent(*thisRenderer);
+        splashScreen->render(0,0,*mRenderer,NULL);
+        SDL_RenderPresent(*mRenderer);
         SDL_Delay(100);
     }
 }
 
-void Game ::  loadSplashScreen (LTexture * splashScreen, SDL_Renderer ** thisRenderer){
-    splashScreen->loadFromFile("img/bg/waitKey.jpg",*thisRenderer);
+void Game ::  loadSplashScreen (LTexture * splashScreen, SDL_Renderer ** mRenderer){
+    splashScreen->loadFromFile("img/bg/waitKey.jpg",*mRenderer);
 }

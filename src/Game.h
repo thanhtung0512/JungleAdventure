@@ -26,7 +26,7 @@
 #define FIREBALL_WIDTH 68 
 #define NUMBER_OF_FIREBALLS 100
 
-#define FRAME_PER_SECOND 90
+#define FRAME_PER_SECOND 80
 
 #define MAX_HEIGHT_JUMP DEFAULT_MAIN_CHARACTER_Y  - 135
 
@@ -76,17 +76,17 @@ class Game {
     public : 
         Game();
         ~Game();
-        void loadSplashScreen (LTexture * splashScreen, SDL_Renderer ** thisRenderer);
-        void waitUntilKeyPressed (LTexture * splashScreen, SDL_Renderer ** thisRenderer);
+        void loadSplashScreen (LTexture * , SDL_Renderer ** );
+        void waitUntilKeyPressed (LTexture * , SDL_Renderer ** );
         int  playGame();
         void resetGame (Boss * boss,Phoenix * phoenix , Character * mainCharacter , Fireball * phoenixFireball) ;
-        bool loadSkyFireball( SDL_Renderer ** thisRenderer);
-        bool loadFireball(Fireball*phoenixFireball , SDL_Renderer ** thisRenderer);
+        bool loadSkyFireball( SDL_Renderer ** mRenderer);
+        bool loadFireball(Fireball*phoenixFireball , SDL_Renderer ** mRenderer);
         bool loadPhoenix( SDL_Renderer ** screen);
-        bool initData(SDL_Renderer ** thisRenderer , SDL_Window ** thisWindow);
+        bool initData(SDL_Renderer ** mRenderer , SDL_Window ** mWindow);
         bool loadAudio();
-        void close ( SDL_Renderer ** thisRenderer,SDL_Window ** thisWindow);
-        bool loadAllNeeded (LTexture * splashScreen , Fireball *  phoenixFireball,SDL_Renderer ** thisRenderer,SDL_Window ** thisWindow);
+        void close ( SDL_Renderer ** mRenderer,SDL_Window ** mWindow);
+        bool loadAllNeeded (LTexture * splashScreen , Fireball *  phoenixFireball,SDL_Renderer ** mRenderer,SDL_Window ** mWindow);
         void playBGMusic (Character  * mainCharacter );
         void pointManage();
         void fpsManage();

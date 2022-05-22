@@ -50,7 +50,6 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
         switch ( e.key.keysym.sym  ){
             case SDLK_RIGHT :{
                 if ( status != JUMP_DOWN && status != JUMP_UP && status !=DEAD_CHARACTER  ){
-                  
                     status = RUN_RIGHT ;
                 }
                 mVelCharX  += CHARACTER_VEL ;
@@ -60,7 +59,6 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
             case SDLK_LEFT :{
                 if (status != JUMP_DOWN && status != JUMP_UP && status !=DEAD_CHARACTER )
                 {
-                    
                     status =RUN_LEFT ;
                 }
                 mVelCharX -=CHARACTER_VEL;
@@ -129,7 +127,6 @@ void Character :: handleInputAction(SDL_Event &e , SDL_Renderer *screen,Mix_Chun
             }
 
             case SDLK_y :{
-                
                 Mix_HaltChannel(-1);
                 playRunningSound();
                 if (status != JUMP_DOWN && status != JUMP_UP  )
@@ -176,7 +173,6 @@ void Character :: showCharacter (SDL_Renderer * screen  ){
 
    
     SDL_Rect * currentFrame;
-
     if ( isVisible ){
         if ( status == IDLE || status == IDLE_LEFT){
             frameIdle ++;
@@ -270,7 +266,7 @@ void Character ::  setClipsRunLeft(int frameNumbers){
     }
 }
 
-Status   Character :: getStatus (){
+Status Character :: getStatus (){
     return status ;
 }
 
@@ -308,7 +304,7 @@ int Character :: getCharacterPosX (){
     return mPosX ;
 }
 
-int  Character ::getCharacterPosY(){
+int Character ::getCharacterPosY(){
     return mPosY;
 }
 
@@ -388,9 +384,9 @@ int Character :: getFrameAttack(){
     return frameAttack ;
 }
 
- void Character ::   setStatus (Status statusS ){
+void Character ::   setStatus (Status statusS ){
      status = statusS ;
- }
+}
 
  void Character ::  setCharacterPosX(int posX){
      mPosX = posX ;
@@ -425,14 +421,14 @@ int Character :: getFrameAttack(){
      if ( * point == * recentPointVisible + 30  ){
          isVisible = true ;
      }
-     if ( !isVisible   ){
-        int countDownTime =  * recentPointVisible + 30 - * point;
-        visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Time invisible : ",screen,fontSize);
-        countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,fontSize );
+     if ( !isVisible ){
+        
+        // visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Time invisible : ",screen,fontSize);
+        // countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,fontSize );
      }
      else {
-        gScore.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40,point,screen,fontSize);
-        pointText.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Your score is ",screen,fontSize);
+        // gScore.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40,point,screen,fontSize);
+        // pointText.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Your score is ",screen,fontSize);
      }
      getHitFromFireball (gFireball);
      movingCharacter();
