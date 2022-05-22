@@ -63,8 +63,4 @@
 - Các điều tâm đắc rút ra được sau khi hoàn thiện chương trình :
     - Chỉ tham khảo trên mạng code phần load đồ hoạ ( cách sử dụng SDL2.0) còn lại về logic game đều tự tay code toàn bộ -> Nâng cao kỹ năng lập trình .
     - Biết sử dụng Photoshop để chỉnh sửa đồ hoạ theo ý mình .
-    - Cuối cùng là có được sản phẩm để có thể chơi cùng bạn bè . 
-
-
-
-
+    - Có được sản phẩm để có thể chơi cùng bạn bè . 
