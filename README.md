@@ -6,8 +6,14 @@
 - Copy đường dẫn folder ./bin trong installation folder của Codeblock, add vào ***environment path***.
 - Chạy file ***Main.exe*** để chơi game.
 
+
+![GameMenu](img\mainmenu\o_menu_exit_button.jpg) 
+![Splash](img\bg\waitKey.jpg "Splash")
+![SampleIngame](img\bg\sample.png "SampleIngame") 
+ 
+
 #### 2. Mô tả chung về trò chơi 
-- Tựa game side-scrolling 2D đơn giản lấy bối cảnh trong 1 khu rừng, bạn sẽ hoá thân thành một anh hùng đang bị 1 con phượng hoàng lửa truy đuổi phía sau và liên tục phun lửa vào bạn, và trước mặt bạn là vô vàn những con quái vật sẵn sàng lấy mạng của bạn, với hai chiêu chém kiếm bạn có thể tiêu diệt bất cứ con quái nào trên đường đi của bạn và hãy nhớ né quả cầu lửa từ con phượng hoàng đang đuổi theo bạn . Với mỗi lần bạn tiêu diệt được 10 con quái vật thì bạn sẽ có khả năng tàng hình trong 30 giây. Mục tiêu của trò chơi là hãy tiêu diệt nhiều quái và đạt điểm số cao nhất có thể.
+- Tựa game side-scrolling 2D đơn giản lấy bối cảnh trong 1 khu rừng, bạn sẽ hoá thân thành một anh hùng đang bị 1 con phượng hoàng lửa truy đuổi phía sau và liên tục phun lửa vào bạn, và trước mặt bạn là vô vàn những con quái vật sẵn sàng lấy mạng của bạn, nhiệm vụ của bạn là hãy né những quả cầu lửa, tiêu diệt những con quái trên đường và sống sót càng lâu càng tốt . Với mỗi lần bạn tiêu diệt được 10 con quái vật thì bạn sẽ có khả năng tàng hình trong 30 giây. 
 
 #### 3. Các chức năng đã cài đặt 
 - Menu 
@@ -31,20 +37,19 @@
     
 #### 4. Các kỹ thuật lập trình sử dụng trong trò chơi 
 - Sử dụng thư viện hỗ trợ SDL 2.0 để vẽ đồ hoạ . 
-- Kiến thức cơ  bản về OOP ( Lập trình hướng đối tượng ) chia trò chơi thành các đối tượng có những thuộc tính và phương thức, có sử dụng tính kế thừa các class.
+- Kiến thức cơ  bản về OOP ( Lập trình hướng đối tượng ) chia trò chơi thành các đối tượng có những thuộc tính và phương thức.
 - Sử dụng mảng để lưu các con quái vật
 - Đối với 2 chiêu thức chém kiếm của nhân vật chính, phải xét những frame của hành động chém kiếm và tính toán sao cho chém trúng thì quái phải chết . 
 - Parallax background thì phải cài đặt vận tốc chạy đối với từng layer... 
 - Sử dụng con trỏ làm tham số cho hàm để tránh việc copy giá trị vào hàm -> tránh sử dụng thêm bộ nhớ, giúp game đỡ giật lag.
 
 #### 5.Kết luận, hướng phát triển và các điều tâm đắc rút ra được sau khi hoàn thiện chương trình 
-- Kết luận: Game vẫn còn hơi đơn giản và có thể thiếu những chức năng như điều chỉnh âm lượng của âm thanh, thiếu những vật phẩm để hỗ trợ nhân vật ,... và khi chạy lâu thì sẽ bị lag và ăn nhiều bộ nhớ máy tính, code vẫn còn xấu, chưa thể clean được một cách tối ưu do từ ban đầu không thiết kế khung xương trước . 
+- Kết luận: Game vẫn còn hơi đơn giản và thiếu những chức năng như điều chỉnh âm lượng của âm thanh, thiếu những vật phẩm để hỗ trợ nhân vật ,... và khi chạy game vẫn chiếm khá nhiều bộ nhớ, code vẫn còn xấu, chưa thể clean được một cách tối ưu do từ ban đầu không thiết kế khung xương trước . 
 
-- Hướng phát triển : Có thể thêm nhiều chức năng mới, ví dụ như phát nhạc trong quá trình chơi, chọn bài hát , chọn nhân vật để chơi và thêm nhiều những item hoặc level để tăng độ khó cho game . Tuy nhiên trước hết phải giải quyết được vấn đề giật lag ( vẫn chưa có hướng giải quyết ) . 
+- Hướng phát triển : Có thể thêm nhiều chức năng mới, ví dụ như phát nhạc trong quá trình chơi, chọn bài hát , chọn nhân vật để chơi và thêm nhiều những item hoặc level để tăng độ khó cho game . Tuy nhiên trước hết phải tối ưu hoá game tốt nhất có thể . 
 
 - Các điều tâm đắc rút ra được sau khi hoàn thiện chương trình :
     - Chỉ tham khảo trên mạng code phần load đồ hoạ ( cách sử dụng SDL2.0) còn lại về logic game đều tự tay code toàn bộ -> Nâng cao kỹ năng lập trình .
-    
     - Biết sử dụng Photoshop để chỉnh sửa đồ hoạ theo ý mình .
     - Cuối cùng là có được sản phẩm để có thể chơi cùng bạn bè . 
 
