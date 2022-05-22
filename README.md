@@ -6,10 +6,22 @@
 - Copy đường dẫn folder ./bin trong installation folder của Codeblock, add vào ***environment path***.
 - Chạy file ***Main.exe*** để chơi game.
 
+<p align="center">
+<img src="https://i.imgur.com/7lngNhs.jpg">
+</p>
 
-![GameMenu](https://ibb.co/12GPk7j ) 
-![Splash]( https://ibb.co/9ymHC5w )
-![SampleIngame](https://ibb.co/khQJPLd ) 
+<p align="center">
+<img src="https://i.imgur.com/UTfw6iS.jpg">
+</p>
+
+
+<p align="center">
+<img src="https://i.imgur.com/hIChH7T.png">
+</p>
+
+
+
+
  
 
 #### 2. Mô tả chung về trò chơi 
