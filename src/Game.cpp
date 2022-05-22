@@ -189,7 +189,7 @@ bool Game:: initData(SDL_Renderer ** mRenderer , SDL_Window ** mWindow ){
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1");
     }
     if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
-    {
+    {`
         printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
         success = false;
     }
@@ -197,7 +197,7 @@ bool Game:: initData(SDL_Renderer ** mRenderer , SDL_Window ** mWindow ){
     if (*mWindow!=NULL){
         *mRenderer=SDL_CreateRenderer ( *mWindow,-1,SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
         if ( *mRenderer == NULL){
-            success=0;
+            success=0; 
         }else {
             SDL_SetRenderDrawColor(*mRenderer,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color,Render_Draw_Color);
             int imgFlags = IMG_INIT_PNG;
