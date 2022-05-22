@@ -7,9 +7,9 @@
 - Chạy file ***Main.exe*** để chơi game.
 
 
-![GameMenu](img\mainmenu\o_menu_exit_button.jpg "GameMenu") 
-![Splash](img\bg\waitKey.jpg "Splash")
-![SampleIngame](img\bg\sample.png "SampleIngame") 
+![GameMenu](https://ibb.co/12GPk7j ) 
+![Splash]( https://ibb.co/9ymHC5w )
+![SampleIngame](https://ibb.co/khQJPLd ) 
  
 
 #### 2. Mô tả chung về trò chơi 
