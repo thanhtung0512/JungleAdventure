@@ -7,7 +7,7 @@
 - Chạy file ***Main.exe*** để chơi game.
 
 
-![GameMenu](img\mainmenu\o_menu_exit_button.jpg) 
+![GameMenu](img\mainmenu\o_menu_exit_button.jpg "GameMenu") 
 ![Splash](img\bg\waitKey.jpg "Splash")
 ![SampleIngame](img\bg\sample.png "SampleIngame") 
  
