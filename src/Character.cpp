@@ -421,15 +421,6 @@ void Character ::   setStatus (Status statusS ){
      if ( * point == * recentPointVisible + 30  ){
          isVisible = true ;
      }
-     if ( !isVisible ){
-        
-        // visibleNoti.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Time invisible : ",screen,fontSize);
-        // countDount.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40 , &countDownTime, screen ,fontSize );
-     }
-     else {
-        // gScore.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 40,point,screen,fontSize);
-        // pointText.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 40  ,"Your score is ",screen,fontSize);
-     }
      getHitFromFireball (gFireball);
      movingCharacter();
      showCharacter(screen);

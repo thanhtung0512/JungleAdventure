@@ -50,13 +50,18 @@ void Point :: showPointInGame(int * numsKilledEnemy ,int * point , int * recentP
 
 }
 
-// SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20
-void Point :: showPointGameOver ( int * point ,SDL_Renderer ** screen){
 
+void Point :: showPointGameOver ( int * point ,SDL_Renderer ** screen){
+    string s= to_string ( *point);
+    short f= SCORE_X;
+    for (auto x : s ){
+        render(f,SCORE_Y,*screen,&eachNumOver[x-'0']);
+        f+= 20;
+    }
 }
 
 void Point :: loadPoint(SDL_Renderer ** screen){
-    loadFromFile ( "img/point/point1.png",*screen);
+    loadFromFile ( "img/point/pointAll.png",*screen);
 }
 
 void Point :: setFrame(){
@@ -65,5 +70,11 @@ void Point :: setFrame(){
         eachNum[i].y = 0 ; 
         eachNum[i].w = 39;
         eachNum[i].h = 22 ; 
+    }
+    for (int i=0;i<=9;i++){
+        eachNumOver[i].x=i*39;
+        eachNumOver[i].y=22;
+        eachNumOver[i].w=39;
+        eachNumOver[i].h=28;
     }
 }

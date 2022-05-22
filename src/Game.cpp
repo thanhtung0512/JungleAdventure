@@ -5,27 +5,27 @@
 int  Game:: playGame(){
     
     srand(time(0));
-    static SDL_Renderer * mRenderer = NULL;
-    static SDL_Window *mWindow = NULL;
-    static LTexture splashScreen ;
-    static Fireball phoenixFireball ;
+     SDL_Renderer * mRenderer = NULL;
+     SDL_Window *mWindow = NULL;
+     LTexture splashScreen ;
+     Fireball phoenixFireball ;
     if( loadAllNeeded( &splashScreen , &phoenixFireball , &mRenderer, &mWindow )==false ){
         return -1;
     }
-    static Point gamePoint(&mRenderer) ;
-    static LTexture gameScore ;
-    static LTexture textNumsOfKilledEnemyIs; 
-    static LTexture numsKilledEnemy ;
-    static Character mainCharacter(mRenderer);
+     Point gamePoint(&mRenderer) ;
+     LTexture gameScore ;
+     LTexture textNumsOfKilledEnemyIs; 
+     LTexture numsKilledEnemy ;
+     Character mainCharacter(mRenderer);
     mainCharacter.loadRunningSound();
-    static gameMenu myMenu ( mRenderer  );
-    static Background  scrollingBackground (mRenderer);
-    static Boss boss(&mRenderer);
-    static Phoenix phoenix(&mRenderer);
-    static int bossPlaySound  = 1 ;
-    static int continueToPlay = 0 ;
-    static bool stop = false;
-    static int recentPointVisible = 0 ;
+     gameMenu myMenu ( mRenderer  );
+     Background  scrollingBackground (mRenderer);
+     Boss boss(&mRenderer);
+     Phoenix phoenix(&mRenderer);
+     int bossPlaySound  = 1 ;
+     int continueToPlay = 0 ;
+     bool stop = false;
+     int recentPointVisible = 0 ;
 
 
     myMenu.menuControl(mRenderer,gEvent,button,gFont,mWindow,&stop,&returnGame, &continueToPlay );
@@ -70,38 +70,37 @@ int  Game:: playGame(){
 
             phoenixFireball.manageFireball(mRenderer);
             phoenix.renderPhoenix(mRenderer);
-            // textNumsOfKilledEnemyIs.showTextt(SCREEN_WIDTH - 300 , SCREEN_HEIGHT - 20  ,"NUMS OF KILLED ENEMY",mRenderer,12);
             int numsKilledEnemyy = mainCharacter.getNumsKilledEnemy();
-            // numsKilledEnemy.showText(SCREEN_WIDTH - 50 , SCREEN_HEIGHT - 20, &numsKilledEnemyy , mRenderer,12);
-            
             gamePoint.showPointInGame(&numsKilledEnemyy,&point,&recentPointVisible,&mRenderer,&mainCharacter);
             mainCharacter.manageCharacter(mRenderer,&phoenixFireball,&point,&recentPointVisible );
         }
-        // else if  (mainCharacter.getStatus() == DEAD_CHARACTER ){
-        //         pauseAllMusic(&boss, &mainCharacter);
-        //         isUpdateScore=false ;
-        //         myMenu.renderWhenDead(mRenderer);
-        //         gamePoint.showText(SCORE_X ,SCORE_Y ,&point,mRenderer,28);
-        //         while( SDL_PollEvent (&gEvent) ){
-        //             if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
-        //                 int x = gEvent.button.x;
-        //                 int y = gEvent.button.y;
-        //                 if ( isOnReturnGameArea(x,y) ){
-        //                     bossPlaySound=1; 
-        //                     returnGame =  true ;
-        //                     resetGame(&boss,&phoenix,&mainCharacter,&phoenixFireball);
-        //                 }
-        //                 else if ( isOnExitArea(x,y) ){
-        //                     stop= true ;
-        //                     returnGame= false;
-        //                 }
-        //             }
-        //              if  ( gEvent.type == SDL_QUIT ){
-        //                 stop= true ;
-        //                 returnGame = false;
-        //             }
-        //         }
-        // }
+        else if  (mainCharacter.getStatus() == DEAD_CHARACTER ){
+
+                pauseAllMusic(&boss, &mainCharacter);
+                isUpdateScore=false ;
+                myMenu.renderWhenDead(mRenderer);
+                gamePoint.showPointGameOver(&point,&mRenderer);
+                while( SDL_PollEvent (&gEvent) ){
+                    if ( gEvent.type == SDL_MOUSEBUTTONDOWN ){
+                        int x = gEvent.button.x;
+                        int y = gEvent.button.y;
+                        if ( isOnReturnGameArea(x,y) ){
+                            bossPlaySound=1; 
+                            returnGame =  true ;
+                            resetGame(&boss,&phoenix,&mainCharacter,&phoenixFireball);
+                        }
+                        else if ( isOnExitArea(x,y) ){
+                            stop= true ;
+                            returnGame= false;
+                        }
+                    }
+                     if  ( gEvent.type == SDL_QUIT ){
+                        stop= true ;
+                        returnGame = false;
+                    }
+                }
+        
+        }
         pointManage();
         SDL_RenderPresent(mRenderer); 
         fpsManage();

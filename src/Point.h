@@ -12,6 +12,7 @@ class Point : public LTexture {
         void setFrame();
     private :
     SDL_Rect eachNum [10];
+    SDL_Rect eachNumOver [10];
     LTexture textNumsKilledEnemy ;
     LTexture textYourPointIs;  
     LTexture textYourAreInvisible ;
