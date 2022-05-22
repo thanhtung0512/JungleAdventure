@@ -5,6 +5,7 @@
 - Tải ***[Codeblock](https://www.codeblocks.org/downloads/)*** và folder source code, giải nén từ ***[Github](https://github.com/thanhtung0512/JungleAdventure_Game)*** . 
 - Copy đường dẫn folder ./bin trong installation folder của Codeblock, add vào ***environment path***.
 - Chạy file ***Main.exe*** để chơi game.
+-  Video Demo: ***[Youtube](https://www.youtube.com/watch?v=QXwKe1Oo67I)***
 
 <p align="center">
 <img src="https://i.imgur.com/7lngNhs.jpg">
@@ -18,7 +19,6 @@
 <p align="center">
 <img src="https://i.imgur.com/hIChH7T.png">
 </p>
-
 
 
 
