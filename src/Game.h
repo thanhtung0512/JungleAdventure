@@ -93,6 +93,7 @@ class Game {
         bool isOnReturnGameArea ( const int& x , const int& y );
         bool isOnExitArea( const int &x, const int & y) ;
         void pauseAllMusic (Boss * boss , Character * mainCharacter  )  ;
+        void manageEnemy (Phoenix * phoenix , Fireball * phoenixFireball , Character * mainCharacter, SDL_Renderer ** mRenderer );
 
 };
 

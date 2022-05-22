@@ -56,7 +56,7 @@ void Point :: showPointGameOver ( int * point ,SDL_Renderer ** screen){
     short f= SCORE_X;
     for (auto x : s ){
         render(f,SCORE_Y,*screen,&eachNumOver[x-'0']);
-        f+= 20;
+        f+= 30;
     }
 }
 

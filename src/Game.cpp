@@ -60,13 +60,7 @@ int  Game:: playGame(){
                 }
             }
 
-            for (int i=0;i<NUMS_OF_ENEMY;i++)
-            {
-                gEnemy[i].autoMove();
-                gEnemy[i].ShowEnemie(mRenderer);
-                gEnemy[i].checkCollision(&phoenix,&phoenixFireball,&mainCharacter);
-                gEnemy[i].handleHitFromCharacter(&mainCharacter,mainCharacter.getFrameAttack(),mainCharacter.getFrameAttack2());   
-            }
+            manageEnemy(&phoenix,&phoenixFireball,&mainCharacter,&mRenderer);
 
             phoenixFireball.manageFireball(mRenderer);
             phoenix.renderPhoenix(mRenderer);
@@ -109,6 +103,16 @@ int  Game:: playGame(){
     close(&mRenderer,&mWindow);
     return 0;
 
+}
+
+void Game ::  manageEnemy (Phoenix * phoenix , Fireball * phoenixFireball , Character * mainCharacter, SDL_Renderer ** mRenderer){
+    for (int i=0;i<NUMS_OF_ENEMY;i++)
+    {
+        gEnemy[i].autoMove();
+        gEnemy[i].ShowEnemie(*mRenderer);
+        gEnemy[i].checkCollision(phoenix,phoenixFireball,mainCharacter);
+        gEnemy[i].handleHitFromCharacter(mainCharacter,mainCharacter->getFrameAttack(),mainCharacter->getFrameAttack2());   
+    }
 }
 
 void Game ::  fpsManage(){
@@ -206,9 +210,6 @@ bool Game:: initData(SDL_Renderer ** mRenderer , SDL_Window ** mWindow ){
     else success = 0;
     return success;
 }
-
-
-
 
 bool Game:: loadAudio(){
     sword = Mix_LoadWAV("sound/sword.wav");
