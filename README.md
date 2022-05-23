@@ -41,7 +41,7 @@
     - Âm thanh tiếng kiếm, tiếng chạy, âm thanh của quái ...
     - Kiểm soát va chạm giữa nhân vật với quả cầu lửa, với quái ... 
     - Hiển thị điểm và số lượng quái bạn đã giết, khi vào chế độ tàng hình thì sẽ có dòng chữ thông báo bạn đang tàng hình và có đồng hồ đếm ngược để trở lại trạng thái visible ( không tàng hình ).
-    
+    - Hệ thống SFX sinh động ( tiếng running, tiếng chém kiếm, tiếng quái ... ) .  
 - Màn hình kết thúc 
     - Nút Return để chơi lại.
     - Nút Exit để thoát. 
