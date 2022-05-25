@@ -28,7 +28,7 @@
 - Tựa game side-scrolling 2D đơn giản lấy bối cảnh trong 1 khu rừng, bạn sẽ hoá thân thành một anh hùng đang bị 1 con phượng hoàng lửa truy đuổi phía sau và liên tục phun lửa vào bạn, và trước mặt bạn là vô vàn những con quái vật sẵn sàng lấy mạng của bạn, nhiệm vụ của bạn là hãy né những quả cầu lửa, tiêu diệt những con quái trên đường và sống sót càng lâu càng tốt . Với mỗi lần bạn tiêu diệt được 10 con quái vật thì bạn sẽ có khả năng tàng hình trong 30 giây. 
 
 #### 3. Các chức năng đã cài đặt 
--  Video Demo: ***[Youtube](https://www.youtube.com/watch?v=QXwKe1Oo67I)***
+-  Video Demo: ***[Youtube](https://www.youtube.com/watch?v=FQLYMWRD4ho)***
 - Menu 
     - Nút Play để chơi game. 
     - Nút Information để hiện thông tin của người phát triển.
